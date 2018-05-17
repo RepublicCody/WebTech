@@ -1,5 +1,5 @@
-part of warships;
-
+//part of warships;
+import 'dart:html';
 
 class Field{
 
@@ -26,11 +26,13 @@ class Ship{
   int shipLength;
 
   var fields = [];
+  var objekte = [];
 
   Ship(int shipLength){
     this.shipLength = shipLength;
     this.destroyed = false;
     this.fields = [];
+    this.objekte = [];
   }
 
 
@@ -55,6 +57,14 @@ class Ship{
 
   void setFields(List fields){
     this.fields = fields;
+  }
+
+  List getObjekte(){
+    return this.objekte;
+  }
+
+  void setObjekte(List objekte){
+    this.objekte = objekte;
   }
 }
 
@@ -101,8 +111,6 @@ class PlayingField{
         String img = "images/schiff_mitte_vertikal.png";
         querySelector(id).style.backgroundImage = "url('" + img + "')";
       }
-
-
   }
 }
 
@@ -117,6 +125,17 @@ class Entity{
     this.ship = ship;
     this.powerUp = powerUp;
   }
+}
 
+class Objekt{
+  String bez;
+  String bild;
+
+  Objekt(String bez, String bild){
+    this.bez = bez;
+    this.bild = bild;
+  }
+
+  String getBild(){return this.bild;}
 
 }

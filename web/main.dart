@@ -1,5 +1,5 @@
 import 'dart:html';
-//import 'package:warships/warships.dart';
+import 'model.dart';
 
 String id;
 Element tabelle = querySelector("#T1");
@@ -13,8 +13,8 @@ void main() {
   querySelector("#T1").style.display="none";
   querySelector("#level_1").onClick.listen(changeVisability);
 
-  int anzahl = 3;
-/*
+  int anzahl = 2;
+
   Objekt powerup = new Objekt("powerup", "powerup.png");
   Objekt nebel = new Objekt("nebel", "images/nebel.png");
   Objekt nebel_getroffen_rot = new Objekt("nebel_getroffen_rot", "images/nebel_getroffen_rot.png");
@@ -28,184 +28,203 @@ void main() {
   Objekt wasser = new Objekt("wasser", "images/wasser.png");
   Objekt wasser_getroffen_weiss = new Objekt("wasser_getroffen_weiss", "images/wasser_getroffen_weiss.png");
 
-  Objekt schiff_mitte_vertikal = new Objekt("schiff_mitte_vertikal", "images/schiff_mitte_vertikal.png");
+  Objekt schiff_mitte_vertikal = new Objekt("Ship_mitte_vertikal", "images/schiff_mitte_vertikal.png");
+  Objekt schiff_vorne_vertikal = new Objekt("Ship_mitte_vertikal", "images/schiff_vorne_vertikal.png");
+  Objekt schiff_hinten_vertikal = new Objekt("Ship_mitte_vertikal", "images/schiff_hinten_vertikal.png");
+
+  Objekt schiff_mitte_horizontal = new Objekt("Ship_mitte_vertikal", "images/schiff_mitte_horizontal.png");
+  Objekt schiff_vorne_horizontal = new Objekt("Ship_mitte_vertikal", "images/schiff_vorne_horizontal.png");
+  Objekt schiff_hinten_horizontal = new Objekt("Ship_mitte_vertikal", "images/schiff_hinten_horizontal.png");
+
   Objekt felsen = new Objekt("felsen", "test");
 
 
-  Feld A0 = new Feld("A0", false, false, wasser);
-  Feld A1 = new Feld("A1", false, false, wasser);
-  Feld A2 = new Feld("A2", false, false, wasser);
-  Feld A3 = new Feld("A3", false, false, wasser);
-  Feld A4 = new Feld("A4", false, false, wasser);
-  Feld A5 = new Feld("A5", false, false, wasser);
-  Feld A6 = new Feld("A6", false, false, wasser);
-  Feld A7 = new Feld("A7", false, false, wasser);
-  Feld A8 = new Feld("A8", false, false, wasser);
+  Field A0 = new Field("wasser");
+  Field A1 = new Field("wasser");
+  Field A2 = new Field("wasser");
+  Field A3 = new Field("wasser");
+  Field A4 = new Field("wasser");
+  Field A5 = new Field("wasser");
+  Field A6 = new Field("wasser");
+  Field A7 = new Field("wasser");
+  Field A8 = new Field("wasser");
 
-  Feld B0 = new Feld("B0", false, false, wasser);
-  Feld B1 = new Feld("B1", false, false, wasser);
-  Feld B2 = new Feld("B2", false, false, wasser);
-  Feld B3 = new Feld("B3", false, false, wasser);
-  Feld B4 = new Feld("B4", false, false, wasser);
-  Feld B5 = new Feld("B5", false, false, wasser);
-  Feld B6 = new Feld("B6", false, false, wasser);
-  Feld B7 = new Feld("B7", false, false, wasser);
-  Feld B8 = new Feld("B8", false, false, wasser);
+  Field B0 = new Field("wasser");
+  Field B1 = new Field("wasser");
+  Field B2 = new Field("wasser");
+  Field B3 = new Field("wasser");
+  Field B4 = new Field("wasser");
+  Field B5 = new Field("wasser");
+  Field B6 = new Field("wasser");
+  Field B7 = new Field("wasser");
+  Field B8 = new Field("wasser");
 
-  Feld C0 = new Feld("C0", false, false, wasser);
-  Feld C1 = new Feld("C1", false, false, wasser);
-  Feld C2 = new Feld("C2", false, false, wasser);
-  Feld C3 = new Feld("C3", false, false, wasser);
-  Feld C4 = new Feld("C4", false, false, wasser);
-  Feld C5 = new Feld("C5", false, false, wasser);
-  Feld C6 = new Feld("C6", false, false, wasser);
-  Feld C7 = new Feld("C7", false, false, wasser);
-  Feld C8 = new Feld("C8", false, false, wasser);
+  Field C0 = new Field("wasser");
+  Field C1 = new Field("wasser");
+  Field C2 = new Field("wasser");
+  Field C3 = new Field("wasser");
+  Field C4 = new Field("wasser");
+  Field C5 = new Field("wasser");
+  Field C6 = new Field("wasser");
+  Field C7 = new Field("wasser");
+  Field C8 = new Field("wasser");
 
-  Feld D0 = new Feld("D0", false, false, wasser);
-  Feld D1 = new Feld("D1", false, false, wasser);
-  Feld D2 = new Feld("D2", false, false, wasser);
-  Feld D3 = new Feld("D3", false, false, wasser);
-  Feld D4 = new Feld("D4", false, false, wasser);
-  Feld D5 = new Feld("D5", false, false, wasser);
-  Feld D6 = new Feld("D6", false, false, wasser);
-  Feld D7 = new Feld("D7", false, false, wasser);
-  Feld D8 = new Feld("D8", false, false, wasser);
+  Field D0 = new Field("wasser");
+  Field D1 = new Field("wasser");
+  Field D2 = new Field("wasser");
+  Field D3 = new Field("wasser");
+  Field D4 = new Field("wasser");
+  Field D5 = new Field("wasser");
+  Field D6 = new Field("wasser");
+  Field D7 = new Field("wasser");
+  Field D8 = new Field("wasser");
 
-  Feld E0 = new Feld("E0", false, false, wasser);
-  Feld E1 = new Feld("E1", false, false, wasser);
-  Feld E2 = new Feld("E2", false, false, wasser);
-  Feld E3 = new Feld("E3", false, false, wasser);
-  Feld E4 = new Feld("E4", false, false, wasser);
-  Feld E5 = new Feld("E5", false, false, wasser);
-  Feld E6 = new Feld("E6", false, false, wasser);
-  Feld E7 = new Feld("E7", false, false, wasser);
-  Feld E8 = new Feld("E8", false, false, wasser);
+  Field E0 = new Field("wasser");
+  Field E1 = new Field("wasser");
+  Field E2 = new Field("wasser");
+  Field E3 = new Field("wasser");
+  Field E4 = new Field("wasser");
+  Field E5 = new Field("wasser");
+  Field E6 = new Field("wasser");
+  Field E7 = new Field("wasser");
+  Field E8 = new Field("wasser");
 
-  Feld F0 = new Feld("F0", false, false, wasser);
-  Feld F1 = new Feld("F1", false, false, wasser);
-  Feld F2 = new Feld("F2", false, false, wasser);
-  Feld F3 = new Feld("F3", false, false, wasser);
-  Feld F4 = new Feld("F4", false, false, wasser);
-  Feld F5 = new Feld("F5", false, false, wasser);
-  Feld F6 = new Feld("F6", false, false, wasser);
-  Feld F7 = new Feld("F7", false, false, wasser);
-  Feld F8 = new Feld("F8", false, false, wasser);
+  Field F0 = new Field("wasser");
+  Field F1 = new Field("wasser");
+  Field F2 = new Field("wasser");
+  Field F3 = new Field("wasser");
+  Field F4 = new Field("wasser");
+  Field F5 = new Field("wasser");
+  Field F6 = new Field("wasser");
+  Field F7 = new Field("wasser");
+  Field F8 = new Field("wasser");
 
-  Feld G0 = new Feld("G0", false, false, wasser);
-  Feld G1 = new Feld("G1", false, false, wasser);
-  Feld G2 = new Feld("G2", false, false, wasser);
-  Feld G3 = new Feld("G3", false, false, wasser);
-  Feld G4 = new Feld("G4", false, false, wasser);
-  Feld G5 = new Feld("G5", false, false, wasser);
-  Feld G6 = new Feld("G6", false, false, wasser);
-  Feld G7 = new Feld("G7", false, false, wasser);
-  Feld G8 = new Feld("G8", false, false, wasser);
+  Field G0 = new Field("wasser");
+  Field G1 = new Field("wasser");
+  Field G2 = new Field("wasser");
+  Field G3 = new Field("wasser");
+  Field G4 = new Field("wasser");
+  Field G5 = new Field("wasser");
+  Field G6 = new Field("wasser");
+  Field G7 = new Field("wasser");
+  Field G8 = new Field("wasser");
 
-  Feld H0 = new Feld("H0", false, false, wasser);
-  Feld H1 = new Feld("H1", false, false, wasser);
-  Feld H2 = new Feld("H2", false, false, wasser);
-  Feld H3 = new Feld("H3", false, false, wasser);
-  Feld H4 = new Feld("H4", false, false, wasser);
-  Feld H5 = new Feld("H5", false, false, wasser);
-  Feld H6 = new Feld("H6", false, false, wasser);
-  Feld H7 = new Feld("H7", false, false, wasser);
-  Feld H8 = new Feld("H8", false, false, wasser);
+  Field H0 = new Field("wasser");
+  Field H1 = new Field("wasser");
+  Field H2 = new Field("wasser");
+  Field H3 = new Field("wasser");
+  Field H4 = new Field("wasser");
+  Field H5 = new Field("wasser");
+  Field H6 = new Field("wasser");
+  Field H7 = new Field("wasser");
+  Field H8 = new Field("wasser");
 
-  Feld I0 = new Feld("I0", false, false, wasser);
-  Feld I1 = new Feld("I1", false, false, wasser);
-  Feld I2 = new Feld("I2", false, false, wasser);
-  Feld I3 = new Feld("I3", false, false, wasser);
-  Feld I4 = new Feld("I4", false, false, wasser);
-  Feld I5 = new Feld("I5", false, false, wasser);
-  Feld I6 = new Feld("I6", false, false, wasser);
-  Feld I7 = new Feld("I7", false, false, wasser);
-  Feld I8 = new Feld("I8", false, false, wasser);
+  Field I0 = new Field("wasser");
+  Field I1 = new Field("wasser");
+  Field I2 = new Field("wasser");
+  Field I3 = new Field("wasser");
+  Field I4 = new Field("wasser");
+  Field I5 = new Field("wasser");
+  Field I6 = new Field("wasser");
+  Field I7 = new Field("wasser");
+  Field I8 = new Field("wasser");
 
-  Feld J0 = new Feld("J0", false, false, wasser);
-  Feld J1 = new Feld("J1", false, false, wasser);
-  Feld J2 = new Feld("J2", false, false, wasser);
-  Feld J3 = new Feld("J3", false, false, wasser);
-  Feld J4 = new Feld("J4", false, false, wasser);
-  Feld J5 = new Feld("J5", false, false, wasser);
-  Feld J6 = new Feld("J6", false, false, wasser);
-  Feld J7 = new Feld("J7", false, false, wasser);
-  Feld J8 = new Feld("J8", false, false, wasser);
+  Field J0 = new Field("wasser");
+  Field J1 = new Field("wasser");
+  Field J2 = new Field("wasser");
+  Field J3 = new Field("wasser");
+  Field J4 = new Field("wasser");
+  Field J5 = new Field("wasser");
+  Field J6 = new Field("wasser");
+  Field J7 = new Field("wasser");
+  Field J8 = new Field("wasser");
 
-  Feld K0 = new Feld("K0", false, false, wasser);
-  Feld K1 = new Feld("K1", false, false, wasser);
-  Feld K2 = new Feld("K2", false, false, wasser);
-  Feld K3 = new Feld("K3", false, false, wasser);
-  Feld K4 = new Feld("K4", false, false, wasser);
-  Feld K5 = new Feld("K5", false, false, wasser);
-  Feld K6 = new Feld("K6", false, false, wasser);
-  Feld K7 = new Feld("K7", false, false, wasser);
-  Feld K8 = new Feld("K8", false, false, wasser);
+  Field K0 = new Field("wasser");
+  Field K1 = new Field("wasser");
+  Field K2 = new Field("wasser");
+  Field K3 = new Field("wasser");
+  Field K4 = new Field("wasser");
+  Field K5 = new Field("wasser");
+  Field K6 = new Field("wasser");
+  Field K7 = new Field("wasser");
+  Field K8 = new Field("wasser");
 
-  Feld L0 = new Feld("L0", false, false, wasser);
-  Feld L1 = new Feld("L1", false, false, wasser);
-  Feld L2 = new Feld("L2", false, false, wasser);
-  Feld L3 = new Feld("L3", false, false, wasser);
-  Feld L4 = new Feld("L4", false, false, wasser);
-  Feld L5 = new Feld("L5", false, false, wasser);
-  Feld L6 = new Feld("L6", false, false, wasser);
-  Feld L7 = new Feld("L7", false, false, wasser);
-  Feld L8 = new Feld("L8", false, false, wasser);
+  Field L0 = new Field("wasser");
+  Field L1 = new Field("wasser");
+  Field L2 = new Field("wasser");
+  Field L3 = new Field("wasser");
+  Field L4 = new Field("wasser");
+  Field L5 = new Field("wasser");
+  Field L6 = new Field("wasser");
+  Field L7 = new Field("wasser");
+  Field L8 = new Field("wasser");
 
-  Feld M0 = new Feld("M0", false, false, wasser);
-  Feld M1 = new Feld("M1", false, false, wasser);
-  Feld M2 = new Feld("M2", false, false, wasser);
-  Feld M3 = new Feld("M3", false, false, wasser);
-  Feld M4 = new Feld("M4", false, false, wasser);
-  Feld M5 = new Feld("M5", false, false, wasser);
-  Feld M6 = new Feld("M6", false, false, wasser);
-  Feld M7 = new Feld("M7", false, false, wasser);
-  Feld M8 = new Feld("M8", false, false, wasser);
+  Field M0 = new Field("wasser");
+  Field M1 = new Field("wasser");
+  Field M2 = new Field("wasser");
+  Field M3 = new Field("wasser");
+  Field M4 = new Field("wasser");
+  Field M5 = new Field("wasser");
+  Field M6 = new Field("wasser");
+  Field M7 = new Field("wasser");
+  Field M8 = new Field("wasser");
 
-  Feld N0 = new Feld("N0", false, false, wasser);
-  Feld N1 = new Feld("N1", false, false, wasser);
-  Feld N2 = new Feld("N2", false, false, wasser);
-  Feld N3 = new Feld("N3", false, false, wasser);
-  Feld N4 = new Feld("N4", false, false, wasser);
-  Feld N5 = new Feld("N5", false, false, wasser);
-  Feld N6 = new Feld("N6", false, false, wasser);
-  Feld N7 = new Feld("N7", false, false, wasser);
-  Feld N8 = new Feld("N8", false, false, wasser);
+  Field N0 = new Field("wasser");
+  Field N1 = new Field("wasser");
+  Field N2 = new Field("wasser");
+  Field N3 = new Field("wasser");
+  Field N4 = new Field("wasser");
+  Field N5 = new Field("wasser");
+  Field N6 = new Field("wasser");
+  Field N7 = new Field("wasser");
+  Field N8 = new Field("wasser");
 
-  Feld O0 = new Feld("O0", false, false, wasser);
-  Feld O1 = new Feld("O1", false, false, wasser);
-  Feld O2 = new Feld("O2", false, false, wasser);
-  Feld O3 = new Feld("O3", false, false, wasser);
-  Feld O4 = new Feld("O4", false, false, wasser);
-  Feld O5 = new Feld("O5", false, false, wasser);
-  Feld O6 = new Feld("O6", false, false, wasser);
-  Feld O7 = new Feld("O7", false, false, wasser);
-  Feld O8 = new Feld("O8", false, false, wasser);
+  Field O0 = new Field("wasser");
+  Field O1 = new Field("wasser");
+  Field O2 = new Field("wasser");
+  Field O3 = new Field("wasser");
+  Field O4 = new Field("wasser");
+  Field O5 = new Field("wasser");
+  Field O6 = new Field("wasser");
+  Field O7 = new Field("wasser");
+  Field O8 = new Field("wasser");
 
 
-  var felder=[M2, N2];
-  var objekte=[schiff_mitte_vertikal];
+  var Fielder=["M2", "N2"];
+  var Objekte=[schiff_vorne_vertikal, schiff_hinten_vertikal];
 
-  Schiff zweier = new Schiff(2);
-  Schiff dreier = new Schiff(3);
-  Schiff drei = new Schiff(3);
+  Ship zweier = new Ship(2);
+  Ship dreier = new Ship(3);
+  Ship dreier2 = new Ship(3);
 
-  zweier.setFelder(felder);
-  zweier.setObjekte(objekte);
+  zweier.setFields(Fielder);
+  zweier.setObjekte(Objekte);
 
-  felder=[A2, A3, A4];
+  Fielder=["A2", "A3", "A4"];
+  Objekte=[schiff_vorne_horizontal, schiff_mitte_horizontal, schiff_hinten_horizontal];
 
-  dreier.setFelder(felder);
-  dreier.setObjekte(objekte);
+  dreier.setFields(Fielder);
+  dreier.setObjekte(Objekte);
 
+  Fielder=["B7", "C7", "D7"];
+  Objekte=[schiff_vorne_vertikal, schiff_mitte_vertikal, schiff_hinten_vertikal];
+
+  dreier2.setFields(Fielder);
+  dreier2.setObjekte(Objekte);
+
+  placeShipe(zweier);
+  placeShipe(dreier);
+  placeShipe(dreier2);
+
+  print("test");
 
 //print(test);
 //test = "#" + test;
 
-  String test = "#" + zweier.getFelder()[0].toString();*/
-  String test = "#E2";
+  //String test = "#" + zweier.getFielder()[0].toString();
+//  String test = "#E2";
 
-  querySelector(test).style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
+//  querySelector(test).style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
 
 
 
@@ -213,17 +232,23 @@ void main() {
       'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
 
   // querySelector("#A2").innerHtml = "X";
-  //querySelectorAll('.Feld').onClick.listen(finde);
+  //querySelectorAll('.Field').onClick.listen(finde);
   //String id;
-  //var id = querySelectorAll('.Feld').onClick.listen(finde);
+  //var id = querySelectorAll('.Field').onClick.listen(finde);
+
+
+
   querySelectorAll('.Feld').onClick.listen(finde);
+
+
+
   //querySelector("#"+id).innerHtml="test";
 //print(id);
-  // querySelector('#' + K2.getIDFeld()).innerHtml = 'String';
+  // querySelector('#' + K2.getIDField()).innerHtml = 'String';
 
-//  var schiffe = [zweier, dreier];
+//  var Shipe = [zweier, dreier];
 
- // setzteSchiffe(schiffe);
+ // setzteShipe(Shipe);
 
 }
 
@@ -239,11 +264,31 @@ void finde(MouseEvent event) {
     Element target = event.target;
     // print(target.attributes["id"]);
     id = target.attributes["id"];
+
+    print(id.toString() + "test");
+
     //  target.innerHtml ="X";
     //  target.innerHtml="background='wasser.png'";
     //  target.innerHtml='background-image: url("wasser.png")';
     //  var style = target.style;
     //  style.background='background-image: url("wasser.png")';
-    target.style.backgroundImage="url('images/test.png')";
+
+
+
+    target.style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
+  }
+}
+
+void placeShipe(Ship ship){
+
+  var felder = ship.getFields();
+  var objekte = ship.getObjekte();
+
+  for (int x = 0; x < felder.length; x++) {
+    String id = "#" + felder[x].toString();
+    Objekt obj = objekte[x];
+
+    String img = "url('" + obj.getBild() + "')";
+    querySelector(id).style.backgroundImage = img;
   }
 }
