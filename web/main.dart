@@ -4,6 +4,10 @@ import 'model.dart';
 String id;
 Element tabelle = querySelector("#T1");
 
+var s1 = ["A2", "A3", "A4"];
+var s2 = ["B7", "C7", "D7"];
+
+
 void main() {
 
 
@@ -260,12 +264,44 @@ void main() {
   }
 
 void finde(MouseEvent event) {
+  bool hit = false;
   if (event.target is Element) {
     Element target = event.target;
     // print(target.attributes["id"]);
     id = target.attributes["id"];
 
-    print(id.toString() + "test");
+    for(int x = 0; x < s1.length; x++){
+      if(s1[x] == id && hit == false){
+        target.style.backgroundImage='url("images/nebel_getroffen_rot.png")';
+        s1[x] = null;
+        hit = true;
+      }
+    }
+
+    for(int x = 0; x < s1.length; x++){
+      if(s2[x] == id && hit == false){
+        target.style.backgroundImage='url("images/nebel_getroffen_rot.png")';
+        s2[x] = null;
+        hit = true;
+      }
+    }
+
+
+      if(s1[0] == null && s1[1] == null && s1[2] == null){
+        querySelector("#A2").style.backgroundImage = 'url("images/schiff_getroffen_vorne_horizontal.png")';
+        querySelector("#A3").style.backgroundImage = 'url("images/schiff_getroffen_mitte_horizontal.png")';
+        querySelector("#A4").style.backgroundImage = 'url("images/schiff_getroffen_hinten_horizontal.png")';
+      }
+
+
+
+      if(s2[0] == null && s2[1] == null && s2[2] == null){
+        querySelector("#B7").style.backgroundImage = 'url("images/schiff_getroffen_vorne_vertikal.png")';
+        querySelector("#C7").style.backgroundImage = 'url("images/schiff_getroffen_mitte_vertikal.png")';
+        querySelector("#D7").style.backgroundImage = 'url("images/schiff_getroffen_hinten_vertikal.png")';
+      }
+
+
 
     //  target.innerHtml ="X";
     //  target.innerHtml="background='wasser.png'";
@@ -275,7 +311,10 @@ void finde(MouseEvent event) {
 
 
 
-    target.style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
+
+if(hit == false) {
+  target.style.backgroundImage = 'url("images/wasser_getroffen_weiss.png")';
+}
   }
 }
 
