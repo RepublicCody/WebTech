@@ -7,6 +7,22 @@ html, body {
   padding: 0;
   font-family: 'Roboto', sans-serif;
 }
+#level_1, #level_2, #level_3, #level_4, #level_5, #zufall{
+  color: white;
+  padding: 1%;
+  margin: 0.5%;
+  width: 20%;
+  border: 3px solid #080808;
+  font-size: 140%;
+  background:linear-gradient(top, #3c3c3c 0%, #222222 100%);
+  background:-webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+}
+
+
+
+
+
+
 
 #T1 {
   /*border: 3px solid black;*/

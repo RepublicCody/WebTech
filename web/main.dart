@@ -2,9 +2,16 @@ import 'dart:html';
 //import 'package:warships/warships.dart';
 
 String id;
-
+Element tabelle = querySelector("#T1");
 
 void main() {
+
+
+
+
+ // querySelector("#T1").style.visibility="hidden";
+  querySelector("#T1").remove();
+  querySelector("#level_1").onClick.listen(changeVisability);
 
   int anzahl = 3;
 /*
@@ -220,7 +227,12 @@ void main() {
 
 }
 
+  void changeVisability(Event e){
 
+      querySelector("#menu").remove();
+   //   querySelector("#T1").style.visibility="visible";
+      querySelector("#body").children.add(tabelle);
+  }
 
 void finde(MouseEvent event) {
   if (event.target is Element) {
