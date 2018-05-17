@@ -105,3 +105,18 @@ class PlayingField{
 
   }
 }
+
+class Entity{
+
+  int rock;
+  int ship;
+  int powerUp;
+
+  Entitiy(int rock, int ship, int powerUp){
+    this.rock = rock;
+    this.ship = ship;
+    this.powerUp = powerUp;
+  }
+
+
+}

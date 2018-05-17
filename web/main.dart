@@ -10,7 +10,7 @@ void main() {
 
 
  // querySelector("#T1").style.visibility="hidden";
-  querySelector("#T1").remove();
+  querySelector("#T1").style.display="none";
   querySelector("#level_1").onClick.listen(changeVisability);
 
   int anzahl = 3;
@@ -229,9 +229,9 @@ void main() {
 
   void changeVisability(Event e){
 
-      querySelector("#menu").remove();
+      querySelector("#menu").style.display="none";
    //   querySelector("#T1").style.visibility="visible";
-      querySelector("#body").children.add(tabelle);
+      querySelector("#T1").style.display="block";
   }
 
 void finde(MouseEvent event) {

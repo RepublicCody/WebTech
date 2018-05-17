@@ -25,19 +25,20 @@ html, body {
 
 
 #T1 {
-  /*border: 3px solid black;*/
-  /*border-collapse: collapse;*/
+  border: 3px solid black;
+  border-collapse: collapse;
   width: 288px;
-  height: 532px;
+  height: 514px;
 }
 th {
-  /*border: 3px solid black;*/
-  height: 32px;
+  border-bottom: 3px solid black;
+  height: 29px;
 }
 td{
-  /*border: 1px solid black;*/
-  width: 32px;
-  height: 32px;
+  border: 1px solid black;
+  width: 29px;
+  height: 29px;
+  table-layout: fixed;
 }
 td:hover{
   background: orange;
