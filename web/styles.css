@@ -8,7 +8,56 @@ html, body {
   font-family: 'Roboto', sans-serif;
 }
 
-#output {
-  padding: 20px;
-  text-align: center;
+#T1 {
+  border: 3px solid black;
+  padding: 1%;
+  border-collapse: collapse;
+
+  height: 536px;
+}
+th {
+  border: 3px solid black;
+  height: 32px;
+}
+td{
+  border: 1px solid black;
+  width: 32px;
+  height: 32px;
+}
+td:hover{
+  background: orange;
+}
+
+.Spieler {
+  background-color: #AAAAAA;
+  background-image: url("images/wasser.png");
+
+}
+
+.Gegner {
+  background-color: #DDAAAA;
+}
+
+* {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media screen and (max-width:304px){
+  #T1{
+    width:100vw;
+  }
+  /* td{
+     width: 11%;
+   }*/
+}
+@media screen and (max-height:583px){
+  #T1{
+    height:100vw;
+  }
+  /* th{
+     height: 6%;
+   }
+   td{
+     height: 6%;
+   }*/
 }
