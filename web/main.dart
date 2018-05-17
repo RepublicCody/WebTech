@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'package:warships/warships.dart';
+//import 'package:warships/warships.dart';
 
 String id;
 
@@ -7,7 +7,7 @@ String id;
 void main() {
 
   int anzahl = 3;
-
+/*
   Objekt powerup = new Objekt("powerup", "powerup.png");
   Objekt nebel = new Objekt("nebel", "images/nebel.png");
   Objekt nebel_getroffen_rot = new Objekt("nebel_getroffen_rot", "images/nebel_getroffen_rot.png");
@@ -191,10 +191,12 @@ void main() {
   dreier.setFelder(felder);
   dreier.setObjekte(objekte);
 
-  String test = "#" + zweier.getFelder()[0].toString();
+
 //print(test);
 //test = "#" + test;
-  test = "#E2";
+
+  String test = "#" + zweier.getFelder()[0].toString();*/
+  String test = "#E2";
 
   querySelector(test).style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
 
@@ -212,9 +214,9 @@ void main() {
 //print(id);
   // querySelector('#' + K2.getIDFeld()).innerHtml = 'String';
 
-  var schiffe = [zweier, dreier];
+//  var schiffe = [zweier, dreier];
 
-  setzteSchiffe(schiffe);
+ // setzteSchiffe(schiffe);
 
 }
 

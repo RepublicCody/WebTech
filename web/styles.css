@@ -9,18 +9,17 @@ html, body {
 }
 
 #T1 {
-  border: 3px solid black;
-  padding: 1%;
-  border-collapse: collapse;
-
-  height: 536px;
+  /*border: 3px solid black;*/
+  /*border-collapse: collapse;*/
+  width: 288px;
+  height: 532px;
 }
 th {
-  border: 3px solid black;
+  /*border: 3px solid black;*/
   height: 32px;
 }
 td{
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   width: 32px;
   height: 32px;
 }
@@ -42,7 +41,7 @@ td:hover{
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
-@media screen and (max-width:304px){
+@media screen and (max-width:301px){
   #T1{
     width:100vw;
   }
@@ -50,7 +49,7 @@ td:hover{
      width: 11%;
    }*/
 }
-@media screen and (max-height:583px){
+@media screen and (max-height:531px){
   #T1{
     height:100vw;
   }
