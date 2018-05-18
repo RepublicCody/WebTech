@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'model.dart';
+import '../lib/dartwarships.dart';
 
 String id;
 Element tabelle = querySelector("#T1");

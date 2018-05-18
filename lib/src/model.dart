@@ -1,5 +1,17 @@
-//part of warships;
-import 'dart:html';
+part of warships;
+
+class gamePlay{
+
+  int row;
+  int column;
+
+  gamePlay(int row, int column){
+    this.row = row;
+    this.column = column;
+  }
+}
+
+
 
 class Field{
 
