@@ -14,6 +14,7 @@ html, body {
   background-repeat: no-repeat;
   height: 561px;
   width: 320px;
+  border: 1px solid black;
 }
 
 #menu_head{

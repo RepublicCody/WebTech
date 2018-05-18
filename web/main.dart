@@ -7,6 +7,7 @@ Element tabelle = querySelector("#T1");
 var s1 = ["A2", "A3", "A4"];
 var s2 = ["B7", "C7", "D7"];
 
+int anzahl = 2;
 
 void main() {
 
@@ -17,7 +18,7 @@ void main() {
   querySelector("#T1").style.display="none";
   querySelector("#level_1").onClick.listen(changeVisability);
 
-  int anzahl = 2;
+
 
   Objekt powerup = new Objekt("powerup", "powerup.png");
   Objekt nebel = new Objekt("nebel", "images/nebel.png");
@@ -205,13 +206,14 @@ void main() {
   zweier.setObjekte(Objekte);
 
   Fielder=["A2", "A3", "A4"];
-  Objekte=[schiff_vorne_horizontal, schiff_mitte_horizontal, schiff_hinten_horizontal];
+//  Objekte=[schiff_vorne_horizontal, schiff_mitte_horizontal, schiff_hinten_horizontal];
+  Objekte=[nebel, nebel, nebel];
 
   dreier.setFields(Fielder);
   dreier.setObjekte(Objekte);
 
   Fielder=["B7", "C7", "D7"];
-  Objekte=[schiff_vorne_vertikal, schiff_mitte_vertikal, schiff_hinten_vertikal];
+//  Objekte=[schiff_vorne_vertikal, schiff_mitte_vertikal, schiff_hinten_vertikal];
 
   dreier2.setFields(Fielder);
   dreier2.setObjekte(Objekte);
@@ -230,11 +232,10 @@ void main() {
 
 //  querySelector(test).style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
 
-
-
+if(anzahl == 2) {
   querySelector('#anzeige').innerHtml =
       'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
-
+}
   // querySelector("#A2").innerHtml = "X";
   //querySelectorAll('.Field').onClick.listen(finde);
   //String id;
@@ -265,6 +266,8 @@ void main() {
 
 void finde(MouseEvent event) {
   bool hit = false;
+  bool sh1 = true;
+  bool sh2 = true;
   if (event.target is Element) {
     Element target = event.target;
     // print(target.attributes["id"]);
@@ -287,18 +290,37 @@ void finde(MouseEvent event) {
     }
 
 
-      if(s1[0] == null && s1[1] == null && s1[2] == null){
-        querySelector("#A2").style.backgroundImage = 'url("images/schiff_getroffen_vorne_horizontal.png")';
-        querySelector("#A3").style.backgroundImage = 'url("images/schiff_getroffen_mitte_horizontal.png")';
-        querySelector("#A4").style.backgroundImage = 'url("images/schiff_getroffen_hinten_horizontal.png")';
+      if(sh1 == true && s1[0] == null && s1[1] == null && s1[2] == null) {
+        querySelector("#A2").style.backgroundImage =
+        'url("images/schiff_getroffen_vorne_horizontal.png")';
+        querySelector("#A3").style.backgroundImage =
+        'url("images/schiff_getroffen_mitte_horizontal.png")';
+        querySelector("#A4").style.backgroundImage =
+        'url("images/schiff_getroffen_hinten_horizontal.png")';
+
+        if (anzahl != 0 && sh1 == true){
+          print("1");
+          anzahl = 0;
+      /*  querySelector('#anzeige').innerHtml =
+            'Noch ' + anzahl.toString() + ' Schiffe vorhanden';*/
+          sh1 = false;
+      }
       }
 
 
 
-      if(s2[0] == null && s2[1] == null && s2[2] == null){
+      if(sh2 == true && s2[0] == null && s2[1] == null && s2[2] == null){
         querySelector("#B7").style.backgroundImage = 'url("images/schiff_getroffen_vorne_vertikal.png")';
         querySelector("#C7").style.backgroundImage = 'url("images/schiff_getroffen_mitte_vertikal.png")';
         querySelector("#D7").style.backgroundImage = 'url("images/schiff_getroffen_hinten_vertikal.png")';
+
+        if(anzahl !=0 && sh2 == true) {
+          print("2");
+          anzahl = 1;
+          /*   querySelector('#anzeige').innerHtml =
+              'Noch ' + anzahl.toString() + ' Schiffe vorhanden';*/
+          sh2 = false;
+        }
       }
 
 
@@ -308,14 +330,17 @@ void finde(MouseEvent event) {
     //  target.innerHtml='background-image: url("wasser.png")';
     //  var style = target.style;
     //  style.background='background-image: url("wasser.png")';
-
-
-
+if(anzahl == 1 || anzahl == 0) {
+  querySelector('#anzeige').innerHtml =
+      'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
+}
 
 if(hit == false) {
   target.style.backgroundImage = 'url("images/wasser_getroffen_weiss.png")';
 }
   }
+
+
 }
 
 void placeShipe(Ship ship){
