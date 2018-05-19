@@ -2,7 +2,7 @@ import 'dart:html';
 import '../lib/dartwarships.dart';
 
 String id;
-Element tabelle = querySelector("#T1");
+Element tabelle = querySelector("#gameTable");
 
 var s1 = ["A2", "A3", "A4"];
 var s2 = ["B7", "C7", "D7"];
@@ -14,8 +14,8 @@ void main() {
 
 
 
- // querySelector("#T1").style.visibility="hidden";
-  querySelector("#T1").style.display="none";
+ // querySelector("#gameTable").style.visibility="hidden";
+  querySelector("#gameTable").style.display="none";
   querySelector("#level_1").onClick.listen(changeVisability);
 
 
@@ -260,8 +260,8 @@ if(anzahl == 2) {
   void changeVisability(Event e){
 
       querySelector("#menu").style.display="none";
-   //   querySelector("#T1").style.visibility="visible";
-      querySelector("#T1").style.display="block";
+   //   querySelector("#gameTable").style.visibility="visible";
+      querySelector("#gameTable").style.display="block";
   }
 
 void finde(MouseEvent event) {
