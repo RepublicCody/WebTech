@@ -10,6 +10,7 @@ class gameView{
 
   List<List<HtmlElement>> fields;
 
+
   void generateField(gamePlay model){
     final field = model.field;
     String table = "";

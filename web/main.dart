@@ -1,5 +1,6 @@
 import 'dart:html';
-import '../lib/dartwarships.dart';
+import 'package:WebTech/dartwarships.dart';
+
 
 String id;
 Element tabelle = querySelector("#gameTable");
