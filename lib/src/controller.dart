@@ -8,4 +8,7 @@ class gameController{
   final view = new gameView();
 
 
+  gameController(){
+    view.generateField();
+  }
 }

@@ -9,6 +9,31 @@ class gamePlay{
     this.row = row;
     this.column = column;
   }
+/*
+  List<List<Symbol>> get field {
+    var _field = new Iterable.generate(_size, (row) {
+      return new Iterable.generate(_size, (col) => #empty).toList();
+    }).toList();
+    mice.forEach((m) {
+      if (m.row < size && m.col < size)
+        _field[m.row][m.col] = #mouse;
+      else
+        print (m);
+    });
+    snake.body.forEach((s) {
+      final r = s['row'];
+      final c = s['col'];
+      if (r < 0 || r >= _size) return;
+      if (c < 0 || c >= _size) return;
+      _field[r][c] = #snake;
+    });
+    return _field;
+  }
+
+*/
+
+
+  
 }
 
 

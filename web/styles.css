@@ -39,11 +39,11 @@ html, body {
 
 
 
-#T1 {
+#gameTable {
   border: 3px solid black;
   border-collapse: collapse;
-  width: 288px;
-  height: 514px;
+ /* width: 288px;
+  height: 561px;*/
 }
 th {
   border-bottom: 3px solid black;
@@ -55,15 +55,22 @@ td{
   height: 29px;
   table-layout: fixed;
 }
+#back{
+  border-left: 3px solid black;
+  width: 29px;
+  height: 29px;
+}
 
-.Spieler {
-  background-color: #AAAAAA;
+td:hover{
+  background: orange;
+}
+
+.player {
   background-image: url("images/wasser.png");
 
 }
 
 .Gegner {
-  background-color: #DDAAAA;
   background-image: url("images/nebel.png");
 }
 

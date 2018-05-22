@@ -11,13 +11,11 @@ var s2 = ["B7", "C7", "D7"];
 int anzahl = 2;
 
 void main() {
+  var game = new gameController();
 
-
-
-
- // querySelector("#gameTable").style.visibility="hidden";
   querySelector("#gameTable").style.display="none";
   querySelector("#level_1").onClick.listen(changeVisability);
+
 
 
 
@@ -244,7 +242,7 @@ if(anzahl == 2) {
 
 
 
-  querySelectorAll('.Feld').onClick.listen(finde);
+  querySelectorAll('.field').onClick.listen(finde);
 
 
 
@@ -357,3 +355,6 @@ void placeShipe(Ship ship){
     querySelector(id).style.backgroundImage = img;
   }
 }
+
+
+

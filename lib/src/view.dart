@@ -8,23 +8,24 @@ class gameView{
 
   final gameTable = querySelector("#gameTable");
 
-  List<List<HtmlElement>> fields;
+//  List<List<HtmlElement>> fields;
 
-
-  void generateField(gamePlay model){
-    final field = model.field;
+  void generateField(){
+    //  final field = model.field;
     String table = "";
-    for (int row = 0; row < field.length; row++) {
-      table += "<tr>";
-      for (int col = 0; col < field[row].length; col++) {
-        final assignment = field[row][col];
-        final pos = "field_${row}_${col}";
-        table += "<td id='$pos' class='$assignment'></td>";
+    int colAnzeige = column -1;
+    table += "<tr> <th colspan='$colAnzeige' id='anzeige'></th> <th id='back'></th></tr>";
+    for (int xrow = 0; xrow < row; xrow++) {
+      table += "<tr id='player'>";
+      for (int ycol = 0; ycol < column; ycol++) {
+        // final assignment = field[xrow][ycol];
+        final pos = "field_${xrow}_${ycol}";
+        table += "<td id='$pos' class='field'></td>";
       }
       table += "</tr>";
     }
-    gameTable.innerHtml = table;
 
+/*
     // Saves all generated TD elements in field to
     // avoid time intensive querySelector calls in update().
     // Thanks to Johannes Gosch, SoSe 2015.
@@ -34,10 +35,10 @@ class gameView{
       for (int col = 0; col < field[row].length; col++) {
         fields[row].add(gameTable.querySelector("#field_${row}_${col}"));
       }
-    }
+    }*/
+
+    gameTable.innerHtml = table;
   }
-
-
 
 
 
