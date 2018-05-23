@@ -12,11 +12,26 @@ class gameView{
 
   void generateField(){
     //  final field = model.field;
+    int enemy;
+    if(row.isEven){
+      enemy = (row / 2).toInt();
+    }
+    else{
+      enemy = ((row+1) / 2).toInt();
+    }
+
+
     String table = "";
     int colAnzeige = column -1;
     table += "<tr> <th colspan='$colAnzeige' id='anzeige'></th> <th id='back'></th></tr>";
     for (int xrow = 0; xrow < row; xrow++) {
-      table += "<tr id='player'>";
+      if(enemy > 0) {
+        table += "<tr id='enemy'>";
+        enemy--;
+      }
+      else{
+        table += "<tr id='player'>";
+      }
       for (int ycol = 0; ycol < column; ycol++) {
         // final assignment = field[xrow][ycol];
         final pos = "field_${xrow}_${ycol}";

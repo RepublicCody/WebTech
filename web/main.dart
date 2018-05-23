@@ -193,7 +193,7 @@ void main() {
   Field O7 = new Field("wasser");
   Field O8 = new Field("wasser");
 
-
+/*
   var Fielder=["M2", "N2"];
   var Objekte=[schiff_vorne_vertikal, schiff_hinten_vertikal];
 
@@ -222,7 +222,7 @@ void main() {
   placeShipe(dreier2);
 
   print("test");
-
+*/
 //print(test);
 //test = "#" + test;
 
@@ -253,6 +253,9 @@ if(anzahl == 2) {
 //  var Shipe = [zweier, dreier];
 
  // setzteShipe(Shipe);
+
+  querySelector("#field_6_3").style.backgroundImage = 'url("images/nebel_getroffen_rot.png")';
+
 
 }
 
