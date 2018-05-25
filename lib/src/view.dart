@@ -38,7 +38,7 @@ class gameView {
       table += "</tr>";
     }
     gameTable.innerHtml = table;
-
+    querySelector("#back").style.backgroundImage = "url('images/back.png')";
     fields = new List<List<HtmlElement>>(row);
     for (int c = 0; c < row; c++) {
       fields[c] = [];
@@ -85,6 +85,10 @@ class gameView {
           '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
     }
     menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
     menu.innerHtml = menuString;
   }
 
@@ -92,11 +96,18 @@ class gameView {
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
   }
+  void goBack(Event e){
 
+<<<<<<< HEAD
   void showMenu() {
     querySelector("#menu").style.display="block";
     querySelector("#gameTable").style.display="none";
   }
 
+=======
+    querySelector("#gameTable").style.display="none";
+    querySelector("#menu").style.display="block";
+  }
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
 }

@@ -1,13 +1,21 @@
 part of warships;
 
 
+<<<<<<< HEAD
 class GameController{
 
   var model = new GameModel(16, 8);
+=======
+class gameController {
+
+  String lvl;
+  var game = new gamePlay(row, column);
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
   final view = new gameView();
 
 
+<<<<<<< HEAD
   GameController(){
     view.generateField(model.playingField);
     view.generateMenu();
@@ -23,6 +31,22 @@ class GameController{
 
     querySelector("#level_1").onClick.listen((Event e) {lvl_1();});
     querySelector("#level_2").onClick.listen((Event e) {lvl_2();});
+=======
+  gameController() {
+    view.generateField();
+    view.generateMenu();
+
+
+    querySelector("#gameTable").style.display = "none";
+    querySelector("#level_1").onClick.listen(lvl_1);
+    querySelector("#level_2").onClick.listen(view.changeVisability);
+    querySelector("#level_3").onClick.listen(view.changeVisability);
+    querySelector("#level_4").onClick.listen(view.changeVisability);
+    querySelector("#zufall").onClick.listen(view.changeVisability);
+    querySelector("#back").onClick.listen(view.goBack);
+
+
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
 /*
     switch (lvl) {
@@ -73,6 +97,7 @@ class GameController{
       Element target = event.target;
       // print(target.attributes["id"]);
       //String l = target.attributes["id"];
+<<<<<<< HEAD
       target.onClick.listen((Event e) {view.showGame();});
     }
   }
@@ -89,5 +114,16 @@ class GameController{
     querySelector("#field_10_3").style.backgroundImage =
     'url("images/nebel_getroffen_rot.png")';
     view.showGame();
+=======
+      target.onClick.listen(view.changeVisability);
+    }
+}
+
+  void lvl_1(Event e){
+    // PlayingField lvl_1 = new PlayingField();
+    querySelector("#field_0_3").style.backgroundImage =
+    'url("images/nebel_getroffen_rot.png")';
+    view.changeVisability(e);
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
   }
 }

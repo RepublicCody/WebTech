@@ -1,6 +1,7 @@
 import 'package:WebTech/dartwarships.dart';
 
 
+<<<<<<< HEAD
 //int anzahl = 2;
 
 void main() {
@@ -10,20 +11,54 @@ void main() {
 /*
   querySelector('#anzeige').innerHtml =
       'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
+=======
+int anzahl = 2;
+
+void main() {
+
+  var game = new gameController();
 
 
+if(anzahl == 2) {
+  querySelector('#anzeige').innerHtml =
+      'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
+}
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
+
+  querySelectorAll('.field').onClick.listen(search);
+
+<<<<<<< HEAD
   querySelectorAll('.field').onClick.listen(finde);
 */
 
 /*
 void finde(MouseEvent event) {
 
+=======
+
+
+
+
+}
+
+
+
+void search(MouseEvent event) {
+  bool hit = false;
+  bool sh1 = true;
+  bool sh2 = true;
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
   if (event.target is Element) {
     Element target = event.target;
     // print(target.attributes["id"]);
     //id = target.attributes["id"];
+<<<<<<< HEAD
 }
 
+=======
+  }
+}
+>>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
 void placeShipe(Ship ship){
 
