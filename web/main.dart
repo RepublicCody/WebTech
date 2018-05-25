@@ -11,10 +11,10 @@ var s2 = ["B7", "C7", "D7"];
 int anzahl = 2;
 
 void main() {
+
   var game = new gameController();
 
-  querySelector("#gameTable").style.display="none";
-  querySelector("#level_1").onClick.listen(changeVisability);
+
 
 
 
@@ -259,12 +259,7 @@ if(anzahl == 2) {
 
 }
 
-  void changeVisability(Event e){
 
-      querySelector("#menu").style.display="none";
-   //   querySelector("#gameTable").style.visibility="visible";
-      querySelector("#gameTable").style.display="block";
-  }
 
 void finde(MouseEvent event) {
   bool hit = false;

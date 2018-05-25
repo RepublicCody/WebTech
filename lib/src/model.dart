@@ -38,6 +38,7 @@ class gamePlay{
 
 
 
+
 class Field{
 
   bool hit;
@@ -138,10 +139,10 @@ class PlayingField{
 
   void placeShip(Ship ship){
 
-      var felder = ship.getFields();
+      var shipFields = ship.getFields();
 
-      for (int x = 0; x < felder.length; x++) {
-        String id = "#" + felder[x].toString();
+      for (int x = 0; x < shipFields.length; x++) {
+        String id = "#" + shipFields[x].toString();
 
         //String img = "url('" + obj.getBild() + "')";
         //print(img);

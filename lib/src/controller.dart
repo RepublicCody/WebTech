@@ -10,5 +10,11 @@ class gameController{
 
   gameController(){
     view.generateField();
+    view.generateMenu();
+
+
+    querySelector("#gameTable").style.display="none";
+    querySelector("#level_1").onClick.listen(view.changeVisability);
+
   }
 }

@@ -1,35 +1,32 @@
 part of warships;
 
-class gameView{
-
+class gameView {
   final menu = querySelector("#menu");
 
   final gameover = querySelector("#gameover");
 
   final gameTable = querySelector("#gameTable");
 
-//  List<List<HtmlElement>> fields;
+  List<List<HtmlElement>> fields;
 
-  void generateField(){
+  void generateField() {
     //  final field = model.field;
     int enemy;
-    if(row.isEven){
+    if (row.isEven) {
       enemy = (row / 2).toInt();
+    } else {
+      enemy = ((row + 1) / 2).toInt();
     }
-    else{
-      enemy = ((row+1) / 2).toInt();
-    }
-
 
     String table = "";
-    int colAnzeige = column -1;
-    table += "<tr> <th colspan='$colAnzeige' id='anzeige'></th> <th id='back'></th></tr>";
+    int colAnzeige = column - 1;
+    table +=
+        "<tr> <th colspan='$colAnzeige' id='anzeige'></th> <th id='back'></th></tr>";
     for (int xrow = 0; xrow < row; xrow++) {
-      if(enemy > 0) {
+      if (enemy > 0) {
         table += "<tr id='enemy'>";
         enemy--;
-      }
-      else{
+      } else {
         table += "<tr id='player'>";
       }
       for (int ycol = 0; ycol < column; ycol++) {
@@ -39,24 +36,36 @@ class gameView{
       }
       table += "</tr>";
     }
-
-/*
-    // Saves all generated TD elements in field to
-    // avoid time intensive querySelector calls in update().
-    // Thanks to Johannes Gosch, SoSe 2015.
-    fields = new List<List<HtmlElement>>(field.length);
-    for (int row = 0; row < field.length; row++) {
-      fields[row] = [];
-      for (int col = 0; col < field[row].length; col++) {
-        fields[row].add(gameTable.querySelector("#field_${row}_${col}"));
-      }
-    }*/
-
     gameTable.innerHtml = table;
+
+    fields = new List<List<HtmlElement>>(row);
+    for (int c = 0; c < row; c++) {
+      fields[c] = [];
+      for (int d = 0; d < column; d++) {
+        fields[c].add(gameTable.querySelector("#field_${c}_${d}"));
+      }
+    }
   }
 
+  void generateMenu() {
+    String menuString;
 
+    menuString = '<div id="menu_head">Warships Menu</div><br>';
 
+    for (int x = 1; x < 5; x++) {
+      menuString +=
+          '<input type="button" id="level_$x" value="Level $x"></input> <br>';
+    }
+    menuString += '<input type="button" id="zufall" value="Zufall"></input>';
+
+    menu.innerHtml = menuString;
+  }
+
+  void changeVisability(Event e){
+
+    querySelector("#menu").style.display="none";
+    querySelector("#gameTable").style.display="block";
+  }
 
 
 }
