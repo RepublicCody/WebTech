@@ -42,7 +42,7 @@ html, body {
 #gameTable {
   border: 3px solid black;
   border-collapse: collapse;
- /* width: 288px;
+  /*width: 288px;
   height: 561px;*/
 }
 th {
@@ -97,3 +97,47 @@ td:hover{
      height: 6%;
    }*/
 }
+
+/* pictures for the tiles */
+
+.water {
+  background-image: url("images/wasser.png");
+}
+
+.water_miss {
+  background-image: url("images/wasser_getroffen_weiss.png");
+}
+
+.fog {
+  background-image: url("images/nebel.png");
+}
+
+.ship_vertical_front {
+  background-image: url("images/schiff_vorne_vertikal.png");
+}
+
+.ship_vertical {
+  background-image: url("images/schiff_mitte_vertikal.png");
+
+}
+
+.ship_vertical_back {
+  background-image: url("images/schiff_hinten_vertikal.png");
+
+}
+
+.ship_horizontal_front {
+  background-image: url("images/schiff_getroffen_vorne_horizontal.png");
+
+}
+
+.ship_horizontal {
+  background-image: url("images/schiff_mitte_horizontal.png");
+
+}
+
+.ship_horizontal_back {
+  background-image: url("images/schiff_mitte_vertikal.png");
+
+}
+

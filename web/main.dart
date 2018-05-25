@@ -9,7 +9,7 @@ import 'package:WebTech/dartwarships.dart';
 //int anzahl = 2;
 
 void main() {
-  var game = new gameController();
+  var game = new GameController();
 }
 
 

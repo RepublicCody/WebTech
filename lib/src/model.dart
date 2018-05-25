@@ -7,6 +7,11 @@ class GameModel{
 
   Enemy get enemy => _enemy;
   PlayingField get playingField => _playingField;
+  set playingField(PlayingField field) => _playingField = field;
+
+  GameModel(int rows, int cols) {
+    playingField = new PlayingField(rows, cols);
+  }
 }
 
 class Enemy {
@@ -31,24 +36,21 @@ class Enemy {
 
 class PlayingField {
   List<List<Field>> _fields;
-  List<Ship> _friendlyShips;
-  List<Ship> _enemyShips;
+  List<Ship> _ships;
   List<Terrain> _terrain;
 
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
-  List<Ship> get friendlyShips => _friendlyShips;
-  set friendlyShips(List<Ship> ships) => _friendlyShips = ships;
-  List<Ship> get enemyShips => _enemyShips;
-  set enemyShips(List<Ship> ships) => _enemyShips = ships;
+  List<Ship> get ships => ships;
+  set ships(List<Ship> ships) => _ships = ships;
 
-  // TODO: implement possibility to create fields of varying dimensions
-  PlayingField() {
-    var outerList = new List<List<Field>>(16);
-    for (int row = 0; row < 16; row++) {
-      var innerList = new List<Field>(8);
-      for (int col = 0; col < 8; col++) {
-        innerList[col] = new Field(row, col, "water_miss");
+  PlayingField(int rows, int cols) {
+    var outerList = new List<List<Field>>(rows);
+    for (int row = 0; row < rows; row++) {
+      var innerList = new List<Field>(cols);
+      for (int col = 0; col < cols; col++) {
+
+        innerList[col] = row >= rows / 2 ? new Field(row, col, "water"): new Field(row, col, "fog");
       }
       outerList[row] = innerList;
     }
@@ -56,7 +58,7 @@ class PlayingField {
   }
 
   void fireAt(int row, int col) {
-    fields[row][col].hit = true;
+    fields[row][col].fireAt();
   }
 
   void generateField(int rocks, int items) {
@@ -69,12 +71,10 @@ class PlayingField {
   }
 
   void placeShips() {
-    for (int i = 0; i < friendlyShips.length; i++) {
-      friendlyShips[i].place();
+    for (int i = 0; i < ships.length; i++) {
+      ships[i].place();
     }
-    for(int i = 0; i < enemyShips.length; i++) {
-      enemyShips[i].place();
-    }
+
   }
 
   // just for testing purposes
@@ -113,6 +113,10 @@ class Field{
     this.entity = entity;
   }
 
+  void fireAt() {
+    // TODO: fireAt logic
+  }
+
   // just for testing purposes
   String toString() => entity == "ship" ? "S" : entity == "rock" ? "R" : entity == "power_up" ? "P" : ".";
 }
@@ -120,6 +124,7 @@ class Field{
 class Ship{
   bool destroyed;
   bool _vertical;
+  bool _friendly;
   PlayingField playingField;
 
   List<Field> _fields;
