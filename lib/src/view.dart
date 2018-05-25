@@ -30,7 +30,6 @@ class gameView {
         table += "<tr id='player'>";
       }
       for (int ycol = 0; ycol < column; ycol++) {
-        // final assignment = field[xrow][ycol];
         final pos = "field_${xrow}_${ycol}";
         table += "<td id='$pos' class='field'></td>";
       }

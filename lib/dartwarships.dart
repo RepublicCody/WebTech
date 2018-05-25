@@ -7,5 +7,5 @@ part 'src/model.dart';
 part 'src/controller.dart';
 part 'src/view.dart';
 
-const row = 16;
+const row = 4;
 const column = 9;
