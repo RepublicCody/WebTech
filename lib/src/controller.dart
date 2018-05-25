@@ -3,7 +3,7 @@ part of warships;
 
 class gameController{
 
-  var game = new gamePlay(row, column);
+  var model = new GameModel();
 
   final view = new gameView();
 

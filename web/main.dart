@@ -1,24 +1,20 @@
 import 'dart:html';
 import 'package:WebTech/dartwarships.dart';
 
+//String id;
+//Element tabelle = querySelector("#gameTable");
+//var s1 = ["A2", "A3", "A4"];
+//var s2 = ["B7", "C7", "D7"];
 
-String id;
-Element tabelle = querySelector("#gameTable");
-
-var s1 = ["A2", "A3", "A4"];
-var s2 = ["B7", "C7", "D7"];
-
-int anzahl = 2;
+//int anzahl = 2;
 
 void main() {
-
   var game = new gameController();
+}
 
 
 
-
-
-
+  /*
   Objekt powerup = new Objekt("powerup", "powerup.png");
   Objekt nebel = new Objekt("nebel", "images/nebel.png");
   Objekt nebel_getroffen_rot = new Objekt("nebel_getroffen_rot", "images/nebel_getroffen_rot.png");
@@ -41,8 +37,9 @@ void main() {
   Objekt schiff_hinten_horizontal = new Objekt("Ship_mitte_vertikal", "images/schiff_hinten_horizontal.png");
 
   Objekt felsen = new Objekt("felsen", "test");
+  */
 
-
+  /*
   Field A0 = new Field("wasser");
   Field A1 = new Field("wasser");
   Field A2 = new Field("wasser");
@@ -192,6 +189,7 @@ void main() {
   Field O6 = new Field("wasser");
   Field O7 = new Field("wasser");
   Field O8 = new Field("wasser");
+  */
 
 /*
   var Fielder=["M2", "N2"];
@@ -230,7 +228,7 @@ void main() {
 //  String test = "#E2";
 
 //  querySelector(test).style.backgroundImage='url("images/wasser_getroffen_weiss.png")';
-
+/*
 if(anzahl == 2) {
   querySelector('#anzeige').innerHtml =
       'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
@@ -244,7 +242,7 @@ if(anzahl == 2) {
 
   querySelectorAll('.field').onClick.listen(finde);
 
-
+*/
 
   //querySelector("#"+id).innerHtml="test";
 //print(id);
@@ -254,12 +252,12 @@ if(anzahl == 2) {
 
  // setzteShipe(Shipe);
 
-  querySelector("#field_6_3").style.backgroundImage = 'url("images/nebel_getroffen_rot.png")';
+ // querySelector("#field_6_3").style.backgroundImage = 'url("images/nebel_getroffen_rot.png")';
 
 
-}
+//}
 
-
+/*
 
 void finde(MouseEvent event) {
   bool hit = false;
@@ -320,13 +318,14 @@ void finde(MouseEvent event) {
         }
       }
 
-
+*/
 
     //  target.innerHtml ="X";
     //  target.innerHtml="background='wasser.png'";
     //  target.innerHtml='background-image: url("wasser.png")';
     //  var style = target.style;
     //  style.background='background-image: url("wasser.png")';
+    /*
 if(anzahl == 1 || anzahl == 0) {
   querySelector('#anzeige').innerHtml =
       'Noch ' + anzahl.toString() + ' Schiffe vorhanden';
@@ -353,6 +352,6 @@ void placeShipe(Ship ship){
     querySelector(id).style.backgroundImage = img;
   }
 }
-
+*/
 
 
