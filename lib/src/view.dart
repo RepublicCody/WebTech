@@ -53,9 +53,9 @@ class gameView {
   void generateField(PlayingField playingField) {
     List<List<Field>> tiles = playingField.fields;
     int text = tiles[0].length - 1;
-    String table = "<tr><th colspan='$text' id='text'></th> <th id='back'></th></tr>";
+    String table = "<tbody><tr><th colspan='$text' id='text'></th> <th id='back' class='back'></th></tr>";
     for (int row = 0; row < tiles.length; row++) {
-      table += "<tr>";
+      table += "<tr>";        //Ich wäre dafür tr noch die class enemy und player zu geben, zumindest kann ich mir gut vorstellen, dass man damit später beim Schiffe platzieren leichtes Spiel hat
       for (int col = 0; col < tiles[row].length; col++) {
         var terrain = tiles[row][col].entity;
         var position = "field_${row}_${col}";
@@ -63,6 +63,7 @@ class gameView {
       }
       table += "</tr>";
     }
+    table += "</tbody>";
     gameTable.innerHtml = table;
     fields = new List<List<HtmlElement>>(tiles.length);
     for (int row = 0; row < tiles.length; row++) {
@@ -81,9 +82,9 @@ class gameView {
     menuString = '<div id="menu_head">Warships Menu</div><br>';
     for (int x = 1; x < 5; x++) {
       menuString +=
-          '<input type="button" id="level_$x" value="Level $x"></input> <br>';
+          '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
     }
-    menuString += '<input type="button" id="zufall" value="Zufall"></input>';
+    menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
     menu.innerHtml = menuString;
   }
 

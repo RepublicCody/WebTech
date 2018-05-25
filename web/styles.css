@@ -12,14 +12,18 @@ html, body {
   background-position: center;
   background-size: 600px 600px;
   background-repeat: no-repeat;
-  height: 561px;
+  height: 550px;
   width: 320px;
-  border: 1px solid black;
 }
 
 #menu_head{
   padding: 1%;
-  font-size: 20px;
+  margin: 3% 0.5% 0% 0.5%;
+  width: 240px;
+  border: 3px solid #080808;
+  font-size: 140%;
+  background:linear-gradient(top, #129799 0%, #626262 100%);
+  background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
 }
 
 #level_1, #level_2, #level_3, #level_4, #level_5, #zufall{
@@ -33,27 +37,26 @@ html, body {
   background:-webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
 }
 
-
-
-
-
-
-
-#gameTable {
-  border: 3px solid black;
+#gameTable{
   border-collapse: collapse;
+}
+
+tbody {
+  border: 3px solid black;
+
   /*width: 288px;
   height: 561px;*/
 }
 th {
+  background:linear-gradient(top, #129799 0%, #626262 100%);
+  background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
   border-bottom: 3px solid black;
   height: 29px;
 }
 td{
   border: 1px solid black;
   width: 29px;
-  height: 29px;
-  table-layout: fixed;
+  height: 29px;;
 }
 #back{
   border-left: 3px solid black;
@@ -65,29 +68,21 @@ td:hover{
   background: orange;
 }
 
-.player {
-  background-image: url("images/wasser.png");
-
-}
-
-.Gegner {
-  background-image: url("images/nebel.png");
-}
-
 * {
   font-family: Roboto, Helvetica, Arial, sans-serif;
+  background-repeat: no-repeat;
 }
-
+/*
 @media screen and (max-width:301px){
-  #T1{
+  #gameTable{
     width:100vw;
   }
   /* td{
      width: 11%;
-   }*/
+   }
 }
 @media screen and (max-height:531px){
-  #T1{
+  #gameTable{
     height:100vw;
   }
   /* th{
@@ -95,8 +90,8 @@ td:hover{
    }
    td{
      height: 6%;
-   }*/
-}
+   }
+}*/
 
 /* pictures for the tiles */
 
@@ -138,6 +133,11 @@ td:hover{
 
 .ship_horizontal_back {
   background-image: url("images/schiff_mitte_vertikal.png");
+
+}
+
+.back {
+  background-image: url("images/back.png");
 
 }
 
