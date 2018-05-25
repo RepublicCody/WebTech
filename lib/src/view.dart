@@ -36,7 +36,7 @@ class gameView {
       table += "</tr>";
     }
     gameTable.innerHtml = table;
-
+    querySelector("#back").style.backgroundImage = "url('images/back.png')";
     fields = new List<List<HtmlElement>>(row);
     for (int c = 0; c < row; c++) {
       fields[c] = [];
@@ -53,9 +53,9 @@ class gameView {
 
     for (int x = 1; x < 5; x++) {
       menuString +=
-          '<input type="button" id="level_$x" value="Level $x"></input> <br>';
+          '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
     }
-    menuString += '<input type="button" id="zufall" value="Zufall"></input>';
+    menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
 
     menu.innerHtml = menuString;
   }
@@ -65,6 +65,10 @@ class gameView {
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
   }
+  void goBack(Event e){
 
+    querySelector("#gameTable").style.display="none";
+    querySelector("#menu").style.display="block";
+  }
 
 }
