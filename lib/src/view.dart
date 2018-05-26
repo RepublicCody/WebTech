@@ -65,7 +65,12 @@ class GameView {
       return f.hit ? "water_miss" : "water";
     }
     if (f.entity is Ship) {
-      return f.hit ? "ship_hit" : "ship";
+      String css = "";
+      Ship s = f.entity;
+      css += s.vertical ? "_vertical" : "_horizontal";
+      css += s.fields.indexOf(f) == 0 ? "_front" : s.fields.indexOf(f) == s.fields.length ? "_back" : "";
+      css += f.hit ? "_hit" : "";
+      return css;
     }
     if (f.entity is Rock) {
       return f.hit ? "rock_hit" : "rock";

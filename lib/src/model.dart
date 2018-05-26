@@ -1,7 +1,7 @@
 part of warships;
 
 // TODO: add classes for Moves
-class GameModel{
+class GameModel {
   Enemy _enemy;
   PlayingField _playingField;
 
@@ -21,17 +21,21 @@ class GameModel{
 class Enemy {
   int _strategy;
   GameModel _model;
+  Random _rng;
+  int prevHitRow;
+  int prevHitCol;
 
   set strategy(int value) => _strategy = value;
   int get strategy => _strategy;
   set model(GameModel value) => _model = value;
   GameModel get model => _model;
 
-  Enemy(int strategy) {
+  Enemy(int strategy, int shipCount) {
     this.strategy = strategy;
+    _rng = new Random(100);
   }
 
-  void placeShips() {
+  void placeShips(int shipCount) {
     //TODO: enemy places their ships
   }
 
@@ -51,10 +55,11 @@ class Enemy {
   }
 
   void randomMove() {
-    var rng = new Random(100);
-    int row = rng.nextInt(model.playingField.fields.length);
-    int col = rng.nextInt(model.playingField.fields[0].length);
+    int row = _rng.nextInt(model.playingField.fields.length);
+    int col = _rng.nextInt(model.playingField.fields[0].length);
     model.fireAt(row, col);
+    prevHitRow = row;
+    prevHitCol = col;
   }
 
   void mediocreMove() { // for a lack of a better name
@@ -74,8 +79,8 @@ class PlayingField {
   set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
   set ships(List<Ship> ships) => _ships = ships;
-  List<Entity> get terrain => _terrain;
-  set terrain(List<Entity> terrain) => _terrain = terrain;
+  //List<Entity> get terrain => _terrain;
+  //set terrain(List<Entity> terrain) => _terrain = terrain;
 
   PlayingField(int rows, int cols) {
     var outerList = new List<List<Field>>(rows);
@@ -89,7 +94,7 @@ class PlayingField {
     fields = outerList;
 
     ships = new List<Ship>();
-    terrain = new List<Entity>();
+    //terrain = new List<Entity>();
   }
 
   void fireAt(int row, int col) {
@@ -190,6 +195,7 @@ class Ship extends Entity {
   set vertical(bool value) => _vertical = value;
 
   Ship(PlayingField pField, int startRow, int startCol, int endRow, int endCol) : super(pField, null){
+    playingField.ships.add(this);
     this.destroyed = false;
     this.playingField = pField;
     fields = new List<Field>();
