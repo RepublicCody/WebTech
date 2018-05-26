@@ -1,6 +1,6 @@
 part of warships;
 
-class gameView {
+class GameView {
   final menu = querySelector("#menu");
 
   final gameover = querySelector("#gameover");
@@ -8,47 +8,6 @@ class gameView {
   final gameTable = querySelector("#gameTable");
 
   List<List<HtmlElement>> fields;
-
-  /*
-  void generateField(PlayingField playingField) {
-    //  final field = model.field;
-    List<List<Field>> field = playingField.fields;
-    int enemy;
-    if (row.isEven) {
-      enemy = (row / 2).toInt();
-    } else {
-      enemy = ((row + 1) / 2).toInt();
-    }
-
-    String table = "";
-    int colAnzeige = column - 1;
-    table +=
-        "<tr> <th colspan='$colAnzeige' id='anzeige'></th> <th id='back'></th></tr>";
-    for (int xrow = 0; xrow < row; xrow++) {
-      if (enemy > 0) {
-        table += "<tr id='enemy'>";
-        enemy--;
-      } else {
-        table += "<tr id='player'>";
-      }
-      for (int ycol = 0; ycol < column; ycol++) {
-        final pos = "field_${xrow}_${ycol}";
-        table += "<td id='$pos' class='field'></td>";
-      }
-      table += "</tr>";
-    }
-    gameTable.innerHtml = table;
-    querySelector("#back").style.backgroundImage = "url('images/back.png')";
-    fields = new List<List<HtmlElement>>(row);
-    for (int c = 0; c < row; c++) {
-      fields[c] = [];
-      for (int d = 0; d < column; d++) {
-        fields[c].add(gameTable.querySelector("#field_${c}_${d}"));
-      }
-    }
-  }
-  */
-
 
   void generateField(PlayingField playingField) {
     List<List<Field>> tiles = playingField.fields;
@@ -59,7 +18,7 @@ class gameView {
       for (int col = 0; col < tiles[row].length; col++) {
         var terrain = tiles[row][col].entity;
         var position = "field_${row}_${col}";
-        table += "<td id ='${position}' class='${terrain}'></td>";
+        table += "<td id ='${position}' class='${cssClass(tiles[row][col])}'></td>";
       }
       table += "</tr>";
     }
@@ -85,29 +44,47 @@ class gameView {
           '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
     }
     menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
-<<<<<<< HEAD
-=======
 
->>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
     menu.innerHtml = menuString;
+  }
+
+  void update(PlayingField playingField) {
+    List<List<Field>> tiles = playingField.fields;
+    for (int row = 0; row < fields.length; row++) {
+      for (int col = 0; col < fields[row].length; col++) {
+        this.fields[row][col].attributes["class"] = cssClass(tiles[row][col]);
+      }
+    }
+  }
+
+  String cssClass(Field f) {
+    if (f.foggy) {
+      return f.hit ? f.entity == null ? "fog_miss" : "fog_hit" : "fog";
+    }
+    if (f.entity == null) {
+      return f.hit ? "water_miss" : "water";
+    }
+    if (f.entity is Ship) {
+      return f.hit ? "ship_hit" : "ship";
+    }
+    if (f.entity is Rock) {
+      return f.hit ? "rock_hit" : "rock";
+    }
+    if (f.entity is PowerUp) {
+      return "powerup";
+    }
+    return "";
   }
 
   void showGame() {
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
   }
-  void goBack(Event e){
+  //void goBack(Event e){
 
-<<<<<<< HEAD
   void showMenu() {
     querySelector("#menu").style.display="block";
     querySelector("#gameTable").style.display="none";
   }
-
-=======
-    querySelector("#gameTable").style.display="none";
-    querySelector("#menu").style.display="block";
-  }
->>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
 }

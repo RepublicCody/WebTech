@@ -141,3 +141,19 @@ td:hover{
 
 }
 
+/* ONLY FOR TESTING, REMOVE LATER! */
+.ship {
+  background-image: url("images/schiff_mitte_vertikal.png");
+}
+
+.ship_hit {
+  background-image: url("images/schiff_getroffen_mitte_vertikal.png");
+}
+
+.water_miss {
+  background-image: url("images/wasser_getroffen_weiss.png");
+}
+
+.fog_miss {
+  background_image : url("images/wasser.png");
+}

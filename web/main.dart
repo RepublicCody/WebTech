@@ -1,7 +1,5 @@
 import 'package:WebTech/dartwarships.dart';
 
-
-<<<<<<< HEAD
 //int anzahl = 2;
 
 void main() {

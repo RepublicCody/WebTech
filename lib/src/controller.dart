@@ -1,21 +1,25 @@
 part of warships;
 
-
-<<<<<<< HEAD
 class GameController{
+  GameModel model = new GameModel(16, 8);
+  GameView view = new GameView();
 
+  GameController() {
+    view.showMenu();
+    view.generateField(model.playingField);
+    view.generateMenu();
+    querySelector("#level_1").onClick.listen((Event e) {view.showGame();});
+  }
+}
+
+  /*
   var model = new GameModel(16, 8);
-=======
-class gameController {
-
   String lvl;
   var game = new gamePlay(row, column);
->>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
   final view = new gameView();
 
 
-<<<<<<< HEAD
   GameController(){
     view.generateField(model.playingField);
     view.generateMenu();
@@ -29,11 +33,11 @@ class gameController {
     querySelector("#zufall").onClick.listen((Event e) {view.showGame();});
     querySelector("#back").onClick.listen((Event e) {view.showMenu();});
 
-    querySelector("#level_1").onClick.listen((Event e) {lvl_1();});
-    querySelector("#level_2").onClick.listen((Event e) {lvl_2();});
-=======
-  gameController() {
-    view.generateField();
+    //querySelector("#level_1").onClick.listen((Event e) {lvl_1();});
+    //querySelector("#level_2").onClick.listen((Event e) {lvl_2();});
+
+  GameController() {
+    view.generateField(model.playingField);
     view.generateMenu();
 
 
@@ -44,9 +48,6 @@ class gameController {
     querySelector("#level_4").onClick.listen(view.changeVisability);
     querySelector("#zufall").onClick.listen(view.changeVisability);
     querySelector("#back").onClick.listen(view.goBack);
-
-
->>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
 
 /*
     switch (lvl) {
@@ -91,13 +92,12 @@ class gameController {
         break;
     }*/
   }
-
+/*
   void searchLvl(MouseEvent event) {
     if (event.target is Element) {
       Element target = event.target;
       // print(target.attributes["id"]);
       //String l = target.attributes["id"];
-<<<<<<< HEAD
       target.onClick.listen((Event e) {view.showGame();});
     }
   }
@@ -114,7 +114,6 @@ class gameController {
     querySelector("#field_10_3").style.backgroundImage =
     'url("images/nebel_getroffen_rot.png")';
     view.showGame();
-=======
       target.onClick.listen(view.changeVisability);
     }
 }
@@ -124,6 +123,7 @@ class gameController {
     querySelector("#field_0_3").style.backgroundImage =
     'url("images/nebel_getroffen_rot.png")';
     view.changeVisability(e);
->>>>>>> 1d6682de59f014f8e57526c89669197c337b625d
   }
+  */
 }
+*/

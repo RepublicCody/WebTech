@@ -12,14 +12,20 @@ class GameModel{
   GameModel(int rows, int cols) {
     playingField = new PlayingField(rows, cols);
   }
+
+  void fireAt(int row, int col) {
+    playingField.fireAt(row, col);
+  }
 }
 
 class Enemy {
   int _strategy;
-  GameModel _gamemodel;
+  GameModel _model;
 
   set strategy(int value) => _strategy = value;
-  set gamemodel(GameModel value) => _gamemodel = value;
+  int get strategy => _strategy;
+  set model(GameModel value) => _model = value;
+  GameModel get model => _model;
 
   Enemy(int strategy) {
     this.strategy = strategy;
@@ -30,31 +36,60 @@ class Enemy {
   }
 
   void makeMove() {
-    // TODO: enemy makes his moves here, resulting move depends on strategy
+    switch (strategy) {
+      case 1:
+        randomMove();
+        break;
+      case 2:
+        mediocreMove();
+        break;
+      case 3:
+        cleverMove();
+        break;
+    }
+    print("Strategy doesn't exist");
+  }
+
+  void randomMove() {
+    var rng = new Random(100);
+    int row = rng.nextInt(model.playingField.fields.length);
+    int col = rng.nextInt(model.playingField.fields[0].length);
+    model.fireAt(row, col);
+  }
+
+  void mediocreMove() { // for a lack of a better name
+    //TODO: implement medium difficulty
+  }
+
+  void cleverMove() {
+    //TODO: implement hard difficulty
   }
 }
 
 class PlayingField {
   List<List<Field>> _fields;
   List<Ship> _ships;
-  List<Terrain> _terrain;
 
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
-  List<Ship> get ships => ships;
+  List<Ship> get ships => _ships;
   set ships(List<Ship> ships) => _ships = ships;
+  List<Entity> get terrain => _terrain;
+  set terrain(List<Entity> terrain) => _terrain = terrain;
 
   PlayingField(int rows, int cols) {
     var outerList = new List<List<Field>>(rows);
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-
-        innerList[col] = row >= rows / 2 ? new Field(row, col, "water"): new Field(row, col, "fog");
+        innerList[col] = row >= rows / 2 ? new Field(row, col, false): new Field(row, col, true);
       }
       outerList[row] = innerList;
     }
     fields = outerList;
+
+    ships = new List<Ship>();
+    terrain = new List<Entity>();
   }
 
   void fireAt(int row, int col) {
@@ -95,7 +130,8 @@ class Field{
   int _row;
   int _col;
   bool _hit;
-  String _entity;
+  bool _foggy;
+  Entity _entity;
 
   int get row => _row;
   set row(int row) => _row = row;
@@ -103,60 +139,72 @@ class Field{
   set col(int col) => _col = col;
   bool get hit => _hit;
   set hit(bool hit) => _hit = hit;
-  String get entity => _entity;
-  set entity(String entity) => _entity = entity;
+  Entity get entity => _entity;
+  set entity(Entity entity) => _entity = entity;
+  bool get foggy => _foggy;
+  set foggy(bool value) => _foggy = value;
 
-  Field(int row, int col, String entity){
+  Field(int row, int col, bool foggy){
     this.row = row;
     this.col = col;
-    hit = false;
-    this.entity = entity;
+    this.foggy = foggy;
+    this.hit = false;
+    //this.entity = null;
   }
 
   void fireAt() {
-    // TODO: fireAt logic
+    hit = true;
   }
 
   // just for testing purposes
-  String toString() => entity == "ship" ? "S" : entity == "rock" ? "R" : entity == "power_up" ? "P" : ".";
+  String toString() => entity == null ? "." : entity is Ship ? "S" : entity is Rock ? "R" : "P";
 }
 
-class Ship{
+class Entity {
+  PlayingField _playingField;
+  List<Field> _fields;
+
+  PlayingField get playingField => _playingField;
+  set playingField(PlayingField value) => _playingField = value;
+  List<Field> get fields => _fields;
+  set fields(List<Field> value) => _fields = value;
+
+  Entity(PlayingField playingField, List<Field> fields) {
+    this.playingField = playingField;
+    this.fields = fields;
+  }
+
+  void place() {
+    for (int i = 0; i < fields.length; i++) {
+      fields[i].entity = this;
+    }
+  }
+}
+
+class Ship extends Entity {
   bool destroyed;
   bool _vertical;
   bool _friendly;
-  PlayingField playingField;
 
-  List<Field> _fields;
-  List<Field> get fields => _fields;
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
-  set fields(List<Field> fields) => _fields = fields;
 
-  Ship(PlayingField pField, int startRow, int startCol, int endRow, int endCol){
+  Ship(PlayingField pField, int startRow, int startCol, int endRow, int endCol) : super(pField, null){
     this.destroyed = false;
     this.playingField = pField;
     fields = new List<Field>();
     if (startRow == endRow) { // for horizontal ships
       for (int col  = startCol; col <= endCol; col++) {
         fields.add(playingField.fields[startRow][col]);
-        //print("${startRow}-${col}"); //just for testing
       }
       vertical = false;
     } else if (startCol == endCol){ // for vertical ships
       for (int row = startRow; row <= endRow; row++) {
         fields.add(playingField.fields[row][startCol]);
-        //print("${row}-${startCol}"); //just for testing
       }
       vertical = true;
     } else {
-      print("Something went wrong");
-    }
-  }
-
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      fields[i].entity = "ship";
+      print("Ships have to be aligned either vertically or horizontally.");
     }
   }
 
@@ -168,34 +216,17 @@ class Ship{
   }
 }
 
-class Terrain {
-  Field _field;
-  PlayingField _playingField;
-
-  PlayingField get playingField => _playingField;
-  set playingField(PlayingField value) => _playingField = value;
-  Field get field => _field;
-  set field(Field value) => _field = value;
-
-  Terrain(PlayingField playingField, int row, int col) {
-    this.playingField = playingField;
-    this.field = this.playingField.fields[row][col];
+class Rock extends Entity {
+  Rock(PlayingField field, int row, int col) : super(field, null) {
+    this.fields = new List<Field>();
+    fields.add(field.fields[row][col]);
   }
 }
 
-class Rock extends Terrain {
-  Rock(PlayingField field, int row, int col) : super(field, row, col);
-
-  void place() {
-    field.entity = "rock";
-  }
-}
-
-class PowerUp extends Terrain {
-  PowerUp(PlayingField field, int row, int col) : super(field, row, col);
-
-  void place() {
-    field.entity = "power_up";
+class PowerUp extends Entity {
+  PowerUp(PlayingField field, int row, int col) : super(field, null) {
+    this.fields = new List<Field>();
+    fields.add(field.fields[row][col]);
   }
 
   void activate() {
