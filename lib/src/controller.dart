@@ -1,77 +1,53 @@
 part of warships;
 
+List<int> shipss = [2, 3, 3, 4];
+int pos = 0;
+bool setShip = false;
+
 class GameController{
   GameModel model = new GameModel(1);
   GameView view = new GameView();
 
   GameController() {
     view.showMenu();
-    view.generateField(model.playingField);
     view.generateMenu();
-  //  querySelector("#level_1").onClick.listen((Event e) {view.showGame();});
-  //  querySelector("#level_2").onClick.listen((Event e) {view.showGame();});
-    querySelector("#level_3").onClick.listen((Event e) {view.showGame();});
-    querySelector("#level_4").onClick.listen((Event e) {view.showGame();});
-    querySelector("#zufall").onClick.listen((Event e) {view.showGame();});
-    querySelector("#back").onClick.listen((Event e) {view.showMenu();});
+    view.generateField(model.playingField);
+    //  querySelector("#level_1").onClick.listen((Event e) {view.showGame();});
+    //  querySelector("#level_2").onClick.listen((Event e) {view.showGame();});
+    querySelector("#level_3").onClick.listen((Event e) {
+      view.showGame();
+    });
+    querySelector("#level_4").onClick.listen((Event e) {
+      view.showGame();
+    });
+    querySelector("#zufall").onClick.listen((Event e) {
+      view.showGame();
+    });
+    querySelector("#back").onClick.listen((Event e) {
+      view.showMenu();
+    });
 
-    querySelector("#level_1").onClick.listen((Event e) {lvl_1();});
-    querySelector("#level_2").onClick.listen((Event e) {lvl_2();});
+    querySelector("#level_1").onClick.listen((Event e) {
+      lvl_1();
+    });
+    querySelector("#level_2").onClick.listen((Event e) {
+      lvl_2();
+    });
 
-
-    querySelectorAll('tr').onClick.listen(search);
-
-
+    querySelectorAll('tr').onClick.listen(view.search);
   }
 
-  void lvl_1(){
-    PlayingField lvl_1 = new PlayingField(ROWCOUNT, COLCOUNT);
+  void lvl_1() {
     view.showGame();
   }
 
-  void lvl_2(){
-    // PlayingField lvl_1 = new PlayingField();
-    querySelector("#field_10_3").style.backgroundImage =
-    'url("images/nebel_getroffen_rot.png")';
+  void lvl_2() {
     view.showGame();
   }
 
-
-  void search(MouseEvent event) {
-
-    if (event.target is Element) {
-    Element target = event.target;
-    // print(target.attributes["id"]);
-    //id = target.attributes["id"];
-    if(target.attributes["class"] == "water") {
-      target.attributes["class"] = "shipStart";
-      String id = target.attributes["id"];
-      List<int> rowCol = getRowCol(id);
-      print(rowCol[0]);
-    }
-    if(target.attributes["class"] == "shipStart") {
-      target.attributes["class"] = "shipStart";
-    }
-
-    }
-
-  }
-
-  List getRowCol(String fieldID){
-    List<String> rowCol = [];
-    rowCol = fieldID.split("_");
-    List<int> rowColInt = [int.parse(rowCol[1]), int.parse(rowCol[2])];
-    return rowColInt;
-  }
 }
 
-
-
-
-
-
-
-  /*
+/*
   var model = new GameModel(16, 8);
   String lvl;
   var game = new gamePlay(row, column);
@@ -152,4 +128,3 @@ class GameController{
     }*/
   }
 */
-

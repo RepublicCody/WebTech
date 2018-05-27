@@ -127,7 +127,7 @@ td{
 }
 
 .fog_miss {
-  background_image : url("images/wasser.png");  /*which picture to use here?*/
+  background_image : url("images/nebel_getroffen_weiss.png");
 }
 
 .ship_vertical_front {
@@ -143,7 +143,7 @@ td{
 }
 
 .ship_horizontal_front {
-  background-image: url("images/schiff_getroffen_vorne_horizontal.png");
+  background-image: url("images/schiff_vorne_horizontal.png");
 }
 
 .ship_horizontal {
@@ -151,7 +151,7 @@ td{
 }
 
 .ship_horizontal_back {
-  background-image: url("images/schiff_mitte_vertikal.png");
+  background-image: url("images/schiff_hinten_horizontal.png");
 }
 
 .ship_vertical_front_hit {

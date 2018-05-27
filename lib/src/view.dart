@@ -92,4 +92,288 @@ class GameView {
     querySelector("#gameTable").style.display="none";
   }
 
+
+
+
+  void search(MouseEvent event) {
+    if (event.target is Element) {
+      Element target = event.target;
+
+      if (pos < shipss.length) {
+        int length = shipss[pos];
+
+        if (target.attributes["class"] == "water" && setShip == false) {
+          target.attributes["class"] = "shipStart";
+          setShip = true;
+          String id = target.attributes["id"];
+          List<int> rowCol = getRowCol(id);
+          setArrow(rowCol, length);
+        }
+
+
+        else if (target.attributes["class"] == "up") {
+          List<int> rowCol = getRowCol(target.attributes["id"]);
+          int r = rowCol[0];
+          int c = rowCol[1];
+          querySelector('#field_' + (r + 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
+
+          if (length > 2) {
+            for (int x = 0; x < length - 2; x++) {
+              querySelector('#field_' + (r - x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
+            }
+            querySelector('#field_' + (r - length + 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
+          } else {
+            target.attributes["class"] = "ship_vertical_front";
+          }
+          pos++;
+          removeArrows(r, c, "up");
+          setShip = false;
+        }
+
+
+        else if (target.attributes["class"] == "right") {
+          List<int> rowCol = getRowCol(target.attributes["id"]);
+          int r = rowCol[0];
+          int c = rowCol[1];
+          int dummy;
+          dummy = c - 1;
+          if(dummy < 0)dummy += COLCOUNT;
+          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
+
+          if (length > 2) {
+            for (int x = 0; x < length - 2; x++) {
+              dummy = c + x;
+              if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+              querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
+            }
+            dummy = c + length - 2;
+            if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+            querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
+          } else {
+            target.attributes["class"] = "ship_horizontal_back";
+          }
+          pos++;
+          removeArrows(r, c, "right");
+          setShip = false;
+        }
+
+
+        else if (target.attributes["class"] == "down") {
+          List<int> rowCol = getRowCol(target.attributes["id"]);
+          int r = rowCol[0];
+          int c = rowCol[1];
+          querySelector('#field_' + (r - 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
+
+          if (length > 2) {
+            for (int x = 0; x < length - 2; x++) {
+              querySelector('#field_' + (r + x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
+            }
+            querySelector('#field_' + (r + length - 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
+          } else {
+            target.attributes["class"] = "ship_vertical_back";
+          }
+          pos++;
+          removeArrows(r, c, "down");
+          setShip = false;
+        }
+
+
+        else if (target.attributes["class"] == "left") {
+          List<int> rowCol = getRowCol(target.attributes["id"]);
+          int r = rowCol[0];
+          int c = rowCol[1];
+          int dummy;
+          dummy = c + 1;
+          if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
+
+          if (length > 2) {
+            for (int x = 0; x < length - 2; x++) {
+              dummy = c - x;
+              if(dummy < 0)dummy += COLCOUNT;
+              querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
+            }
+            dummy = c - length + 2;
+            if(dummy < 0)dummy += COLCOUNT;
+            querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
+          } else {
+            target.attributes["class"] = "ship_horizontal_front";
+          }
+          pos++;
+          removeArrows(r, c, "left");
+          setShip = false;
+        }
+      }
+    }
+  }
+
+  void setArrow(List rowCol, int length) {
+    int r = rowCol[0];
+    int c = rowCol[1];
+    int dummy;
+    bool possible = false;
+    bool arrow = false;
+
+    Element up = querySelector('#field_' + (r - 1).toString() + '_' + (c).toString());
+    dummy = c + 1;
+    if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+    Element right = querySelector('#field_' + (r).toString() + '_' + (dummy).toString());
+    dummy = r + 1;
+    Element down;
+    if(dummy < ROWCOUNT) {
+      down = querySelector(
+          '#field_' + (dummy).toString() + '_' + (c).toString());
+    }
+    dummy = c - 1;
+    if(dummy < 0)dummy += COLCOUNT;
+    Element left = querySelector('#field_' + (r).toString() + '_' + (dummy).toString());
+
+
+    if (up.attributes["class"] == "water") {
+      possible = true;
+      for(int x = 1; x < length; x++){
+        if(querySelector('#field_' + (r - x).toString() + '_' + (c).toString()).attributes["class"] != "water"){
+          possible = false;
+        }
+      }
+      if(possible == true){
+        up.attributes["class"] = "up";
+        arrow = true;
+      }
+    }
+    if (right.attributes["class"] == "water") {
+      possible = true;
+      int dummy;
+      for (int x = 1; x < length; x++) {
+        dummy = c + x;
+        if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+        if (querySelector('#field_' + (r).toString() + '_' + (dummy).toString())
+            .attributes["class"] != "water") {
+          possible = false;
+        }
+      }
+      if(possible == true){
+        right.attributes["class"] = "right";
+        arrow = true;
+      }
+    }
+    if (down.attributes["class"] == "water") {
+      possible = true;
+      int dummy;
+      for (int x = 1; x < length; x++) {
+        dummy = r + x;
+        if(dummy < ROWCOUNT) {
+          if (querySelector('#field_' + (dummy).toString() + '_' + (c).toString()).attributes["class"] != "water") {
+            possible = false;
+          }
+        }else{
+          possible = false;
+        }
+      }
+      if(possible == true) {
+        down.attributes["class"] = "down";
+        arrow = true;
+      }
+    }
+    if (left.attributes["class"] == "water") {
+      possible = true;
+      int dummy;
+      for (int x = 1; x < length; x++) {
+        dummy = c - x;
+        if(dummy < 0)dummy += COLCOUNT;
+        if (querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] != "water") {
+          possible = false;
+        }
+      }
+      if(possible == true) {
+        left.attributes["class"] = "left";
+        arrow = true;
+      }
+    }
+    if(arrow == false){
+      querySelector('#field_' + (r).toString() + '_' + (c).toString()).attributes["class"] = "water";
+      setShip = false;
+    }
+  }
+
+  List getRowCol(String fieldID) {
+    List<String> rowCol = [];
+    rowCol = fieldID.split("_");
+    List<int> rowColInt = [int.parse(rowCol[1]), int.parse(rowCol[2])];
+    return rowColInt;
+  }
+
+  void removeArrows(int r, int c, String direction){
+    int dummy;
+    if(direction == "up"){
+      if (querySelector('#field_' + (r + 2).toString() + '_' + (c).toString()).attributes["class"] == "down") {
+        querySelector('#field_' + (r + 2).toString() + '_' + (c).toString()).attributes["class"] = "water";
+      }
+      dummy = c + 1;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      if (querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] == "right") {
+        querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c - 1;
+      if(dummy < 0)dummy += COLCOUNT;
+      if (querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] == "left") {
+        querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+    }
+
+    if(direction == "right"){
+      dummy = c - 1;
+      if(dummy < 0)dummy += COLCOUNT;
+      if (querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] == "down") {
+        querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c - 1;
+      if(dummy < 0)dummy += COLCOUNT;
+      if (querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] == "up") {
+        querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c - 2;
+      if(dummy < 0)dummy += COLCOUNT;
+      if (querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] == "left") {
+        querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+    }
+
+    if(direction == "down"){
+      if (querySelector('#field_' + (r - 2).toString() + '_' + (c).toString()).attributes["class"] == "up") {
+        querySelector('#field_' + (r - 2).toString() + '_' + (c).toString()).attributes["class"] = "water";
+      }
+      dummy = c + 1;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      if (querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] == "right") {
+        querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c - 1;
+      if(dummy < 0)dummy += COLCOUNT;
+      if (querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] == "left") {
+        querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+    }
+
+    if(direction == "left"){
+      dummy = c + 1;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      if (querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] == "down") {
+        querySelector('#field_' + (r + 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c + 1;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      if (querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] == "up") {
+        querySelector('#field_' + (r - 1).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+      dummy = c + 2;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      if (querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] == "right") {
+        querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "water";
+      }
+    }
+  }
+
+
+
 }
