@@ -1,9 +1,5 @@
 part of warships;
 
-List<int> shipss = [2, 3, 3, 4];
-int pos = 0;
-bool setShip = false;
-
 class GameController{
   GameModel model = new GameModel(1);
   GameView view = new GameView();

@@ -1,5 +1,9 @@
 part of warships;
 
+List<int> shipss = [2, 3, 3, 4];
+int pos = 0;
+bool setShip = false;
+
 class GameView {
   final menu = querySelector("#menu");
 
