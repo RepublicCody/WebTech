@@ -214,6 +214,14 @@ class Ship extends Entity {
     }
   }
 
+  void sinkShip(){//TODO: sink ship and replace field with warter
+
+  }
+
+
+
+
+
   void move(int distance) { // TODO: make ships reenter the playing field from the opposite side if moved beyond borders
     for (int i = 0; i < fields.length; i++) {
       fields[i] = vertical ? playingField.fields[fields[i].row + distance][fields[i].col]

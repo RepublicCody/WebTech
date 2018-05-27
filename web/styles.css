@@ -64,10 +64,6 @@ td{
   height: 29px;
 }
 
-td:hover{
-  background: orange;
-}
-
 * {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   background-repeat: no-repeat;
@@ -94,6 +90,25 @@ td:hover{
 }*/
 
 /* pictures for the tiles */
+.up {
+    background-image: url("images/up.png");
+}
+
+.right {
+    background-image: url("images/right.png");
+}
+
+.down {
+    background-image: url("images/down.png");
+}
+
+.left {
+    background-image: url("images/left.png");
+}
+
+.shipStart {
+    background-image: url("images/ship_start.png");
+}
 
 .back {
   background-image: url("images/back.png");
