@@ -1,7 +1,7 @@
 part of warships;
 
 class GameController{
-  GameModel model = new GameModel(16, 8);
+  GameModel model = new GameModel(1);
   GameView view = new GameView();
 
   GameController() {
@@ -25,7 +25,7 @@ class GameController{
   }
 
   void lvl_1(){
-    PlayingField lvl_1 = new PlayingField(row, column);
+    PlayingField lvl_1 = new PlayingField(ROWCOUNT, COLCOUNT);
     view.showGame();
   }
 
