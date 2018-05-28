@@ -119,6 +119,8 @@ class GameView {
           List<int> rowCol = getRowCol(target.attributes["id"]);
           int r = rowCol[0];
           int c = rowCol[1];
+          // r und c sind die Position vom Pfeil, der Startpunkt liegt ein Feld davor (in diesem Fall bei r + 1 und c
+          // hier kann man die Positionen in das doppelte Array einfügen
           querySelector('#field_' + (r + 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
 
           if (length > 2) {
@@ -129,6 +131,9 @@ class GameView {
           } else {
             target.attributes["class"] = "ship_vertical_front";
           }
+          //das Schiff muss im DOM Tree danach stehen, sonst funktioniert nichts mehr
+
+          //hier muss vermutlich nichts angepasst werden
           pos++;
           removeArrows(r, c, "up");
           setShip = false;
@@ -208,6 +213,14 @@ class GameView {
           setShip = false;
         }
       }
+
+
+
+// Hier kann die fireAt etc hin
+
+
+
+
     }
   }
 
