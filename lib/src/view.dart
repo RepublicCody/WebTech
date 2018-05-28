@@ -103,115 +103,12 @@ class GameView {
     if (event.target is Element) {
       Element target = event.target;
 
+
       if (pos < shipss.length) {
-        int length = shipss[pos];
 
-        if (target.attributes["class"] == "water" && setShip == false) {
-          target.attributes["class"] = "shipStart";
-          setShip = true;
-          String id = target.attributes["id"];
-          List<int> rowCol = getRowCol(id);
-          setArrow(rowCol, length);
-        }
+      placePlayerShips(target);
 
 
-        else if (target.attributes["class"] == "up") {
-          List<int> rowCol = getRowCol(target.attributes["id"]);
-          int r = rowCol[0];
-          int c = rowCol[1];
-          // r und c sind die Position vom Pfeil, der Startpunkt liegt ein Feld davor (in diesem Fall bei r + 1 und c
-          // hier kann man die Positionen in das doppelte Array einfügen
-          querySelector('#field_' + (r + 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
-
-          if (length > 2) {
-            for (int x = 0; x < length - 2; x++) {
-              querySelector('#field_' + (r - x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
-            }
-            querySelector('#field_' + (r - length + 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
-          } else {
-            target.attributes["class"] = "ship_vertical_front";
-          }
-          //das Schiff muss im DOM Tree danach stehen, sonst funktioniert nichts mehr
-
-          //hier muss vermutlich nichts angepasst werden
-          pos++;
-          removeArrows(r, c, "up");
-          setShip = false;
-        }
-
-
-        else if (target.attributes["class"] == "right") {
-          List<int> rowCol = getRowCol(target.attributes["id"]);
-          int r = rowCol[0];
-          int c = rowCol[1];
-          int dummy;
-          dummy = c - 1;
-          if(dummy < 0)dummy += COLCOUNT;
-          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
-
-          if (length > 2) {
-            for (int x = 0; x < length - 2; x++) {
-              dummy = c + x;
-              if(dummy >= COLCOUNT)dummy -= COLCOUNT;
-              querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
-            }
-            dummy = c + length - 2;
-            if(dummy >= COLCOUNT)dummy -= COLCOUNT;
-            querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
-          } else {
-            target.attributes["class"] = "ship_horizontal_back";
-          }
-          pos++;
-          removeArrows(r, c, "right");
-          setShip = false;
-        }
-
-
-        else if (target.attributes["class"] == "down") {
-          List<int> rowCol = getRowCol(target.attributes["id"]);
-          int r = rowCol[0];
-          int c = rowCol[1];
-          querySelector('#field_' + (r - 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
-
-          if (length > 2) {
-            for (int x = 0; x < length - 2; x++) {
-              querySelector('#field_' + (r + x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
-            }
-            querySelector('#field_' + (r + length - 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
-          } else {
-            target.attributes["class"] = "ship_vertical_back";
-          }
-          pos++;
-          removeArrows(r, c, "down");
-          setShip = false;
-        }
-
-
-        else if (target.attributes["class"] == "left") {
-          List<int> rowCol = getRowCol(target.attributes["id"]);
-          int r = rowCol[0];
-          int c = rowCol[1];
-          int dummy;
-          dummy = c + 1;
-          if(dummy >= COLCOUNT)dummy -= COLCOUNT;
-          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
-
-          if (length > 2) {
-            for (int x = 0; x < length - 2; x++) {
-              dummy = c - x;
-              if(dummy < 0)dummy += COLCOUNT;
-              querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
-            }
-            dummy = c - length + 2;
-            if(dummy < 0)dummy += COLCOUNT;
-            querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
-          } else {
-            target.attributes["class"] = "ship_horizontal_front";
-          }
-          pos++;
-          removeArrows(r, c, "left");
-          setShip = false;
-        }
       }
 
 
@@ -223,6 +120,122 @@ class GameView {
 
     }
   }
+
+  void placePlayerShips(Element target){
+    int length = shipss[pos];
+
+    if (target.attributes["class"] == "water" && setShip == false) {
+      target.attributes["class"] = "shipStart";
+      setShip = true;
+      String id = target.attributes["id"];
+      List<int> rowCol = getRowCol(id);
+      setArrow(rowCol, length);
+    }
+
+
+    else if (target.attributes["class"] == "up") {
+      List<int> rowCol = getRowCol(target.attributes["id"]);
+      int r = rowCol[0];
+      int c = rowCol[1];
+      // r und c sind die Position vom Pfeil, der Startpunkt liegt ein Feld davor (in diesem Fall bei r + 1 und c
+      // hier kann man die Positionen in das doppelte Array einfügen
+      querySelector('#field_' + (r + 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
+
+      if (length > 2) {
+        for (int x = 0; x < length - 2; x++) {
+          querySelector('#field_' + (r - x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
+        }
+        querySelector('#field_' + (r - length + 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
+      } else {
+        target.attributes["class"] = "ship_vertical_front";
+      }
+      //das Schiff muss im DOM Tree danach stehen, sonst funktioniert nichts mehr
+
+      //hier muss vermutlich nichts angepasst werden
+      pos++;
+      removeArrows(r, c, "up");
+      setShip = false;
+    }
+
+
+    else if (target.attributes["class"] == "right") {
+      List<int> rowCol = getRowCol(target.attributes["id"]);
+      int r = rowCol[0];
+      int c = rowCol[1];
+      int dummy;
+      dummy = c - 1;
+      if(dummy < 0)dummy += COLCOUNT;
+      querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
+
+      if (length > 2) {
+        for (int x = 0; x < length - 2; x++) {
+          dummy = c + x;
+          if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
+        }
+        dummy = c + length - 2;
+        if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+        querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
+      } else {
+        target.attributes["class"] = "ship_horizontal_back";
+      }
+      pos++;
+      removeArrows(r, c, "right");
+      setShip = false;
+    }
+
+
+    else if (target.attributes["class"] == "down") {
+      List<int> rowCol = getRowCol(target.attributes["id"]);
+      int r = rowCol[0];
+      int c = rowCol[1];
+      querySelector('#field_' + (r - 1).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_front";
+
+      if (length > 2) {
+        for (int x = 0; x < length - 2; x++) {
+          querySelector('#field_' + (r + x).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical";
+        }
+        querySelector('#field_' + (r + length - 2).toString() + '_' + (c).toString()).attributes["class"] = "ship_vertical_back";
+      } else {
+        target.attributes["class"] = "ship_vertical_back";
+      }
+      pos++;
+      removeArrows(r, c, "down");
+      setShip = false;
+    }
+
+
+    else if (target.attributes["class"] == "left") {
+      List<int> rowCol = getRowCol(target.attributes["id"]);
+      int r = rowCol[0];
+      int c = rowCol[1];
+      int dummy;
+      dummy = c + 1;
+      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+      querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_back";
+
+      if (length > 2) {
+        for (int x = 0; x < length - 2; x++) {
+          dummy = c - x;
+          if(dummy < 0)dummy += COLCOUNT;
+          querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal";
+        }
+        dummy = c - length + 2;
+        if(dummy < 0)dummy += COLCOUNT;
+        querySelector('#field_' + (r).toString() + '_' + (dummy).toString()).attributes["class"] = "ship_horizontal_front";
+      } else {
+        target.attributes["class"] = "ship_horizontal_front";
+      }
+      pos++;
+      removeArrows(r, c, "left");
+      setShip = false;
+    }
+  }
+
+
+
+
+
 
   void setArrow(List rowCol, int length) {
     int r = rowCol[0];
