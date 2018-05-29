@@ -13,11 +13,11 @@ class GameController{
     view.generateField(model.playingField);
     
     menuListener = querySelectorAll('.button').onClick.listen(selectLevel);
-    tableListener = querySelectorAll('tr').onClick.listen(buildShips);
+    tableListener = querySelectorAll('tr').onClick.listen(buildShip);
     addListeners();
   }
 
-  //TODO: possibly belongs into the view ???
+  // this possibly belongs into the view,
   List<int> rowCol(String cssId) {
     RegExp re = new RegExp("field_([0-9]+)_([0-9]+)");
     Match m = re.firstMatch(cssId);
@@ -66,13 +66,7 @@ class GameController{
     //querySelectorAll('td').onClick.listen(fireAt);
   }
 
-
   void buildShip(MouseEvent e) {
-    view.search(e);
-  }
-
-
-  void buildShips(MouseEvent e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
