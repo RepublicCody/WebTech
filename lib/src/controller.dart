@@ -4,12 +4,16 @@ class GameController{
   GameModel model = new GameModel(1);
   GameView view = new GameView();
 
+  var menuListener;
+  var tableListener;
+
   GameController() {
     view.showMenu();
     view.generateMenu();
     view.generateField(model.playingField);
-    //  querySelector("#level_1").onClick.listen((Event e) {view.showGame();});
-    //  querySelector("#level_2").onClick.listen((Event e) {view.showGame();});
+    
+    menuListener = querySelectorAll('.button').onClick.listen(selectLevel);
+    tableListener = querySelectorAll('tr').onClick.listen(buildShip);
     addListeners();
   }
 
@@ -22,39 +26,43 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-    print("fire at called");
     print(e.target.runtimeType);
     if (e.target is Element) {
-      print("fire at successful");
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       model.fireAt(rc[0], rc[1]);
-      //model.enemy.makeMove();
+      //model.enemy.makeMove(); TODO: enemy makes their move here
       view.update(model.playingField);
     }
   }
 
+  void selectLevel(MouseEvent e) {
+    if (e.target is Element){
+      HtmlElement element = e.target;
+      RegExp re = new RegExp("level_([0-9]+)");
+      Match m = re.firstMatch(element.id);
+      // TODO: implement random level
+      print("start level ${m.group(1)}");
+      model = new GameModel(int.parse(m.group(1)));
+      view.update(model.playingField);
+      view.showGame();
+    }
+  }
+
+  void goBack() {
+    view.showMenu();
+    model = null;
+  }
+
   void addListeners() {
-    querySelector("#level_1").onClick.listen((Event e) {
-      lvl_1();
-    });
-    querySelector("#level_2").onClick.listen((Event e) {
-      lvl_2();
-    });
-    querySelector("#level_3").onClick.listen((Event e) {
-      view.showGame();
-    });
-    querySelector("#level_4").onClick.listen((Event e) {
-      view.showGame();
-    });
     querySelector("#zufall").onClick.listen((Event e) {
       view.showGame();
     });
+
     querySelector("#back").onClick.listen((Event e) {
-      view.showMenu();
+      goBack();
     });
-    querySelectorAll('tr').onClick.listen(buildShip);;
-    querySelectorAll('td').onClick.listen(fireAt);
+    //querySelectorAll('td').onClick.listen(fireAt);
   }
   
   void buildShip(MouseEvent e) {

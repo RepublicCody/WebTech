@@ -88,7 +88,6 @@ class GameView {
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
   }
-  //void goBack(Event e){
 
   void showMenu() {
     querySelector("#menu").style.display="block";
