@@ -31,18 +31,139 @@ class Enemy {
   Random _rng;
   int prevHitRow;
   int prevHitCol;
+  List<int> shipLengths;
 
   set strategy(int value) => _strategy = value;
   int get strategy => _strategy;
   set model(GameModel value) => _model = value;
   GameModel get model => _model;
 
-  Enemy(int strategy, List<int> ShipLengths) {
+  Enemy(int strategy, List<int> shipLengths) {
     this.strategy = strategy;
     _rng = new Random(100);
+
+    this.shipLengths = shipLengths;
+
   }
 
-  void placeShips(int shipCount) {
+  void placeShips(List<List<Field>> fields) {
+    /*
+    //This will generate a List of 12 int from 0 to 99
+    var rng = new Random();
+    var l = new List.generate(12, (_) => rng.nextInt(100));
+    */
+    int length;
+    int r;      //row
+    int c;      //column
+    int direction;
+    int dummy;
+    bool checkUp = false;
+    bool checkRight = false;
+    bool checkDown = false;
+    bool checkLeft = false;
+    bool shipCouldBePlaced = false;
+    bool shipPlaced = false;
+
+    var rand = new Random();
+
+
+    for(int x = 0; x < shipLengths.length; x++){
+      length = shipLengths[x];
+      shipPlaced = false;
+
+
+
+      while(shipPlaced == false) {
+        r = rand.nextInt(ROWCOUNT);
+        c = rand.nextInt(COLCOUNT);
+
+        Field f = fields[r][c];
+
+        if (f._foggy == true) {
+          checkUp = false;
+          checkRight = false;
+          checkDown = false;
+          checkLeft = false;
+          shipCouldBePlaced = true;
+
+          while (shipCouldBePlaced == true && shipPlaced == false) {
+            direction = rand.nextInt(3);
+
+            switch (direction) {
+              case 0:
+                {
+                  if (checkUp == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = r - y;
+                      if(dummy > 0 && fields[dummy][c]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
+                    checkUp = true;
+                  }
+                }
+                break;
+              case 1:
+                {
+                  if (checkRight == false) {
+                    checkRight = true;
+                  }
+                }
+                break;
+              case 2:
+                {
+                  if (checkDown == false) {
+                    for (int y = 0; y < length; y++) {
+                      if(fields[r + y][c]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
+                    checkDown = true;
+                  }
+                }
+                break;
+              case 3:
+                {
+                  if (checkLeft == false) {
+                    checkLeft = true;
+                  }
+                }
+                break;
+            }
+
+            if(checkUp == false || checkRight == false ||
+                checkDown == false || checkLeft == false){
+              shipCouldBePlaced = true;
+            }
+            else{
+              shipCouldBePlaced = false;
+            }
+
+
+          }
+        }
+      }
+
+    }
+
+
+
+
+
+
+
     //TODO: enemy places their ships
     // Just a level dummy for testing
   }
