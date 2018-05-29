@@ -3,19 +3,16 @@ part of warships;
 class GameModel {
   Enemy _enemy;
   PlayingField _playingField;
-  List<int> _shipLengths;
 
   Enemy get enemy => _enemy;
   PlayingField get playingField => _playingField;
   set playingField(PlayingField field) => _playingField = field;
-  List<int> get shipLengths => _shipLengths;
 
   GameModel(int level) {
-    playingField = new PlayingField(ROWCOUNT, COLCOUNT);
-    //var sb = new ShipBuilder(playingField, 15, 4, 2);
+    playingField = new PlayingField(ROWCOUNT, COLCOUNT, [2, 2, 3, 3, 4]);
     switch (level) {
       case 1:
-        _shipLengths = [2, 2, 3, 4, 5];
+        //_shipLengths = [2, 2, 3, 4, 5];
         break;
     //TODO: complete level implementation
     }
@@ -83,15 +80,17 @@ class Enemy {
 class PlayingField {
   List<List<Field>> _fields;
   List<Ship> _ships;
+  List<int> _shipLengths;
 
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
   set ships(List<Ship> ships) => _ships = ships;
-  //List<Entity> get terrain => _terrain;
-  //set terrain(List<Entity> terrain) => _terrain = terrain;
+  List<int> get shipLengths => _shipLengths;
+  set shipLengths(List<int> value) => _shipLengths = value;
 
-  PlayingField(int rows, int cols) {
+  PlayingField(int rows, int cols, List<int> shipLengths) {
+    this.shipLengths = shipLengths;
     var outerList = new List<List<Field>>(rows);
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
@@ -119,16 +118,18 @@ class PlayingField {
     }
   }
 
-  void placeShips() {
-    for (int i = 0; i < ships.length; i++) {
-      ships[i].place();
-    }
+  void addShip(Ship ship) {
+    ships.add(ship);
+    ship.place();
   }
 
   void buildShip(int row, int col) {
     Field f = fields[row][col];
     if (f.entity == null && !f.foggy) {
-      new ShipBuilder(this, row, col, 3); //TODO: put correct length here
+      new ShipBuilder(this, row, col, shipLengths[ships.length]); //TODO: put correct length here
+    } else if(f.entity is ShipBuilder) {
+      ShipBuilder sb = f.entity;
+      sb.buildShip(f);
     }
   }
 
@@ -216,49 +217,56 @@ class Ship extends Entity {
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
 
-  Ship(PlayingField pField, int startRow, int startCol, int endRow, int endCol, bool reenters) : super(pField, null){
-    playingField.ships.add(this);
-    this.destroyed = false;
-    this.playingField = pField;
-    fields = new List<Field>();
-    if (startRow == endRow) { // for horizontal ships
-      if (reenters) {
-        if (startCol < endCol) {
-          var dummy = startCol;
-          startCol = endCol;
-          endCol = dummy;
-        }
-        for (int col = startCol; col < playingField.fields[startRow].length;col++) {
-          fields.add(playingField.fields[startRow][col]);
-        }
-        for (int col = 0; col <= endCol; col++) {
-          fields.add(playingField.fields[startRow][col]);
-        }
-      } else {
-        if (startCol > endCol) { // swap start and endcol if endcol < startcol
-          var dummy = startCol;
-          startCol = endCol;
-          endCol = dummy;
-        }
-        for (int col = startCol; col <= endCol; col++) {
-          fields.add(playingField.fields[startRow][col]);
-        }
-      }
-      vertical = false;
-    } else if (startCol == endCol){ // for vertical ships
-      if (startRow > endRow) {      // swap start and endrow if endrow < startrow
-        var dummy = startRow;
-        startRow = endRow;
-        endRow = dummy;
-      }
-      for (int row = startRow; row <= endRow; row++) {
-        fields.add(playingField.fields[row][startCol]);
-      }
-      vertical = true;
-    } else {
-      print("Ships have to be aligned either vertically or horizontally.");
+  Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField, fields) {
+    destroyed = false;
+    this._friendly = friendly;
+    this.vertical = fields.first.col == fields.last.col;
+
+    if (fields.last != back()) {
+      this.fields = fields.reversed.toList();
     }
-    place();
+    print(back().row);
+  }
+
+  bool reenters() {
+    bool first = false;
+    bool last = false;
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i].col == 0) first = true;
+      if (fields[i].col == playingField.fields[fields[i].row].length - 1) last = true;
+    }
+    return first && last;
+  }
+
+  Field back() {  //can probably be improved
+    Field f;
+    if (!vertical) {
+      for (int i = 0; i < fields.length; i++) {
+        f = fields[i];
+        bool hasNext = false;
+        for (int j = 0; j < fields.length; j++) {
+          if (fields[j].col == fields[i].col + 1) hasNext = true;
+          if (fields[i].col == playingField.fields.first.length - 1 &&
+              fields[j].col == 0) hasNext = true;
+        }
+        if (!hasNext) {
+          return f;
+        }
+      }
+      return null;
+    } else {
+      for (int i = 0; i < fields.length; i++) {
+        f = fields[i];
+        bool hasNext = false;
+        for (int j = 0; j < fields.length; j++) {
+          if (fields[j].row == fields[i].row + 1) hasNext = true;
+        }
+        if (!hasNext) {
+          return f;
+        }
+      }
+      return null;
+    }
   }
 
   bool isDamaged() {
@@ -278,7 +286,7 @@ class Ship extends Entity {
     }
     playingField.ships.remove(this);
   }
-
+  /*
   void move(int distance) {
     // TODO: make ships reenter the playing field from the opposite side if moved beyond borders
     if (vertical) {
@@ -290,6 +298,7 @@ class Ship extends Entity {
     }
     sinkShip();
   }
+  */
 }
 
 class Rock extends Entity {
@@ -312,35 +321,91 @@ class PowerUp extends Entity {
 
 class ShipBuilder extends Entity{
   int shipLength;
+  int centerRow;
+  int centerCol;
+
   ShipBuilder(PlayingField field, int row, int col, int shipLength) : super(field, null) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
-    fields.add(field.fields[row][col]);       // center
-    fields.add(field.fields[row - 1][col]);   // north
-    fields.add(field.fields[row][col + 1]);   // east
-    fields.add(field.fields[row + 1][col]);   // south
-    fields.add(field.fields[row][col - 1]);   // west
+    this.centerRow = row;
+    this.centerCol = col;
+    //add fields to the list
+    fields.add(field.fields[row][col]);                                                   // center
+    fields.add(row - 1 >= 0 ? field.fields[row - 1][col] : null);                         // north
+    fields.add(field.fields[row][col + 1 < field.fields[row].length ? col + 1 : 0]);      // east
+    fields.add(row + 1 < field.fields.length ? field.fields[row + 1][col] : null);        // south
+    fields.add(field.fields[row][col - 1 >= 0 ? col - 1 : field.fields[row].length - 1]); // west
 
     // check if direction is blocked or foggy, remove if it is
     for (int dir = 1; dir < fields.length; dir++) {
-      bool unOccupied = true;
-      int rowDiff = fields[0].row - fields[dir].row;
-      int colDiff = fields[0].col - fields[dir].col;
-      for (int r = row, c = col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
-        if (c < 0) r = field.fields[row].length;
-        if (c > field.fields[row].length) c = 0;  // still has to be tested
-        if (r > field.fields.length || r < 0) {
-          unOccupied == false;
-        } else if(field.fields[r][c].entity != null || field.fields[r][c].foggy) {
-          unOccupied = false;
+      if (fields[dir] != null) {
+        bool unOccupied = true;
+        int rowDiff = fields[0].row - fields[dir].row;
+        int colDiff = fields[0].col - fields[dir].col;
+        if (colDiff > 1) {
+          colDiff = -1;
         }
-
+        if (colDiff < -1) {
+          colDiff = 1;
+        }
+        for (int r = row, c = col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
+          if (c < 0) c = field.fields[row].length - 1;
+          if (c >= field.fields[row].length) c = 0;
+          if (r >= field.fields.length || r < 0) {
+            unOccupied = false;
+          } else if (field.fields[r][c].entity != null || field.fields[r][c].foggy) {
+            unOccupied = false;
+          }
+          print("${r}, ${c}, ${unOccupied}");
+        }
+        if (!unOccupied) {
+          fields[dir] = null;
+        }
       }
-      if (!unOccupied) {
-        fields[dir] = null;
+      }
+    place();
+  }
+
+  void place() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null) {
+        fields[i].entity = this;
       }
     }
-    place();
+  }
+
+  void remove() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null) {
+        fields[i].entity = null;
+      }
+    }
+  }
+
+  void buildShip(Field f) {
+    if (fields.contains(f) && f != fields.first) {
+      List<Field> shipFields = new List<Field>();
+      var rowDiff = centerRow - f.row;
+      var colDiff = centerCol - f.col;
+      if (colDiff > 1) {
+        colDiff = -1;
+      }
+      if (colDiff < -1) {
+        colDiff = 1;
+      }
+      for (int r = centerRow, c = centerCol, i = 0; i < shipLength;
+      r -= rowDiff, c -= colDiff, i++) {
+        if (c < 0) {
+          c = playingField.fields[centerRow].length - 1;
+        }
+        if (c >= playingField.fields[centerRow].length) {
+          c = 0;
+        }
+        shipFields.add(playingField.fields[r][c]);
+      }
+      remove();
+      playingField.addShip(new Ship(playingField, shipFields, true));
+    }
   }
 
 }
