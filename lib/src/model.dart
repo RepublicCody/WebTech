@@ -46,7 +46,7 @@ class Enemy {
 
   }
 
-  void placeShips(List<List<Field>> fields) {
+  void placeShips(List<List<Field>> fields) {// Es kann passieren, dass ein Schiff nicht platziert werden kann, weil es keine Möglichkeiten mehr gibt
     /*
     //This will generate a List of 12 int from 0 to 99
     var rng = new Random();
@@ -57,12 +57,16 @@ class Enemy {
     int c;      //column
     int direction;
     int dummy;
+    int halfROWCOUNT;
     bool checkUp = false;
     bool checkRight = false;
     bool checkDown = false;
     bool checkLeft = false;
     bool shipCouldBePlaced = false;
     bool shipPlaced = false;
+
+    if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
+    else{halfROWCOUNT = (ROWCOUNT+1 / 2).toInt();}
 
     var rand = new Random();
 
@@ -74,7 +78,8 @@ class Enemy {
 
 
       while(shipPlaced == false) {
-        r = rand.nextInt(ROWCOUNT);
+
+        r = rand.nextInt(halfROWCOUNT);
         c = rand.nextInt(COLCOUNT);
 
         Field f = fields[r][c];
@@ -112,6 +117,19 @@ class Enemy {
               case 1:
                 {
                   if (checkRight == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = c + y;
+                      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+                      if(fields[r][dummy]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
                     checkRight = true;
                   }
                 }
@@ -137,6 +155,18 @@ class Enemy {
               case 3:
                 {
                   if (checkLeft == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = c - y;
+                      if(dummy < 0)dummy += COLCOUNT;
+                      if(fields[r][dummy]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
                     checkLeft = true;
                   }
                 }
@@ -150,22 +180,10 @@ class Enemy {
             else{
               shipCouldBePlaced = false;
             }
-
-
           }
         }
       }
-
     }
-
-
-
-
-
-
-
-    //TODO: enemy places their ships
-    // Just a level dummy for testing
   }
 
   void makeMove() {
