@@ -10,6 +10,37 @@ class GameController{
     view.generateField(model.playingField);
     //  querySelector("#level_1").onClick.listen((Event e) {view.showGame();});
     //  querySelector("#level_2").onClick.listen((Event e) {view.showGame();});
+    addListeners();
+  }
+
+  //TODO: possibly belongs into the view ???
+  List<int> rowCol(String cssId) {
+    RegExp re = new RegExp("field_([0-9]+)_([0-9]+)");
+    Match m = re.firstMatch(cssId);
+    return [int.parse(m.group(1)), int.parse(m.group(2))];
+  }
+
+
+  void fireAt(MouseEvent e) {
+    print("fire at called");
+    print(e.target.runtimeType);
+    if (e.target is Element) {
+      print("fire at successful");
+      HtmlElement element = e.target;
+      var rc = rowCol(element.id);
+      model.fireAt(rc[0], rc[1]);
+      //model.enemy.makeMove();
+      view.update(model.playingField);
+    }
+  }
+
+  void addListeners() {
+    querySelector("#level_1").onClick.listen((Event e) {
+      lvl_1();
+    });
+    querySelector("#level_2").onClick.listen((Event e) {
+      lvl_2();
+    });
     querySelector("#level_3").onClick.listen((Event e) {
       view.showGame();
     });
@@ -22,15 +53,12 @@ class GameController{
     querySelector("#back").onClick.listen((Event e) {
       view.showMenu();
     });
-
-    querySelector("#level_1").onClick.listen((Event e) {
-      lvl_1();
-    });
-    querySelector("#level_2").onClick.listen((Event e) {
-      lvl_2();
-    });
-
-    querySelectorAll('tr').onClick.listen(view.search);
+    querySelectorAll('tr').onClick.listen(buildShip);;
+    querySelectorAll('td').onClick.listen(fireAt);
+  }
+  
+  void buildShip(MouseEvent e) {
+    view.search(e);
   }
 
   void lvl_1() {
@@ -40,8 +68,9 @@ class GameController{
   void lvl_2() {
     view.showGame();
   }
-
 }
+
+
 
 /*
   var model = new GameModel(16, 8);

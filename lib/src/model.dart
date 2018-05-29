@@ -12,6 +12,8 @@ class GameModel {
 
   GameModel(int level) {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
+    Ship s = new Ship(playingField, 14, 2, 14, 5, false);
+    Ship s1 = new Ship(playingField, 9, 0, 11, 0, false);
     switch (level) {
       case 1:
         _shipLengths = [2, 2, 3, 4, 5];

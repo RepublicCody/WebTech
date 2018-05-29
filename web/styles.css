@@ -127,7 +127,11 @@ td{
 }
 
 .fog_miss {
-  background_image : url("images/nebel_getroffen_weiss.png");
+  background-image: url("images/nebel_getroffen_weiss.png");
+}
+
+.fog_hit {
+  background-image: url("images/nebel_getroffen_rot.png");
 }
 
 .ship_vertical_front {
@@ -175,5 +179,5 @@ td{
 }
 
 .ship_horizontal_back_hit {
-  background-image: url("images/schiff_getroffen_mitte_vertikal.png");
+  background-image: url("images/schiff_getroffen_hinten_horizontal.png");
 }

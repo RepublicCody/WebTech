@@ -35,7 +35,6 @@ class GameView {
         fields[row].add(querySelector("#field_${row}_${col}"));
       }
     }
-
     //TODO: width und height des gameTables anpassen
   }
 
@@ -69,10 +68,10 @@ class GameView {
       return f.hit ? "water_miss" : "water";
     }
     if (f.entity is Ship) {
-      String css = "";
+      String css = "ship";
       Ship s = f.entity;
       css += s.vertical ? "_vertical" : "_horizontal";
-      css += s.fields.indexOf(f) == 0 ? "_front" : s.fields.indexOf(f) == s.fields.length ? "_back" : "";
+      css += s.fields.first == f ? "_front" : s.fields.last == f ? "_back" : "";
       css += f.hit ? "_hit" : "";
       return css;
     }
@@ -100,6 +99,7 @@ class GameView {
 
 
   void search(MouseEvent event) {
+    print("search called"); // testing
     if (event.target is Element) {
       Element target = event.target;
 
@@ -113,7 +113,6 @@ class GameView {
           List<int> rowCol = getRowCol(id);
           setArrow(rowCol, length);
         }
-
 
         else if (target.attributes["class"] == "up") {
           List<int> rowCol = getRowCol(target.attributes["id"]);
