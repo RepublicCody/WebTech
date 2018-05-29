@@ -75,6 +75,27 @@ class GameView {
       css += f.hit ? "_hit" : "";
       return css;
     }
+    if (f.entity is ShipBuilder) {
+      String css = "shipbuilder";
+      ShipBuilder sb = f.entity;
+      switch (sb.fields.indexOf(f)) {
+        case 0:
+          css += "_center";
+          break;
+        case 1:
+          css += "_north";
+          break;
+        case 2:
+          css += "_east";
+          break;
+        case 3:
+          css += "_south";
+          break;
+        case 4:
+          css += "_west";
+      }
+      return css;
+    }
     if (f.entity is Rock) {
       return f.hit ? "rock_hit" : "rock";
     }

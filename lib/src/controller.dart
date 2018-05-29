@@ -13,7 +13,7 @@ class GameController{
     view.generateField(model.playingField);
     
     menuListener = querySelectorAll('.button').onClick.listen(selectLevel);
-    tableListener = querySelectorAll('tr').onClick.listen(buildShip);
+    tableListener = querySelectorAll('tr').onClick.listen(buildShips);
     addListeners();
   }
 
@@ -77,6 +77,7 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       model.playingField.buildShip(rc[0], rc[1]);
+      view.update(model.playingField);
     }
   }
 

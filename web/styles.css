@@ -90,23 +90,23 @@ td{
 }*/
 
 /* pictures for the tiles */
-.up {
+.shipbuilder_north {
     background-image: url("images/up.png");
 }
 
-.right {
+.shipbuilder_east {
     background-image: url("images/right.png");
 }
 
-.down {
+.shipbuilder_south {
     background-image: url("images/down.png");
 }
 
-.left {
+.shipbuilder_west {
     background-image: url("images/left.png");
 }
 
-.shipStart {
+.shipbuilder_center {
     background-image: url("images/ship_start.png");
 }
 
