@@ -8,15 +8,19 @@ class GameController{
   var tableListener;
   var gameoverListener;
 
+  int lastPlayed = 0;
+
   GameController() {
-    view.showMenu();
-    //view.showGameover();
     view.generateMenu();
     view.generateField(model.playingField);
     view.generateGameoverscreen();
+    view.showMenu();
+    //view.showGame();
+    //iew.showGameover();
     
-    menuListener = querySelectorAll('.button').onClick.listen(selectLevel);
+    menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('tr').onClick.listen(buildShip);
+    gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
     addListeners();
   }
 
@@ -34,8 +38,15 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       model.fireAt(rc[0], rc[1]);
-      model.enemy.makeMove();
-      view.update(model.playingField);
+      if (model.playingField.gameOver()) {
+        view.showGameover();
+      } else {
+        model.enemy.makeMove();
+        view.update(model.playingField);
+        if (model.playingField.gameOver()) {
+          view.showGameover();
+        }
+      }
     }
   }
 
@@ -47,8 +58,23 @@ class GameController{
       // TODO: implement random level
       print("start level ${m.group(1)}");
       model.generatePlayingField(int.parse(m.group(1)));
+      lastPlayed = int.parse(m.group(1));
       view.update(model.playingField);
       view.showGame();
+    }
+  }
+
+  void gameOver(Event e) {
+    if (e.target is Element) {
+      HtmlElement element = e.target;
+      if (element.id == "menuGameover") {
+        view.showMenu();
+      } else if (element.id == "nextGameover"){
+        model.generatePlayingField(lastPlayed + 1);
+        lastPlayed++;
+        view.update(model.playingField);
+        view.showGame();
+      }
     }
   }
 

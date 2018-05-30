@@ -309,6 +309,17 @@ class PlayingField {
     return fieldString;
   }
 
+  bool gameOver() {
+    int friendly = 0;
+    int enemy = 0;
+    for (int i = 0; i < ships.length; i++) {
+      if (ships[i].friendly) friendly++;
+      else enemy++;
+    }
+    print("enemy : ${enemy}");
+    print("friendly : ${friendly}");
+    return friendly <= 0 || enemy <= 0;
+  }
 
 }
 
@@ -378,8 +389,8 @@ class Ship extends Entity {
   bool _friendly;
 
   bool get vertical => _vertical;
-
   set vertical(bool value) => _vertical = value;
+  bool get friendly => _friendly;
 
   Ship(PlayingField pField, List<Field> fields, bool friendly)
       : super(pField, fields) {
@@ -444,6 +455,16 @@ class Ship extends Entity {
 
   void fireAt(Field f) {
     f.hit = true;
+    bool sunk = true;
+    for (int i = 0; i < fields.length; i++) {
+      if (!fields[i].hit) {
+        sunk = false;
+      }
+    }
+    if (sunk) {
+      sinkShip();
+      print("Schiff versenkt");
+    }
   }
 
   void sinkShip() {
