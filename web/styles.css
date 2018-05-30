@@ -6,6 +6,13 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+* {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    background-repeat: no-repeat;
+}
+
+/* Menu */
+
 #menu {
     background-image: url("images/Menu.png");
     background-position: center;
@@ -36,9 +43,14 @@ html, body {
     background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
 }
 
+
+/* Game Table */
+
+
 #gameTable {
     border-collapse: collapse;
     margin: auto;
+    background-color: #626262;
 }
 
 th {
@@ -62,10 +74,46 @@ td {
     background-repeat: no-repeat;
 }
 
-* {
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+/* Gameover */
+
+
+#gameover {
+    background-image: url("images/Menu.png");
+    background-position: center;
+    background-size: 600px 600px;
     background-repeat: no-repeat;
+    height: 750px;
+    width: 450px;
 }
+#gameover_head {
+    text-align: center;
+    padding: 1%;
+    margin: 3% 15% 0% 15%;
+    width: 70%;
+    font-size: 140%;
+    border: 3px solid #080808;
+    background: linear-gradient(top, #129799 0%, #626262 100%);
+    background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
+}
+#gameoverText {
+    text-align: center;
+    padding: 1%;
+    margin: 3% 15% 0% 15%;
+    width: 70%;
+    font-size: 140%;
+}
+
+#menuGameover, #nextGameover {
+    color: white;
+    padding: 1%;
+    margin: 3% 15% 0% 15%;
+    width: 70%;
+    border: 3px solid #080808;
+    font-size: 140%;
+    background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+    background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+}
+
 
 /*
 @media screen and (max-width:450px){
@@ -90,6 +138,11 @@ td {
      width: 11%;
    }
 }*/
+
+
+/* Smartphone */
+
+
 @media screen and (max-height: 750px) {
     body, html {
         height: 100%;
@@ -97,11 +150,7 @@ td {
         margin: 0;
     }
 
-    #gameTable {
-        border-collapse: collapse;
-        background-repeat: no-repeat;
-        margin: auto;
-    }
+    /* Menu */
 
     #menu {
         background-image: url("images/Menu.png");
@@ -110,7 +159,6 @@ td {
         background-repeat: no-repeat;
         height: 100%;
         width: 100%;
-
     }
 
     #menu_head {
@@ -134,9 +182,14 @@ td {
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
 
+
+    /* Game Table */
+
     #gameTable {
         border-collapse: collapse;
-
+        background-repeat: no-repeat;
+        margin: auto;
+        background-color: #626262;
     }
 
     th {
@@ -157,9 +210,27 @@ td {
         height: 29px;
         background-repeat: no-repeat;
     }
+
+    /* Gameover */
+
+
+    #gameover {
+        background-image: url("images/Menu.png");
+        background-position: center bottom;
+        background-size: 600px 600px;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
+    }
 }
 
+
+
+
+
 /* pictures for the tiles */
+
+
 .shipbuilder_north {
     background-image: url("images/up.png");
 }

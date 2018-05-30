@@ -41,7 +41,7 @@ class GameView {
 
   void generateMenu() {
     String menuString;
-    menuString = '<div id="menu_head">Warships Menu</div><br>';
+    menuString = '<div id="gameover">Gameover</div><br>';
     for (int x = 1; x < 5; x++) {
       menuString +=
       '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
@@ -50,6 +50,17 @@ class GameView {
 
     menu.innerHtml = menuString;
   }
+
+  void generateGameoverscreen() {
+    String gameoverString;
+    gameoverString = '<div id="gameover_head">Gameover!</div><br>';
+    gameoverString += '<div id="gameoverText"></div><br>';
+    gameoverString += '<input type="button" id="menuGameover" class="button" value="Menü"></input> <br>';
+    gameoverString += '<input type="button" id="nextGameover" class="button" value="Nächstes Spiel"></input>';
+
+    gameover.innerHtml = gameoverString;
+  }
+
 
   void update(PlayingField playingField) {
     List<List<Field>> tiles = playingField.fields;
@@ -108,10 +119,18 @@ class GameView {
   void showGame() {
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
+    querySelector("#gameover").style.display="none";
   }
 
   void showMenu() {
     querySelector("#menu").style.display="block";
     querySelector("#gameTable").style.display="none";
+    querySelector("#gameover").style.display="none";
+  }
+
+  void showGameover(){
+    querySelector("#menu").style.display="none";
+    querySelector("#gameTable").style.display="none";
+    querySelector("#gameover").style.display="block";
   }
 }
