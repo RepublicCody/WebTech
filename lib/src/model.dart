@@ -215,9 +215,11 @@ class Ship extends Entity {
   bool _friendly;
 
   bool get vertical => _vertical;
+
   set vertical(bool value) => _vertical = value;
 
-  Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField, fields) {
+  Ship(PlayingField pField, List<Field> fields, bool friendly)
+      : super(pField, fields) {
     destroyed = false;
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
@@ -225,7 +227,6 @@ class Ship extends Entity {
     if (fields.last != back()) {
       this.fields = fields.reversed.toList();
     }
-    print(back().row);
   }
 
   bool reenters() {
@@ -233,12 +234,14 @@ class Ship extends Entity {
     bool last = false;
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].col == 0) first = true;
-      if (fields[i].col == playingField.fields[fields[i].row].length - 1) last = true;
+      if (fields[i].col == playingField.fields[fields[i].row].length - 1)
+        last = true;
     }
     return first && last;
   }
 
-  Field back() {  //can probably be improved
+  Field back() {
+    //can probably be improved
     Field f;
     if (!vertical) {
       for (int i = 0; i < fields.length; i++) {
@@ -280,25 +283,30 @@ class Ship extends Entity {
     f.hit = true;
   }
 
-  void sinkShip(){//TODO: sink ship and replace field with water
-    for(int i = 0; i < fields.length; i++) {
+  void sinkShip() {
+    for (int i = 0; i < fields.length; i++) {
       if (fields[i].entity == this) fields[i].entity = null;
     }
     playingField.ships.remove(this);
   }
-  /*
+
+  // TODO: not completed
   void move(int distance) {
-    // TODO: make ships reenter the playing field from the opposite side if moved beyond borders
+    List<Field> shipFields = new List<Field>();
     if (vertical) {
-      playingField.ships[playingField.ships.indexOf(this)] = new Ship(playingField, fields.first.row + distance, fields.first.col,
-          fields.last.row + distance, fields.last.col, false);
+      for (int i = 0; i < fields.length; i++) {
+        shipFields.add(
+            playingField.fields[fields[i + distance].row][fields[i].col]);
+      }
     } else {
-      playingField.ships[playingField.ships.indexOf(this)] = new Ship(playingField, fields.first.row, fields.first.col + distance,
-          fields.last.row, fields.last.col + distance, fields.first.row + distance < 0 || fields.last.row + distance > playingField.fields.length);
+      for (int i = 0; i < fields.length; i++) {
+        shipFields.add(
+            playingField.fields[fields[i].row][fields[i + distance].col]);
+      }
     }
     sinkShip();
+    playingField.addShip(new Ship(playingField, shipFields, _friendly));
   }
-  */
 }
 
 class Rock extends Entity {
@@ -356,7 +364,6 @@ class ShipBuilder extends Entity{
           } else if (field.fields[r][c].entity != null || field.fields[r][c].foggy) {
             unOccupied = false;
           }
-          print("${r}, ${c}, ${unOccupied}");
         }
         if (!unOccupied) {
           fields[dir] = null;
