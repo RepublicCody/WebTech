@@ -15,8 +15,7 @@ class GameModel {
   }
 
   void generatePlayingField(int level) {
-    switch (level) {
-      case 1:
+
         //+++generate first level+++
         //playingField.generateField();
         //enemy.placeShips();
@@ -34,16 +33,12 @@ class GameModel {
         playingField.addShip(new Ship(playingField, ship3, false));
         playingField.addShip(new Ship(playingField, ship4, false));
         playingField.addShip(new Ship(playingField, ship5, false));
-        break;
-      case 2:
-        // generate second level
-      break;
-    }
   }
 
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
   }
+
 }
 
 class Enemy {
@@ -285,7 +280,7 @@ class PlayingField {
     ship.place();
   }
 
-  void buildShip(int row, int col) {
+  bool buildShip(int row, int col) {
     Field f = fields[row][col];
     if (f.entity == null && !f.foggy) {
       if (_builder != null)_builder.remove();
@@ -293,7 +288,9 @@ class PlayingField {
     } else if(f.entity is ShipBuilder) {
       ShipBuilder sb = f.entity;
       sb.buildShip(f);
+      return true;
     }
+    return false;
   }
 
   // just for testing purposes
@@ -316,11 +313,16 @@ class PlayingField {
       if (ships[i].friendly) friendly++;
       else enemy++;
     }
-    print("enemy : ${enemy}");
-    print("friendly : ${friendly}");
     return friendly <= 0 || enemy <= 0;
   }
 
+  int enemyShipCount() {
+    int count = 0;
+    for (int i = 0; i < ships.length; i++) {
+      if (!ships[i].friendly) count++;
+    }
+    return count;
+  }
 }
 
 class Field{

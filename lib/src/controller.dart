@@ -17,7 +17,6 @@ class GameController{
     view.showMenu();
     //view.showGame();
     //iew.showGameover();
-    
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('tr').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
@@ -38,13 +37,20 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       model.fireAt(rc[0], rc[1]);
+      view.setInGameText("${model.playingField.enemyShipCount()} Gegnerische Schiffe übrig");
       if (model.playingField.gameOver()) {
+        String text = model.playingField.enemyShipCount() == 0 ? "Herzlichen Glückwunsch, Du hast gewonnen!" : "Schade, Du hast verloren!";
+        view.setGameoverText(text);
         view.showGameover();
+        this.tableListener.cancel();
+        this.tableListener = querySelectorAll('tr').onClick.listen(buildShip);  //change to fireat on click on table
       } else {
         model.enemy.makeMove();
         view.update(model.playingField);
         if (model.playingField.gameOver()) {
           view.showGameover();
+          this.tableListener.cancel();
+          this.tableListener = querySelectorAll('tr').onClick.listen(buildShip);  //change to fireat on click on table
         }
       }
     }
@@ -58,6 +64,7 @@ class GameController{
       // TODO: implement random level
       print("start level ${m.group(1)}");
       model.generatePlayingField(int.parse(m.group(1)));
+      view.setInGameText("${model.playingField.shipLengths[0]}er Schiff setzen");
       lastPlayed = int.parse(m.group(1));
       view.update(model.playingField);
       view.showGame();
@@ -71,6 +78,7 @@ class GameController{
         view.showMenu();
       } else if (element.id == "nextGameover"){
         model.generatePlayingField(lastPlayed + 1);
+        view.setInGameText("${model.playingField.shipLengths[0]}er Schiff setzen");
         lastPlayed++;
         view.update(model.playingField);
         view.showGame();
@@ -98,14 +106,17 @@ class GameController{
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
-      model.playingField.buildShip(rc[0], rc[1]);
+      bool completed = model.playingField.buildShip(rc[0], rc[1]);
+      if (completed) {
+        view.setInGameText(
+            "${model.playingField.shipLengths[model.playingField.ships.length -
+                model.playingField.shipLengths.length]}er Schiff setzen");
+      }
       view.update(model.playingField);
-
       if (model.playingField.shipBuildingComplete()) {
-        print("ship building complete");
         this.tableListener.cancel();
         this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
-        print(model.playingField.ships.length);
+        view.setInGameText("${model.playingField.enemyShipCount()} Gegnerische Schiffe übrig");
       }
     }
   }

@@ -133,4 +133,12 @@ class GameView {
     querySelector("#gameTable").style.display="none";
     querySelector("#gameover").style.display="block";
   }
+
+  void setGameoverText(String s) {
+    querySelector('#gameoverText').innerHtml = s;
+  }
+
+  void setInGameText(String s) {
+    querySelector('#text').innerHtml = s;
+  }
 }
