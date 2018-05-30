@@ -8,13 +8,36 @@ class GameModel {
   PlayingField get playingField => _playingField;
   set playingField(PlayingField field) => _playingField = field;
 
-  GameModel(int level) {
-    playingField = new PlayingField(ROWCOUNT, COLCOUNT, [2, 2, 3, 3, 4]);
+  GameModel() {
+    playingField = new PlayingField(ROWCOUNT, COLCOUNT);
+    _enemy = new Enemy(this, [4, 3, 3, 2, 2]);
+    //enemy = new Enemy(); later
+  }
+
+  void generatePlayingField(int level) {
     switch (level) {
       case 1:
-        //_shipLengths = [2, 2, 3, 4, 5];
+        //+++generate first level+++
+        //playingField.generateField();
+        //enemy.placeShips();
+        // this can be replaced, once loading lvls from json is implemented
+        playingField.shipLengths = [4, 3, 3, 2, 2];
+        playingField.newGame();
+        List<List<Field>> f = playingField.fields;
+        var ship1 = [f[7][4], f[7][5], f[7][6], f[7][7]];
+        var ship2 = [f[2][0], f[3][0], f[4][0]];
+        var ship3 = [f[0][6], f[1][6], f[2][6]];
+        var ship4 = [f[1][0], f[1][7]];
+        var ship5 = [f[4][3], f[4][4]];
+        playingField.addShip(new Ship(playingField, ship1, false));
+        playingField.addShip(new Ship(playingField, ship2, false));
+        playingField.addShip(new Ship(playingField, ship3, false));
+        playingField.addShip(new Ship(playingField, ship4, false));
+        playingField.addShip(new Ship(playingField, ship5, false));
         break;
-    //TODO: complete level implementation
+      case 2:
+        // generate second level
+      break;
     }
   }
 
@@ -27,45 +50,171 @@ class Enemy {
   int _strategy;
   GameModel _model;
   Random _rng;
-  int prevHitRow;
-  int prevHitCol;
+  List<int> shipLengths;
 
   set strategy(int value) => _strategy = value;
   int get strategy => _strategy;
   set model(GameModel value) => _model = value;
   GameModel get model => _model;
 
-  Enemy(int strategy, List<int> ShipLengths) {
+  Enemy(GameModel model, List<int> shipLengths) {
+    this.model = model;
     this.strategy = strategy;
-    _rng = new Random(100);
+    _rng = new Random();
+    this.shipLengths = shipLengths;
   }
 
-  void placeShips(int shipCount) {
-    //TODO: enemy places their ships
-    // Just a level dummy for testing
+  void placeShips(List<List<Field>> fields) {// Es kann passieren, dass ein Schiff nicht platziert werden kann, weil es keine Möglichkeiten mehr gibt
+    /*
+    //This will generate a List of 12 int from 0 to 99
+    var rng = new Random();
+    var l = new List.generate(12, (_) => rng.nextInt(100));
+    */
+    int length;
+    int r;      //row
+    int c;      //column
+    int direction;
+    int dummy;
+    int halfROWCOUNT;
+    bool checkUp = false;
+    bool checkRight = false;
+    bool checkDown = false;
+    bool checkLeft = false;
+    bool shipCouldBePlaced = false;
+    bool shipPlaced = false;
+
+    if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
+    else{halfROWCOUNT = (ROWCOUNT+1 / 2).toInt();}
+
+    var rand = new Random();
+
+
+    for(int x = 0; x < shipLengths.length; x++){
+      length = shipLengths[x];
+      shipPlaced = false;
+
+
+
+      while(shipPlaced == false) {
+
+        r = rand.nextInt(halfROWCOUNT);
+        c = rand.nextInt(COLCOUNT);
+
+        Field f = fields[r][c];
+
+        if (f._foggy == true) {
+          checkUp = false;
+          checkRight = false;
+          checkDown = false;
+          checkLeft = false;
+          shipCouldBePlaced = true;
+
+          while (shipCouldBePlaced == true && shipPlaced == false) {
+            direction = rand.nextInt(3);
+
+            switch (direction) {
+              case 0:
+                {
+                  if (checkUp == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = r - y;
+                      if(dummy > 0 && fields[dummy][c]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
+                    checkUp = true;
+                  }
+                }
+                break;
+              case 1:
+                {
+                  if (checkRight == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = c + y;
+                      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
+                      if(fields[r][dummy]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
+                    checkRight = true;
+                  }
+                }
+                break;
+              case 2:
+                {
+                  if (checkDown == false) {
+                    for (int y = 0; y < length; y++) {
+                      if(fields[r + y][c]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+
+                    checkDown = true;
+                  }
+                }
+                break;
+              case 3:
+                {
+                  if (checkLeft == false) {
+                    for (int y = 0; y < length; y++) {
+                      dummy = c - y;
+                      if(dummy < 0)dummy += COLCOUNT;
+                      if(fields[r][dummy]._foggy == true){
+                        shipPlaced = true;
+                      }
+                      else{shipPlaced = false;}
+                    }
+                    if(shipPlaced == true){
+                      //füge Schiff in die Liste mit Schiffen ein
+                      //Füge das Schiff in die Entity ein oder in was ähnliches
+                    }
+                    checkLeft = true;
+                  }
+                }
+                break;
+            }
+
+            if(checkUp == false || checkRight == false ||
+                checkDown == false || checkLeft == false){
+              shipCouldBePlaced = true;
+            }
+            else{
+              shipCouldBePlaced = false;
+            }
+          }
+        }
+      }
+    }
   }
 
   void makeMove() {
-    switch (strategy) {
-      case 1:
-        randomMove();
-        break;
-      case 2:
-        mediocreMove();
-        break;
-      case 3:
-        cleverMove();
-        break;
-    }
-    print("Strategy doesn't exist");
+    randomMove();
+    // implement strategy
   }
 
   void randomMove() {
-    int row = _rng.nextInt(model.playingField.fields.length);
+    int min = model.playingField.fields.length ~/ 2;
+    int row = min + _rng.nextInt(model.playingField.fields.length - min);
     int col = _rng.nextInt(model.playingField.fields[0].length);
+    print("firing at ${row},${col}");
     model.fireAt(row, col);
-    prevHitRow = row;
-    prevHitCol = col;
   }
 
   void mediocreMove() { // for a lack of a better name
@@ -81,6 +230,7 @@ class PlayingField {
   List<List<Field>> _fields;
   List<Ship> _ships;
   List<int> _shipLengths;
+  ShipBuilder _builder;
 
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
@@ -89,8 +239,19 @@ class PlayingField {
   List<int> get shipLengths => _shipLengths;
   set shipLengths(List<int> value) => _shipLengths = value;
 
-  PlayingField(int rows, int cols, List<int> shipLengths) {
-    this.shipLengths = shipLengths;
+  PlayingField(int rows, int cols/*, List<int> shipLengths*/) {
+    //this.shipLengths = shipLengths; // moved to generatePlayingField in GameModel
+    fields = initializeFields(rows, cols);
+    ships = new List<Ship>();
+    //terrain = new List<Entity>();
+  }
+
+  void newGame() {
+    fields = initializeFields(fields.length, fields.first.length);
+    ships = new List<Ship>();
+  }
+
+  List<List<Field>> initializeFields(int rows, int cols) {
     var outerList = new List<List<Field>>(rows);
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
@@ -99,10 +260,7 @@ class PlayingField {
       }
       outerList[row] = innerList;
     }
-    fields = outerList;
-
-    ships = new List<Ship>();
-    //terrain = new List<Entity>();
+    return outerList;
   }
 
   void fireAt(int row, int col) {
@@ -118,6 +276,10 @@ class PlayingField {
     }
   }
 
+  bool shipBuildingComplete() {
+    return shipLengths.length * 2== ships.length;
+  }
+
   void addShip(Ship ship) {
     ships.add(ship);
     ship.place();
@@ -126,7 +288,8 @@ class PlayingField {
   void buildShip(int row, int col) {
     Field f = fields[row][col];
     if (f.entity == null && !f.foggy) {
-      new ShipBuilder(this, row, col, shipLengths[ships.length]); //TODO: put correct length here
+      if (_builder != null)_builder.remove();
+      _builder = new ShipBuilder(this, row, col, shipLengths[ships.length - shipLengths.length]); //TODO: put correct length here
     } else if(f.entity is ShipBuilder) {
       ShipBuilder sb = f.entity;
       sb.buildShip(f);
@@ -383,7 +546,7 @@ class ShipBuilder extends Entity{
 
   void remove() {
     for (int i = 0; i < fields.length; i++) {
-      if (fields[i] != null) {
+      if (fields[i] != null && fields[i].entity == this) {
         fields[i].entity = null;
       }
     }
