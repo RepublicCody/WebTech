@@ -41,7 +41,7 @@ class GameView {
 
   void generateMenu() {
     String menuString;
-    menuString = '<div id="gameover">Gameover</div><br>';
+    menuString = '<div id="menu_head">Warships Menü</div><br>';
     for (int x = 1; x < 5; x++) {
       menuString +=
       '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
