@@ -1,72 +1,72 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 html, body {
-  /*width: 100%;
-  height: 100%;*/
-  font-family: 'Roboto', sans-serif;
+    /*width: 100%;
+    height: 100%;*/
+    font-family: 'Roboto', sans-serif;
 }
 
-#menu{
-  background-image: url("images/Menu.png");
-  background-position: center;
-  background-size: 600px 600px;
-  background-repeat: no-repeat;
-  height: 750px;
-  width: 450px;
+#menu {
+    background-image: url("images/Menu.png");
+    background-position: center;
+    background-size: 600px 600px;
+    background-repeat: no-repeat;
+    height: 750px;
+    width: 450px;
 }
 
-#menu_head{
-  padding: 1%;
-  margin: 3% 15% 0% 15%;
-  width: 70%;
-  font-size: 140%;
-  border: 3px solid #080808;
-  background:linear-gradient(top, #129799 0%, #626262 100%);
-  background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
+#menu_head {
+    padding: 1%;
+    margin: 3% 15% 0% 15%;
+    width: 70%;
+    font-size: 140%;
+    border: 3px solid #080808;
+    background: linear-gradient(top, #129799 0%, #626262 100%);
+    background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
 }
 
-#level_1, #level_2, #level_3, #level_4, #level_5, #zufall{
-  color: white;
-  padding: 1%;
-  margin: 0.5%;
-  width: 240px;
-  border: 3px solid #080808;
-  font-size: 140%;
-  background:linear-gradient(top, #3c3c3c 0%, #222222 100%);
-  background:-webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+#level_1, #level_2, #level_3, #level_4, #level_5, #zufall {
+    color: white;
+    padding: 1%;
+    margin: 0.5%;
+    width: 240px;
+    border: 3px solid #080808;
+    font-size: 140%;
+    background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+    background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
 }
 
-#gameTable{
-  border-collapse: collapse;
+#gameTable {
+    border-collapse: collapse;
+    margin: auto;
 }
-
 
 th {
-  background:linear-gradient(top, #129799 0%, #626262 100%);
-  background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
-  height: 29px;
+    background: linear-gradient(top, #129799 0%, #626262 100%);
+    background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
+    height: 29px;
     border: 1px solid black;
 }
-td{
 
-  width: 29px;
-  height: 29px;
+td {
+
+    width: 29px;
+    height: 29px;
     border: 1px solid black;
-  background-repeat: no-repeat;
+    background-repeat: no-repeat;
 }
 
-
-
-#back{
-  width: 29px;
-  height: 29px;
-  background-repeat: no-repeat;
+#back {
+    width: 29px;
+    height: 29px;
+    background-repeat: no-repeat;
 }
 
 * {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  background-repeat: no-repeat;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    background-repeat: no-repeat;
 }
+
 /*
 @media screen and (max-width:450px){
     body{
@@ -90,18 +90,20 @@ td{
      width: 11%;
    }
 }*/
-@media screen and (max-height:750px){
-    body, html{
+@media screen and (max-height: 750px) {
+    body, html {
         height: 100%;
         width: 100%;
         margin: 0;
     }
 
-  #gameTable{
-    border-collapse: collapse;
-    background-repeat: no-repeat;
-  }
-    #menu{
+    #gameTable {
+        border-collapse: collapse;
+        background-repeat: no-repeat;
+        margin: auto;
+    }
+
+    #menu {
         background-image: url("images/Menu.png");
         background-position: bottom;
         background-size: 600px 600px;
@@ -111,47 +113,46 @@ td{
 
     }
 
-    #menu_head{
+    #menu_head {
         padding: 1%;
         margin: 3% 15% 0% 15%;
         width: 70%;
         border: 3px solid #080808;
         font-size: 140%;
-        background:linear-gradient(top, #129799 0%, #626262 100%);
-        background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
+        background: linear-gradient(top, #129799 0%, #626262 100%);
+        background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
     }
 
-    #level_1, #level_2, #level_3, #level_4, #level_5, #zufall{
+    #level_1, #level_2, #level_3, #level_4, #level_5, #zufall {
         color: white;
         padding: 1%;
         margin: 0.5% 20% 0.5% 20%;
         width: 60%;
         border: 3px solid #080808;
         font-size: 140%;
-        background:linear-gradient(top, #3c3c3c 0%, #222222 100%);
-        background:-webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+        background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
+        background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
 
-    #gameTable{
+    #gameTable {
         border-collapse: collapse;
 
     }
 
     th {
-        background:linear-gradient(top, #129799 0%, #626262 100%);
-        background:-webkit-linear-gradient(top, #129799 0%, #626262 100%);
+        background: linear-gradient(top, #129799 0%, #626262 100%);
+        background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
         border: 1px solid black;
         height: 29px;
     }
-    td{
+
+    td {
         width: 29px;
         height: 29px;
         background-repeat: no-repeat;
     }
 
-
-
-    #back{
+    #back {
         width: 29px;
         height: 29px;
         background-repeat: no-repeat;
@@ -159,90 +160,94 @@ td{
 }
 
 /* pictures for the tiles */
-.up {
+.shipbuilder_north {
     background-image: url("images/up.png");
 }
 
-.right {
+.shipbuilder_east {
     background-image: url("images/right.png");
 }
 
-.down {
+.shipbuilder_south {
     background-image: url("images/down.png");
 }
 
-.left {
+.shipbuilder_west {
     background-image: url("images/left.png");
 }
 
-.shipStart {
+.shipbuilder_center {
     background-image: url("images/ship_start.png");
 }
 
 .back {
-  background-image: url("images/back.png");
+    background-image: url("images/back.png");
 }
 
 .water {
-  background-image: url("images/wasser.png");
+    background-image: url("images/wasser.png");
 }
 
 .water_miss {
-  background-image: url("images/wasser_getroffen_weiss.png");
+    background-image: url("images/wasser_getroffen_weiss.png");
 }
 
 .fog {
-  background-image: url("images/nebel.png");
+    background-image: url("images/nebel.png");
 }
 
 .fog_miss {
-  background_image : url("images/nebel_getroffen_weiss.png");
+    background-image: url("images/nebel_getroffen_weiss.png");
+}
+
+.fog_hit {
+    background-image: url("images/nebel_getroffen_rot.png");
 }
 
 .ship_vertical_front {
-  background-image: url("images/schiff_vorne_vertikal.png");
+    background-image: url("images/schiff_vorne_vertikal.png");
 }
 
 .ship_vertical {
-  background-image: url("images/schiff_mitte_vertikal.png");
+    background-image: url("images/schiff_mitte_vertikal.png");
 }
 
 .ship_vertical_back {
-  background-image: url("images/schiff_hinten_vertikal.png");
+    background-image: url("images/schiff_hinten_vertikal.png");
 }
 
 .ship_horizontal_front {
-  background-image: url("images/schiff_vorne_horizontal.png");
+    background-image: url("images/schiff_vorne_horizontal.png");
 }
 
 .ship_horizontal {
-  background-image: url("images/schiff_mitte_horizontal.png");
+    background-image: url("images/schiff_mitte_horizontal.png");
 }
 
 .ship_horizontal_back {
-  background-image: url("images/schiff_hinten_horizontal.png");
+    background-image: url("images/schiff_hinten_horizontal.png");
 }
 
 .ship_vertical_front_hit {
-  background-image: url("images/schiff_getroffen_vorne_vertikal.png");
+    background-image: url("images/schiff_getroffen_vorne_vertikal.png");
 }
 
 .ship_vertical_hit {
-  background-image: url("images/schiff_getroffen_mitte_vertikal.png");
+    background-image: url("images/schiff_getroffen_mitte_vertikal.png");
 }
 
 .ship_vertical_back_hit {
-  background-image: url("images/schiff_getroffen_hinten_vertikal.png");
+    background-image: url("images/schiff_getroffen_hinten_vertikal.png");
 }
 
 .ship_horizontal_front_hit {
-  background-image: url("images/schiff_getroffen_vorne_horizontal.png");
+    background-image: url("images/schiff_getroffen_vorne_horizontal.png");
 }
 
 .ship_horizontal_hit {
-  background-image: url("images/schiff_getroffen_mitte_horizontal.png");
+    background-image: url("images/schiff_getroffen_mitte_horizontal.png");
 }
 
 .ship_horizontal_back_hit {
-  background-image: url("images/schiff_getroffen_mitte_vertikal.png");
+    background-image: url("images/schiff_getroffen_hinten_horizontal.png");
 }
