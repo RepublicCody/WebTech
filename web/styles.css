@@ -16,7 +16,7 @@ html, body {
 
 #menu {
     background-image: url("images/Menu.png");
-    background-position: center;
+    background-position: center bottom;
     background-size: 600px 600px;
     background-repeat: no-repeat;
     height: 750px;
@@ -79,7 +79,7 @@ td {
 
 #gameover {
     background-image: url("images/Menu.png");
-    background-position: center;
+    background-position: center bottom;
     background-size: 600px 600px;
     background-repeat: no-repeat;
     height: 750px;
@@ -128,7 +128,7 @@ td {
 
     #menu {
         background-image: url("images/Menu.png");
-        background-position: bottom;
+        background-position: center bottom;
         background-size: 600px 600px;
         background-repeat: no-repeat;
         height: 100%;

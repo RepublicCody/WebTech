@@ -120,6 +120,7 @@ void fieldSize(){
     int x = window.screen.available.height-1;
     double calculation = (x/(ROWCOUNT+1))-3;
 
+
     w = calculation.toString() + "px";
     h = calculation.toString() + "px";
 

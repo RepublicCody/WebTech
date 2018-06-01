@@ -26,7 +26,7 @@ class GameModel {
         var ship1 = [f[7][4], f[7][5], f[7][6], f[7][7]];
         var ship2 = [f[2][0], f[3][0], f[4][0]];
         var ship3 = [f[0][6], f[1][6], f[2][6]];
-        var ship4 = [f[1][0], f[1][7]];
+        var ship4 = [f[1][0], f[1][8]];
         var ship5 = [f[4][3], f[4][4]];
         playingField.addShip(new Ship(playingField, ship1, false));
         playingField.addShip(new Ship(playingField, ship2, false));
@@ -205,11 +205,17 @@ class Enemy {
   }
 
   void randomMove() {
-    int min = model.playingField.fields.length ~/ 2;
-    int row = min + _rng.nextInt(model.playingField.fields.length - min);
-    int col = _rng.nextInt(model.playingField.fields[0].length);
-    print("firing at ${row},${col}");
-    model.fireAt(row, col);
+    bool shot = false;
+    while(shot == false) {
+      int min = model.playingField.fields.length ~/ 2;
+      int row = min + _rng.nextInt(model.playingField.fields.length - min);
+      int col = _rng.nextInt(model.playingField.fields[0].length);
+      print("firing at ${row},${col}");
+      if(model.playingField.fields[row][col]._hit == false) {
+        model.fireAt(row, col);
+        shot = true;
+      }
+    }
   }
 
   void mediocreMove() { // for a lack of a better name
