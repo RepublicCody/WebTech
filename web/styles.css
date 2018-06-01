@@ -1,8 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
 html, body {
-    /*width: 100%;
-    height: 100%;*/
+    width: 100%;
+    height: 100%;
+    margin: 0;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -49,28 +50,27 @@ html, body {
 
 #gameTable {
     border-collapse: collapse;
-    margin: auto;
+    width: 100%;
+    height: 100%;
     background-color: #626262;
 }
 
 th {
     background: linear-gradient(top, #129799 0%, #626262 100%);
     background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
-    height: 29px;
     border: 1px solid black;
 }
 
 td {
-
-    width: 29px;
-    height: 29px;
+    /*width: 58%;
+    height: 58%;*/
+    background-position: center center;
     border: 1px solid black;
     background-repeat: no-repeat;
 }
 
 #back {
-    width: 29px;
-    height: 29px;
+    background-position: center center;
     background-repeat: no-repeat;
 }
 
@@ -113,32 +113,6 @@ td {
     background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
     background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
 }
-
-
-/*
-@media screen and (max-width:450px){
-    body{
-        height: 100%;
-    }
-  #gameTable{
-    border-collapse: collapse;
-    background-repeat: no-repeat;
-  }
-    #menu{
-        background-image: url("images/Menu.png");
-        background-position: center;
-        background-size: 600px 600px;
-        background-repeat: no-repeat;
-        width: 100%;
-        padding-bottom: 30%;
-        border: 3px solid black;
-    }
-
-  /* td{
-     width: 11%;
-   }
-}*/
-
 
 /* Smartphone */
 
@@ -188,7 +162,8 @@ td {
     #gameTable {
         border-collapse: collapse;
         background-repeat: no-repeat;
-        margin: auto;
+        width: 100%;
+        height: 100%;
         background-color: #626262;
     }
 
@@ -196,18 +171,15 @@ td {
         background: linear-gradient(top, #129799 0%, #626262 100%);
         background: -webkit-linear-gradient(top, #129799 0%, #626262 100%);
         border: 1px solid black;
-        height: 29px;
     }
 
     td {
-        width: 29px;
-        height: 29px;
+        background-position: center center;
         background-repeat: no-repeat;
     }
 
     #back {
-        width: 29px;
-        height: 29px;
+        background-position: center center;
         background-repeat: no-repeat;
     }
 
@@ -232,93 +204,116 @@ td {
 
 
 .shipbuilder_north {
+    background-size: 100%;
     background-image: url("images/up.png");
 }
 
 .shipbuilder_east {
+    background-size: 100%;
     background-image: url("images/right.png");
 }
 
 .shipbuilder_south {
+    background-size: 100%;
     background-image: url("images/down.png");
 }
 
 .shipbuilder_west {
+    background-size: 100%;
     background-image: url("images/left.png");
 }
 
 .shipbuilder_center {
+    background-size: 100%;
     background-image: url("images/ship_start.png");
 }
 
 .back {
+    background-size: 100%;
     background-image: url("images/back.png");
 }
 
 .water {
+    background-size: 100%;
     background-image: url("images/wasser.png");
 }
 
 .water_miss {
+    background-size: 100%;
     background-image: url("images/wasser_getroffen_weiss.png");
 }
 
 .fog {
+    background-size: 100%;
     background-image: url("images/nebel.png");
 }
 
 .fog_miss {
+    background-size: 100%;
     background-image: url("images/nebel_getroffen_weiss.png");
 }
 
 .fog_hit {
+    background-size: 100%;
     background-image: url("images/nebel_getroffen_rot.png");
 }
 
 .ship_vertical_front {
+    background-size: 100%;
     background-image: url("images/schiff_vorne_vertikal.png");
 }
 
 .ship_vertical {
+    background-size: 100%;
     background-image: url("images/schiff_mitte_vertikal.png");
 }
 
 .ship_vertical_back {
+    background-size: 100%;
     background-image: url("images/schiff_hinten_vertikal.png");
 }
 
 .ship_horizontal_front {
+    background-size: 100%;
     background-image: url("images/schiff_vorne_horizontal.png");
 }
 
 .ship_horizontal {
+    background-size: 100%;
     background-image: url("images/schiff_mitte_horizontal.png");
 }
 
 .ship_horizontal_back {
+    background-size: 100%;
     background-image: url("images/schiff_hinten_horizontal.png");
 }
 
 .ship_vertical_front_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_vorne_vertikal.png");
 }
 
 .ship_vertical_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_mitte_vertikal.png");
 }
 
 .ship_vertical_back_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_hinten_vertikal.png");
 }
 
 .ship_horizontal_front_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_vorne_horizontal.png");
 }
 
 .ship_horizontal_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_mitte_horizontal.png");
 }
 
 .ship_horizontal_back_hit {
+    background-size: 100%;
     background-image: url("images/schiff_getroffen_hinten_horizontal.png");
 }

@@ -1,9 +1,5 @@
 part of warships;
 
-List<int> shipss = [2, 3, 3, 4];
-int pos = 0;
-bool setShip = false;
-
 class GameView {
   final menu = querySelector("#menu");
 
@@ -28,6 +24,8 @@ class GameView {
     }
     table += "</tbody>";
     gameTable.innerHtml = table;
+    fieldSize();
+
     fields = new List<List<HtmlElement>>(tiles.length);
     for (int row = 0; row < tiles.length; row++) {
       fields[row] = new List<HtmlElement>();
@@ -115,6 +113,25 @@ class GameView {
     }
     return "";
   }
+void fieldSize(){
+    String w;
+    String h;
+
+    int x = window.screen.available.height-1;
+    double calculation = (x/(ROWCOUNT+1))-3;
+
+    w = calculation.toString() + "px";
+    h = calculation.toString() + "px";
+
+    querySelectorAll("td").style.width = w;
+    querySelectorAll("td").style.height = h;
+
+    querySelectorAll("th").style.height = h;
+
+    querySelector("#back").style.width = w;
+    querySelector("#back").style.height = h;
+
+}
 
   void showGame() {
     querySelector("#menu").style.display="none";
