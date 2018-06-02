@@ -117,7 +117,7 @@ void fieldSize(){
     String w;
     String h;
 
-    int x = window.screen.available.height-1;
+    int x = window.innerHeight-1;
     double calculation = (x/(ROWCOUNT+1))-3;
 
 
