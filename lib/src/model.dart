@@ -207,8 +207,11 @@ class Enemy {
   void randomMove() {
     bool shot = false;
     while(shot == false) {
-      int min = model.playingField.fields.length ~/ 2;
-      int row = min + _rng.nextInt(model.playingField.fields.length - min);
+      int halfROWCOUNT;
+      if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
+      else{halfROWCOUNT = (ROWCOUNT+1 / 2).toInt();}
+      //int min = model.playingField.fields.length ~/ 2;
+      int row = halfROWCOUNT + _rng.nextInt(ROWCOUNT - halfROWCOUNT);
       int col = _rng.nextInt(model.playingField.fields[0].length);
       print("firing at ${row},${col}");
       if(model.playingField.fields[row][col]._hit == false) {
