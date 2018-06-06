@@ -232,7 +232,9 @@ class Enemy {
     else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
     int row = postionHitMedicoreMove[0];
     int col = postionHitMedicoreMove[1];
-    int x, y, directionTop, directionRight, directionDown, directionLeft;
+    int x, y, top, right, down, left;
+    bool shot = false;
+    bool directionTop = false, directionRight = false, directionDown = false, directionLeft = false;
     //print("row: $row und col $col");
 
     if(hitMedicoreMove == false){
@@ -255,7 +257,6 @@ class Enemy {
           if(row + halfROWCOUNT == ROWCOUNT-1 && col >= COLCOUNT-2) {
             row = 0;
             col = 1;
-            print("Hier bin ich");
           } else if(col == COLCOUNT-1){
             row++;
             col = 1;
@@ -274,7 +275,6 @@ class Enemy {
       if(row + halfROWCOUNT == ROWCOUNT-1 && col >= COLCOUNT-2) {
         row = 0;
         col = 1;
-        print("Hier bin ich");
       } else if(col == COLCOUNT-1){
           row++;
           col = 1;
@@ -299,76 +299,105 @@ class Enemy {
         x = lastHitMedicoreMove[0];
         y = lastHitMedicoreMove[1];
       }
-print("x: $x und y: $y");
-      directionTop = x - 1;
-      if(directionTop <= halfROWCOUNT){}
-      directionRight = y + 1;
-      if(directionRight >= COLCOUNT)directionRight -= COLCOUNT;
-      directionDown = x + 1;
-      if(directionDown >= ROWCOUNT)directionDown -= ROWCOUNT;
-      directionLeft = y - 1;
-      if(directionLeft < 0)directionLeft += COLCOUNT;
+      int t = 0;
+      top = x - 1;
+      if(top <= halfROWCOUNT){}
+      right = y + 1;
+      if(right >= COLCOUNT)right -= COLCOUNT;
+      down = x + 1;
+      if(down >= ROWCOUNT)down -= ROWCOUNT;
+      left = y - 1;
+      if(left < 0)left += COLCOUNT;
 
-      if(model.playingField.fields[directionTop][y]._hit == false && model.playingField.fields[directionTop][y]._foggy == false) {
-        print("top");
-        sLength = model.playingField.ships.length;
-        model.fireAt(directionTop, y);
-        if(sLength > model.playingField.ships.length) {
-          hitMedicoreMove = false;
-          lastHitMedicoreMove[0] = -1;
-        }
-        if(model.playingField.fields[directionTop][y]._entity is Ship) {
-          lastHitMedicoreMove[0] = directionTop;
-          lastHitMedicoreMove[1] = y;
-        }
+      if(model.playingField.fields[top][y]._hit == false && model.playingField.fields[top][y]._foggy == false) {
+        t = 0;
 
 
-      }else if(model.playingField.fields[x][directionRight]._hit == false) {
-        print("right");
-        sLength = model.playingField.ships.length;
-        model.fireAt(x, directionRight);
-        if(sLength > model.playingField.ships.length) {
-          hitMedicoreMove = false;
-          lastHitMedicoreMove[0] = -1;
-        }
-        if(model.playingField.fields[x][directionRight]._entity is Ship) {
-          lastHitMedicoreMove[0] = x;
-          lastHitMedicoreMove[1] = directionRight;
-        }
+      }else if(model.playingField.fields[x][right]._hit == false) {
+        t = 1;
 
 
-      }else if(model.playingField.fields[x][directionLeft]._hit == false) {
-        print("left");
-        sLength = model.playingField.ships.length;
-        model.fireAt(x, directionLeft);
-        if(sLength > model.playingField.ships.length) {
-          hitMedicoreMove = false;
-          lastHitMedicoreMove[0] = -1;
-        }
-        if(model.playingField.fields[x][directionLeft]._entity is Ship) {
-          lastHitMedicoreMove[0] = x;
-          lastHitMedicoreMove[1] = directionLeft;
-        }
+      }else if(model.playingField.fields[x][left]._hit == false) {
+        t = 3;
 
 
-      }else if(model.playingField.fields[directionDown][y]._hit == false && model.playingField.fields[directionDown][y]._foggy == false) {
-        print("down");
-        sLength = model.playingField.ships.length;
-        model.fireAt(directionDown, y);
-        if(sLength > model.playingField.ships.length) {
-          hitMedicoreMove = false;
-          lastHitMedicoreMove[0] = -1;
-        }
-        if(model.playingField.fields[directionDown][y]._entity is Ship) {
-          lastHitMedicoreMove[0] = directionDown;
-          lastHitMedicoreMove[1] = y;
-        }
+      }else if(model.playingField.fields[down][y]._hit == false && model.playingField.fields[down][y]._foggy == false) {
+        t = 2;
 
 
       }else{
         lastHitMedicoreMove[0] = -1;
         print("Hier passiert nichts");
       }
+
+    //  while(shot == false){
+        switch (t) {
+          case 0:
+            print("top");
+            sLength = model.playingField.ships.length;
+            model.fireAt(top, y);
+            if(sLength > model.playingField.ships.length) {
+              hitMedicoreMove = false;
+              lastHitMedicoreMove[0] = -1;
+            }
+            if(model.playingField.fields[top][y]._entity is Ship) {
+              lastHitMedicoreMove[0] = top;
+              lastHitMedicoreMove[1] = y;
+            }
+
+            break;
+          case 1:
+            print("right");
+            sLength = model.playingField.ships.length;
+            model.fireAt(x, right);
+            if(sLength > model.playingField.ships.length) {
+              hitMedicoreMove = false;
+              lastHitMedicoreMove[0] = -1;
+            }
+            if(model.playingField.fields[x][right]._entity is Ship) {
+              lastHitMedicoreMove[0] = x;
+              lastHitMedicoreMove[1] = right;
+            }
+
+
+            break;
+          case 2:
+            print("down");
+            sLength = model.playingField.ships.length;
+            model.fireAt(down, y);
+            if(sLength > model.playingField.ships.length) {
+              hitMedicoreMove = false;
+              lastHitMedicoreMove[0] = -1;
+            }
+            if(model.playingField.fields[down][y]._entity is Ship) {
+              lastHitMedicoreMove[0] = down;
+              lastHitMedicoreMove[1] = y;
+            }
+
+
+            break;
+          case 3:
+            print("left");
+            sLength = model.playingField.ships.length;
+            model.fireAt(x, left);
+            if(sLength > model.playingField.ships.length) {
+              hitMedicoreMove = false;
+              lastHitMedicoreMove[0] = -1;
+            }
+            if(model.playingField.fields[x][left]._entity is Ship) {
+              lastHitMedicoreMove[0] = x;
+              lastHitMedicoreMove[1] = left;
+            }
+
+            break;
+        }
+    //  }
+
+
+
+
+
+
     }
     postionHitMedicoreMove[0] = row;
     postionHitMedicoreMove[1] = col;
