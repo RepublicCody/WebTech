@@ -36,11 +36,12 @@ class GameModel {
         playingField.addShip(new Ship(playingField, ship4, false));
         playingField.addShip(new Ship(playingField, ship5, false));
         */
-    var url = "../web/levels.json";  //TODO: move this to a better location
+    var url = "levels.json";  //TODO: move this to a better location
     var request = HttpRequest.getString(url).then((response) {
       playingField.generateField(JSON.decode(response)["level_${level}"]);
     });
     enemy.placeShips(playingField.fields);
+    print(level);
   }
   /*
   void loadLevel(int level) {
@@ -496,6 +497,7 @@ class PlayingField {
 
   void generateField(Map level) {
     // TODO: generate playing field
+    print(level);
   }
 
   bool shipBuildingComplete() {
