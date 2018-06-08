@@ -32,7 +32,6 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-    print(e.target.runtimeType);
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
@@ -64,7 +63,7 @@ class GameController{
       // TODO: implement random level
       print("start level ${m.group(1)}");
       model.generatePlayingField(int.parse(m.group(1)));
-      view.setInGameText("${model.playingField.shipLengths[0]}er Schiff setzen");
+      view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
       lastPlayed = int.parse(m.group(1));
       view.update(model.playingField);
       view.showGame();
@@ -78,7 +77,7 @@ class GameController{
         view.showMenu();
       } else if (element.id == "nextGameover"){
         model.generatePlayingField(lastPlayed + 1);
-        view.setInGameText("${model.playingField.shipLengths[0]}er Schiff setzen");
+        view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
         lastPlayed++;
         view.update(model.playingField);
         view.showGame();
@@ -107,11 +106,9 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       bool completed = model.playingField.buildShip(rc[0], rc[1]);
-      if (completed && model.playingField.ships.length - model.playingField.enemyShipCount()
-          < model.playingField.shipLengths.length) {
+      if (completed && model.playingField.playerShipCount() < model.playingField.playerShipLengths.length) {
         view.setInGameText(
-            "${model.playingField.shipLengths[model.playingField.ships.length -
-                model.playingField.shipLengths.length]}er Schiff setzen");
+            "${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}er Schiff setzen");
       }
       view.update(model.playingField);
       if (model.playingField.shipBuildingComplete()) {
