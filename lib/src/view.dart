@@ -14,7 +14,7 @@ class GameView {
     int text = tiles[0].length - 1;
     String table = "<tbody><tr><th colspan='$text' id='text'></th> <th id='back' class='back'></th></tr>";
     for (int row = 0; row < tiles.length; row++) {
-      table += "<tr>";        //Ich wäre dafür tr noch die class enemy und player zu geben, zumindest kann ich mir gut vorstellen, dass man damit später beim Schiffe platzieren leichtes Spiel hat
+      table += "<tr>";
       for (int col = 0; col < tiles[row].length; col++) {
         var terrain = tiles[row][col].entity;
         var position = "field_${row}_${col}";

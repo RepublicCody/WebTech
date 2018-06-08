@@ -18,7 +18,7 @@ class GameController{
     //view.showGame();
     //iew.showGameover();
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
-    tableListener = querySelectorAll('tr').onClick.listen(buildShip);
+    tableListener = querySelectorAll('td').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
     addListeners();
   }
@@ -42,14 +42,14 @@ class GameController{
         view.setGameoverText(text);
         view.showGameover();
         this.tableListener.cancel();
-        this.tableListener = querySelectorAll('tr').onClick.listen(buildShip);  //change to fireat on click on table
+        this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
       } else {
         model.enemy.makeMove();
         view.update(model.playingField);
         if (model.playingField.gameOver()) {
           view.showGameover();
           this.tableListener.cancel();
-          this.tableListener = querySelectorAll('tr').onClick.listen(buildShip);  //change to fireat on click on table
+          this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         }
       }
     }

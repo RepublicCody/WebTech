@@ -23,37 +23,10 @@ class GameModel {
   }
 
   void generatePlayingField(int level) {
-    /*
-        playingField.shipLengths = [4, 3, 3, 2, 2];
-        playingField.newGame();
-        */
-        List<List<Field>> f = playingField.fields;
-        var ship1 = [f[7][4], f[7][5], f[7][6], f[7][7]];
-        var ship2 = [f[2][0], f[3][0], f[4][0]];
-        var ship3 = [f[0][6], f[1][6], f[2][6]];
-        var ship4 = [f[1][0], f[1][7]];
-        var ship5 = [f[4][3], f[4][4]];
-
-        playingField.addShip(new Ship(playingField, ship1, false));
-        playingField.addShip(new Ship(playingField, ship2, false));
-        playingField.addShip(new Ship(playingField, ship3, false));
-        playingField.addShip(new Ship(playingField, ship4, false));
-        playingField.addShip(new Ship(playingField, ship5, false));
-
-    /*
-    var url = "levels.json";  //TODO: move this to a better location
-    var request = HttpRequest.getString(url).then((response) {
-      playingField.generateField(JSON.decode(response)["level_${level}"]);
-    });
+    playingField.newGame();
     enemy.placeShips(playingField.fields);
-    */
-    print(levels);
     playingField.generateField(levels["level_${level}"]);
   }
-  /*
-  void loadLevels() async{
-    levels = levelMap();
-  }*/
 
   Future<Map> levelMap() async {
     var url = "levels.json";  //TODO: move this to a better location
@@ -468,7 +441,6 @@ class Enemy {
 class PlayingField {
   List<List<Field>> _fields;
   List<Ship> _ships;
-  //List<int> _shipLengths;
   List<int> _playerShipLengths;
   List<int> _enemyShipLengths;
   ShipBuilder _builder;
@@ -478,8 +450,6 @@ class PlayingField {
   set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
   set ships(List<Ship> ships) => _ships = ships;
-  //List<int> get shipLengths => _shipLengths;
-  //set shipLengths(List<int> value) => _shipLengths = value;
   List<int> get playerShipLengths => _playerShipLengths;
   List<int> get enemyShipLengths => _enemyShipLengths;
   int get rowCount => _rowCount;
@@ -517,7 +487,6 @@ class PlayingField {
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
-    //shipLengths = level["playerShips"]; // this has to be changed!
     var row;
     var col;
     var border = rowCount ~/ 2;
@@ -545,7 +514,7 @@ class PlayingField {
   }
 
   bool shipBuildingComplete() {
-    return playerShipLengths.length + enemyShipLengths.length == ships.length; // OLD: shipLengths.length * 2 == ships.length;
+    return playerShipCount() >= playerShipLengths.length;
   }
 
   void addShip(Ship ship) {
@@ -557,7 +526,7 @@ class PlayingField {
     Field f = fields[row][col];
     if (f.entity == null && !f.foggy) {
       if (_builder != null)_builder.remove();
-      _builder = new ShipBuilder(this, row, col, playerShipLengths[ships.length - enemyShipLengths.length]);// - shipLengths.length]); //TODO: put correct length here
+      _builder = new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()]);
     } else if(f.entity is ShipBuilder) {
       ShipBuilder sb = f.entity;
       sb.buildShip(f);
