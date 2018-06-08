@@ -21,11 +21,7 @@ class GameModel {
   }
 
   void generatePlayingField(int level) {
-
-        //+++generate first level+++
-        //playingField.generateField();
-        //enemy.placeShips();
-        // this can be replaced, once loading lvls from json is implemented
+        /*
         playingField.shipLengths = [4, 3, 3, 2, 2];
         playingField.newGame();
         List<List<Field>> f = playingField.fields;
@@ -39,8 +35,21 @@ class GameModel {
         playingField.addShip(new Ship(playingField, ship3, false));
         playingField.addShip(new Ship(playingField, ship4, false));
         playingField.addShip(new Ship(playingField, ship5, false));
+        */
+    var url = "../web/levels.json";  //TODO: move this to a better location
+    var request = HttpRequest.getString(url).then((response) {
+      playingField.generateField(JSON.decode(response)["level_${level}"]);
+    });
+    enemy.placeShips(playingField.fields);
   }
-
+  /*
+  void loadLevel(int level) {
+    var url = "test.json";  //TODO: move this to a better location
+    var request = HttpRequest.getString(url).then((response) {
+      playingField.generateField(JSON.decode(response)["level_${level}"]);
+    });
+  }
+  */
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
   }
@@ -485,13 +494,8 @@ class PlayingField {
     fields[row][col].fireAt();
   }
 
-  void generateField(int rocks, int items) {
-    for (int i = 0; i < rocks; i++) {
-      //generate rocks
-    }
-    for (int i = 0; i < items; i++) {
-      //generate items
-    }
+  void generateField(Map level) {
+    // TODO: generate playing field
   }
 
   bool shipBuildingComplete() {
