@@ -21,7 +21,7 @@ class GameModel {
   }
 
   void generatePlayingField(int level) {
-        /*
+
         playingField.shipLengths = [4, 3, 3, 2, 2];
         playingField.newGame();
         List<List<Field>> f = playingField.fields;
@@ -35,13 +35,13 @@ class GameModel {
         playingField.addShip(new Ship(playingField, ship3, false));
         playingField.addShip(new Ship(playingField, ship4, false));
         playingField.addShip(new Ship(playingField, ship5, false));
-        */
+    /*
     var url = "levels.json";  //TODO: move this to a better location
     var request = HttpRequest.getString(url).then((response) {
       playingField.generateField(JSON.decode(response)["level_${level}"]);
     });
     enemy.placeShips(playingField.fields);
-    print(level);
+    */
   }
   /*
   void loadLevel(int level) {
@@ -458,6 +458,8 @@ class PlayingField {
   List<List<Field>> _fields;
   List<Ship> _ships;
   List<int> _shipLengths;
+  //playerShipLengths
+  //enemyShipLengths
   ShipBuilder _builder;
 
   List<List<Field>> get fields => _fields;
@@ -495,13 +497,31 @@ class PlayingField {
     fields[row][col].fireAt();
   }
 
-  void generateField(Map level) {
-    // TODO: generate playing field
+  void generateField(Map level) {// TODO: complete
+    //playerShipLengths = level["playerShips"];
+    //enemyShipLengths = level["enemyShips"];
+    shipLengths = level["playerShips"]; // this has to be changed!
+    for(int i = 0; i < level["playerRocks"]; i++) {
+      var rng = new Random();
+      var row = fields.length ~/ 2 + rng.nextInt(fields.length - fields.length ~/ 2 - 1);
+      var col = rng.nextInt(fields.first.length - 1);
+      if (fields[row][col].entity == null) {
+
+      }
+    }
+    for(int i = 0; i < level["enemyRocks"]; i++) {
+      var rng = new Random();
+      var row = fields.length ~/ 2 + rng.nextInt(fields.length - fields.length ~/ 2 - 1);
+      var col = rng.nextInt(fields.first.length - 1);
+      if (fields[row][col].entity == null) {
+        // generate rocks
+      }
+    }
     print(level);
   }
 
   bool shipBuildingComplete() {
-    return shipLengths.length * 2== ships.length;
+    return shipLengths.length * 2 == ships.length;
   }
 
   void addShip(Ship ship) {
@@ -595,42 +615,50 @@ class Field{
 
 class Entity {
   PlayingField _playingField;
-  List<Field> _fields;
+  //List<Field> _fields;
 
   PlayingField get playingField => _playingField;
   set playingField(PlayingField value) => _playingField = value;
-  List<Field> get fields => _fields;
-  set fields(List<Field> value) => _fields = value;
+  //List<Field> get fields => _fields;
+  //set fields(List<Field> value) => _fields = value;
 
-  Entity(PlayingField playingField, List<Field> fields) {
+  Entity(PlayingField playingField /*List<Field> fields*/) {
     this.playingField = playingField;
-    this.fields = fields;
+    //this.fields = fields;
   }
-
+  /*
   void place() {
     for (int i = 0; i < fields.length; i++) {
       fields[i].entity = this;
     }
   }
+  */
 }
 
 class Ship extends Entity {
   bool destroyed;
   bool _vertical;
   bool _friendly;
+  List<Field> fields;
 
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
   bool get friendly => _friendly;
 
-  Ship(PlayingField pField, List<Field> fields, bool friendly)
-      : super(pField, fields) {
+  Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField) {
     destroyed = false;
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
+    this.fields = fields;
 
     if (fields.last != back()) {
       this.fields = fields.reversed.toList();
+    }
+  }
+
+  void place() {
+    for (int i = 0; i < fields.length; i++) {
+      fields[i].entity = this;
     }
   }
 
@@ -725,16 +753,30 @@ class Ship extends Entity {
 }
 
 class Rock extends Entity {
-  Rock(PlayingField field, int row, int col) : super(field, null) {
-    this.fields = new List<Field>();
-    fields.add(field.fields[row][col]);
+  Field _field;
+
+  Field get field => _field;
+
+  Rock(PlayingField field, int row, int col) : super(field) {
+    _field = field.fields[row][col];
+  }
+
+  void place() {
+    _field.entity = this;
   }
 }
 
 class PowerUp extends Entity {
-  PowerUp(PlayingField field, int row, int col) : super(field, null) {
-    this.fields = new List<Field>();
-    fields.add(field.fields[row][col]);
+  Field _field;
+
+  Field get field => _field;
+
+  PowerUp(PlayingField field, int row, int col) : super(field) {
+    _field = field.fields[row][col];
+  }
+
+  void place() {
+    _field.entity = this;
   }
 
   void activate() {
@@ -746,8 +788,12 @@ class ShipBuilder extends Entity{
   int shipLength;
   int centerRow;
   int centerCol;
+  List<Field> _fields;
 
-  ShipBuilder(PlayingField field, int row, int col, int shipLength) : super(field, null) {
+  List<Field> get fields => _fields;
+  set fields(List<Field> fields) => _fields = fields;
+
+  ShipBuilder(PlayingField field, int row, int col, int shipLength) : super(field) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
     this.centerRow = row;
