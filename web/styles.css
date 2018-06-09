@@ -22,7 +22,6 @@
         text-transform: uppercase;
         color: #FFFFFF;
         padding: 0.5%;
-        width: 100vw;
         margin: 0%;
         border: 3px solid #080808;
         font-size: 200%;
@@ -109,22 +108,26 @@
     }
 
     #menuGameover{
+        position: absolute;
         border: 3px solid #080808;
         font-size: 140%;
-        width: 50%;
-        margin: 50% 25% 5% 25%;
+        top: 70%;
+        left: 50%;
+        margin: 0% 0% 5% 0%;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
     }
 
     #nextGameover{
         position: absolute;
         display: none;
+        width: 70%;
         border: 3px solid #080808;
         font-size: 140%;
-        width: auto;
         top: 85%;
         left: 50%;
         margin: 2% 0% 5% 0%;
@@ -141,7 +144,7 @@
         display: none;
         border: 3px solid #080808;
         font-size: 140%;
-        width: auto;
+        width: 70%;
         top: 85%;
         left: 50%;
         margin: 2% 0% 5% 0%;
