@@ -7,6 +7,7 @@ class GameController{
   var menuListener;
   var tableListener;
   var gameoverListener;
+  var messageListener;
 
   int lastPlayed = 0;
 
@@ -14,9 +15,11 @@ class GameController{
     view.generateMenu();
     view.generateField(model.playingField);
     view.generateGameoverscreen();
+    view.generateMessage();
     view.showMenu();
     //view.showGame();
     //iew.showGameover();
+    messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('tr').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
@@ -37,9 +40,13 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       model.fireAt(rc[0], rc[1]);
-      view.setInGameText("${model.playingField.enemyShipCount()} Gegnerische Schiffe übrig");
+      view.setInGameText("${model.playingField.enemyShipCount()} feindliche Schiffe übrig");
       if (model.playingField.gameOver()) {
-        String text = model.playingField.enemyShipCount() == 0 ? "Herzlichen Glückwunsch, Du hast gewonnen!" : "Schade, Du hast verloren!";
+        view.update(model.playingField);
+        String text = model.playingField.enemyShipCount() == 0 ? "Du hast gewonnen!" : "Du hast verloren!";
+        querySelector('#gameoverText').attributes["class"] = model.playingField.enemyShipCount() == 0 ? "win" : "loose";
+        querySelector('#nextGameover').style.display = model.playingField.enemyShipCount() == 0 ? "block" : "none";
+        querySelector('#restartGameover').style.display = model.playingField.enemyShipCount() == 0 ? "none" : "block";
         view.setGameoverText(text);
         view.showGameover();
         this.tableListener.cancel();
@@ -67,7 +74,7 @@ class GameController{
       view.setInGameText("${model.playingField.shipLengths[0]}er Schiff setzen");
       lastPlayed = int.parse(m.group(1));
       view.update(model.playingField);
-      view.showGame();
+      view.showMessage();
     }
   }
 

@@ -7,6 +7,8 @@ class GameView {
 
   final gameTable = querySelector("#gameTable");
 
+  final message = querySelector("#message");
+
   List<List<HtmlElement>> fields;
 
   void generateField(PlayingField playingField) {
@@ -39,11 +41,18 @@ class GameView {
 
   void generateMenu() {
     String menuString;
-    menuString = '<div id="menu_head">Warships Menü</div><br>';
+    int counter = 1;
+    menuString = '<div id="menu_head">Warships</div><br>';
     for (int x = 1; x < 5; x++) {
-      menuString +=
-      '<input type="button" id="level_$x" class="button" value="Level $x"></input> <br>';
+      for (int y = 1; y <= 2; y++) {
+        menuString +=
+        '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
+        counter++;
+      }
+     // menuString +='<br>';
     }
+    menuString +=
+    '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
     menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
 
     menu.innerHtml = menuString;
@@ -51,14 +60,21 @@ class GameView {
 
   void generateGameoverscreen() {
     String gameoverString;
-    gameoverString = '<div id="gameover_head">Gameover!</div><br>';
+    gameoverString = '<div id="gameover_head">Game Over!</div><br>';
     gameoverString += '<div id="gameoverText"></div><br>';
     gameoverString += '<input type="button" id="menuGameover" class="button" value="Menü"></input> <br>';
     gameoverString += '<input type="button" id="nextGameover" class="button" value="Nächstes Spiel"></input>';
-
+    gameoverString += '<input type="button" id="restartGameover" class="button" value="Neuer Versuch"></input>';
     gameover.innerHtml = gameoverString;
   }
 
+  void generateMessage() {
+    String messageString;
+    messageString = '<div id="messageText">Bitte platziere deine Schiffe im unteren Spielfeld</div>';
+    messageString += '<input type="button" id="messageNext" class="button" value="Weiter"></input>';
+
+    message.innerHtml = messageString;
+  }
 
   void update(PlayingField playingField) {
     List<List<Field>> tiles = playingField.fields;
@@ -138,18 +154,28 @@ void fieldSize(){
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
     querySelector("#gameover").style.display="none";
+    querySelector("#message").style.display="none";
   }
 
   void showMenu() {
     querySelector("#menu").style.display="block";
     querySelector("#gameTable").style.display="none";
     querySelector("#gameover").style.display="none";
+    querySelector("#message").style.display="none";
   }
 
   void showGameover(){
     querySelector("#menu").style.display="none";
-    querySelector("#gameTable").style.display="none";
+    querySelector("#gameTable").style.display="block";
     querySelector("#gameover").style.display="block";
+    querySelector("#message").style.display="none";
+  }
+
+  void showMessage(){
+    querySelector("#menu").style.display="none";
+    querySelector("#gameTable").style.display="block";
+    querySelector("#message").style.display="block";
+    querySelector("#gameover").style.display="none";
   }
 
   void setGameoverText(String s) {
