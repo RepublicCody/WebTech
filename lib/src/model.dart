@@ -44,6 +44,7 @@ class GameModel {
 }
 
 class Enemy {
+
   bool hitMedicoreMove = false;
   List<int> firstHitMedicoreMove = [0, 0];
   List<int> lastHitMedicoreMove = [-1, 0];
@@ -62,7 +63,10 @@ class Enemy {
   List<int> firstHitRandomHardcoreMove = [0, 0];
   List<int> lastHitRandomHardcoreMove = [-1, 0];
   List<int> postionHitRandomHardcoreMove = [0, 0];
+  List<int> allHitsColRandomHardcoreMove = [];
+  List<int> allHitsRowRandomHardcoreMove = [];
   String lastDirectionRandomHardcoreMove = "no direction";
+
 
   int _strategy;
   GameModel _model;
@@ -619,13 +623,12 @@ class Enemy {
 
     if(strategieRandomHardcoreMove == false){
       col = _rng.nextInt(COLCOUNT);
-      row = _rng.nextInt(ROWCOUNT);
+      row = _rng.nextInt(halfROWCOUNT);
       strategieRandomHardcoreMove = true;
     }
 
     int x, y, top, right, down, left;
     bool shot = false;
-    bool directionTop = false, directionRight = false, directionDown = false, directionLeft = false;
 
     if(hitRandomHardcoreMove == false){
 
@@ -637,6 +640,8 @@ class Enemy {
           hitRandomHardcoreMove = true;
           firstHitRandomHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitRandomHardcoreMove[1] = col;
+          allHitsRowRandomHardcoreMove.add(row+halfROWCOUNT);
+          allHitsColRandomHardcoreMove.add(col);
           if(sLength > model.playingField.ships.length)hitRandomHardcoreMove = false;
 
         }
@@ -660,7 +665,7 @@ class Enemy {
 
           } else{
             col += 2;
-          }print("row: $row und col $col");
+          }
         } while(model.playingField.fields[row + halfROWCOUNT][col]._hit == true);
 
         sLength = model.playingField.ships.length;
@@ -670,6 +675,8 @@ class Enemy {
           hitRandomHardcoreMove = true;
           firstHitRandomHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitRandomHardcoreMove[1] = col;
+          allHitsRowRandomHardcoreMove.add(row+halfROWCOUNT);
+          allHitsColRandomHardcoreMove.add(col);
           if(sLength > model.playingField.ships.length)hitRandomHardcoreMove = false;
 
         }
@@ -705,15 +712,33 @@ class Enemy {
               sLength = model.playingField.ships.length;
               model.fireAt(top, y);
 
+              if(model.playingField.fields[top][y]._entity is Ship) {
+                lastHitRandomHardcoreMove[0] = top;
+                lastHitRandomHardcoreMove[1] = y;
+                allHitsRowRandomHardcoreMove.add(top);
+                allHitsColRandomHardcoreMove.add(y);
+              }
+
               if(sLength > model.playingField.ships.length) {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
+                for(int p = 0; p < allHitsRowRandomHardcoreMove.length; p++) {
+                  for (int z = 0; z <= 5; z++) {
+                    if (allHitsRowRandomHardcoreMove[p] == top - z + halfROWCOUNT) {
+                      //allHitsRowRandomHardcoreMove.removeAt(p);
+                      //allHitsColRandomHardcoreMove.removeAt(p);
+                      print(allHitsRowRandomHardcoreMove.length.toString() + "test");
+                    }
+                  }
+                }print(allHitsRowRandomHardcoreMove.length);
+                if(allHitsRowRandomHardcoreMove.length != 0){
+                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  hitRandomHardcoreMove = true;
+                }
               }
-              if(model.playingField.fields[top][y]._entity is Ship) {
-                lastHitRandomHardcoreMove[0] = top;
-                lastHitRandomHardcoreMove[1] = y;
-              }
+
               shot = true;
             } else {
               lastDirectionRandomHardcoreMove = "down";
@@ -729,10 +754,23 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
+                for(int z = 0; z < allHitsRowRandomHardcoreMove.length; z++){
+                  if(allHitsColRandomHardcoreMove[z] == right-z){
+                    allHitsRowRandomHardcoreMove.removeAt(z);
+                    allHitsColRandomHardcoreMove.removeAt(z);
+                  }
+                }
+                if(allHitsRowRandomHardcoreMove.length != 0){
+                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  hitRandomHardcoreMove = true;
+                }
               }
               if(model.playingField.fields[x][right]._entity is Ship) {
                 lastHitRandomHardcoreMove[0] = x;
                 lastHitRandomHardcoreMove[1] = right;
+                allHitsRowRandomHardcoreMove.add(x);
+                allHitsColRandomHardcoreMove.add(right);
               }
               shot = true;
             } else {
@@ -746,15 +784,33 @@ class Enemy {
               sLength = model.playingField.ships.length;
               model.fireAt(down, y);
 
+              if(model.playingField.fields[down][y]._entity is Ship) {
+                lastHitRandomHardcoreMove[0] = down;
+                lastHitRandomHardcoreMove[1] = y;
+                allHitsRowRandomHardcoreMove.add(down);
+                allHitsColRandomHardcoreMove.add(y);
+              }
+
               if(sLength > model.playingField.ships.length) {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
+                for(int p = 0; p < allHitsRowRandomHardcoreMove.length; p++) {
+                  for (int z = 0; z <= 5; z++) {
+                    if (allHitsRowRandomHardcoreMove[p] == down + z + halfROWCOUNT) {
+                      //allHitsRowRandomHardcoreMove.removeAt(p);
+                      //allHitsColRandomHardcoreMove.removeAt(p);
+                      print(allHitsRowRandomHardcoreMove.length.toString() + "test");
+                    }
+                  }
+                }print(allHitsRowRandomHardcoreMove.length);
+                if(allHitsRowRandomHardcoreMove.length != 0){
+                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  hitRandomHardcoreMove = true;
+                }
               }
-              if(model.playingField.fields[down][y]._entity is Ship) {
-                lastHitRandomHardcoreMove[0] = down;
-                lastHitRandomHardcoreMove[1] = y;
-              }
+
               shot = true;
             } else {
               lastDirectionRandomHardcoreMove = "right";
@@ -770,10 +826,23 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
+                for(int z = 0; z < allHitsRowRandomHardcoreMove.length; z++){
+                  if(allHitsColRandomHardcoreMove[z] == left+z){
+                    allHitsRowRandomHardcoreMove.removeAt(z);
+                    allHitsColRandomHardcoreMove.removeAt(z);
+                  }
+                }
+                if(allHitsRowRandomHardcoreMove.length != 0){
+                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  hitRandomHardcoreMove = true;
+                }
               }
               if(model.playingField.fields[x][left]._entity is Ship) {
                 lastHitRandomHardcoreMove[0] = x;
                 lastHitRandomHardcoreMove[1] = left;
+                allHitsRowRandomHardcoreMove.add(x);
+                allHitsColRandomHardcoreMove.add(left);
               }
               shot = true;
             } else {
@@ -792,6 +861,7 @@ class Enemy {
       }
 
     }
+    print("Länge von: " + allHitsColRandomHardcoreMove.length.toString());
     postionHitRandomHardcoreMove[0] = row;
     postionHitRandomHardcoreMove[1] = col;
   }

@@ -35,7 +35,7 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-    print(e.target.runtimeType);
+    //print(e.target.runtimeType);
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
