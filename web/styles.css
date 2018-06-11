@@ -7,8 +7,47 @@
         padding: 0;
     }
 
-    /* Menu */
+@media all and (orientation:landscape) {
+   #device {
+        display: block;
+    }
+    #menu {
+        display: none;
+    }
+    #gameover {
+        display: none;
+    }
+    #message {
+        display: none;
+    }
+    #gameTable {
+        display: none;
+    }
 
+}
+
+@media all and (orientation:portrait) {
+
+    #device {
+        display: none;
+    }
+}
+
+    /* Device */
+    #device {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: 3;
+        background-size: 40%;
+        background-repeat: no-repeat;
+        background-color: #080808;
+        background-image: url("images/device.png");
+        background-position: center center;
+    }
+
+
+    /* Menu */
     #menu {
         background-image: url("images/Menu.png");
         background-position: center bottom;
@@ -42,6 +81,7 @@
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
+
     .button:nth-child(odd) {
         color: #FFFFFF;
         padding: 1%;
@@ -55,9 +95,7 @@
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
 
-
     /* Game Table */
-
     #gameTable {
         border-collapse: collapse;
         background-repeat: no-repeat;
@@ -90,8 +128,6 @@
     }
 
     /* Gameover */
-
-
     #gameover {
         position: fixed; /* Sit on top of the page content */
         display: none; /* Hidden by default */
@@ -101,13 +137,13 @@
         bottom: 0;
         border: 3px solid #FFFFFF;
         border-radius: 20px;
-        background-color: rgba(0,0,0,0.6); /* Black background with opacity */
+        background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
         z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
         height: 50%;
         width: 85%;
     }
 
-    #menuGameover{
+    #menuGameover {
         position: absolute;
         border: 3px solid #080808;
         font-size: 140%;
@@ -118,11 +154,11 @@
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
-        transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
-    #nextGameover{
+    #nextGameover {
         position: absolute;
         display: none;
         width: 70%;
@@ -135,11 +171,11 @@
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
-        transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
-    #restartGameover{
+    #restartGameover {
         position: absolute;
         display: none;
         border: 3px solid #080808;
@@ -152,12 +188,11 @@
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
-        transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
-
-    #gameoverText{
+    #gameoverText {
         position: absolute;
         text-align: center;
         padding: 1%;
@@ -167,15 +202,15 @@
         font-size: 140%;
         color: #FFFFFF;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
-    /*    background: linear-gradient(top, #ffffff 0%, #626262 100%);
-        background: -webkit-linear-gradient(top, #ffffff 0%, #626262 100%);*/
+        /*    background: linear-gradient(top, #ffffff 0%, #626262 100%);
+            background: -webkit-linear-gradient(top, #ffffff 0%, #626262 100%);*/
         border: 3px solid #080808;
         border-radius: 20px;
-        transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
-    #gameover_head{
+    #gameover_head {
         position: absolute;
         text-transform: uppercase;
         text-align: center;
@@ -185,10 +220,9 @@
         font-weight: bold;
         top: 20%;
         left: 50%;
-        webkit-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
     }
-
 
     #message {
         position: fixed; /* Sit on top of the page content */
@@ -199,13 +233,13 @@
         bottom: 0;
         border: 3px solid #FFFFFF;
         border-radius: 20px;
-        background-color: rgba(0,0,0,0.6); /* Black background with opacity */
+        background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
         z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
         height: 30%;
         width: 85%;
     }
 
-    #messageText{
+    #messageText {
         position: absolute;
         text-align: center;
         padding: 1%;
@@ -215,11 +249,11 @@
         font-size: 140%;
         color: #FFFFFF;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
-        transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-}
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
 
-    #messageNext{
+    #messageNext {
         border: 3px solid #080808;
         font-size: 140%;
         width: 50%;
@@ -229,7 +263,6 @@
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
-
 
     .win {
         background: linear-gradient(top, #22a34f 0%, #196220 100%);
