@@ -132,10 +132,16 @@ class GameView {
 void fieldSize(){
     String w;
     String h;
+    int x;
+    double calculation;
 
-    int x = window.innerHeight-1;
-    double calculation = (x/(ROWCOUNT+1))-3;
-
+    if(window.innerHeight < window.innerWidth){
+      x = window.innerWidth - 1;
+      calculation = (x / (ROWCOUNT + 1)) - 3;
+    }else {
+      x = window.innerHeight - 1;
+      calculation = (x / (ROWCOUNT + 1)) - 3;
+    }
 
     w = calculation.toString() + "px";
     h = calculation.toString() + "px";
