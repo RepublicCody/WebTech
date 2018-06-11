@@ -57,153 +57,12 @@ class Enemy {
 
   Enemy(GameModel model, List<int> shipLengths) {
     this.model = model;
-    this.strategy = strategy;
+    this.strategy = 0;
     _rng = new Random();
     this.shipLengths = shipLengths;
   }
-  /*
-  void placeShips(PlayingField fields) {// Es kann passieren, dass ein Schiff nicht platziert werden kann, weil es keine Möglichkeiten mehr gibt
-    /*
-    //This will generate a List of 12 int from 0 to 99
-    var rng = new Random();
-    var l = new List.generate(12, (_) => rng.nextInt(100));
-    */
-    int length;
-    int r;      //row
-    int c;      //column
-    int direction;
-    int dummy;
-    int halfROWCOUNT;
-    bool checkUp = false;
-    bool checkRight = false;
-    bool checkDown = false;
-    bool checkLeft = false;
-    bool shipCouldBePlaced = false;
-    bool shipPlaced = false;
 
-    if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
-    else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
-
-    var rand = new Random();
-
-
-    for(int x = 0; x < shipLengths.length; x++){
-      length = shipLengths[x];
-      shipPlaced = false;
-
-
-
-      while(shipPlaced == false) {
-
-        r = rand.nextInt(halfROWCOUNT);
-        c = rand.nextInt(COLCOUNT);
-
-        Field f = fields[r][c];
-
-        if (f._foggy == true) {
-          checkUp = false;
-          checkRight = false;
-          checkDown = false;
-          checkLeft = false;
-          shipCouldBePlaced = true;
-
-          while (shipCouldBePlaced == true && shipPlaced == false) {
-            direction = rand.nextInt(3);
-
-            switch (direction) {
-              case 0:
-                {
-                  if (checkUp == false) {
-                    for (int y = 0; y < length; y++) {
-                      dummy = r - y;
-                      if(dummy > 0 && fields[dummy][c]._foggy == true){
-                        shipPlaced = true;
-                      }
-                      else{shipPlaced = false;}
-                    }
-                    if(shipPlaced == true){
-                      //füge Schiff in die Liste mit Schiffen ein
-                      //Füge das Schiff in die Entity ein oder in was ähnliches
-                    }
-
-                    checkUp = true;
-                  }
-                }
-                break;
-              case 1:
-                {
-                  if (checkRight == false) {
-                    for (int y = 0; y < length; y++) {
-                      dummy = c + y;
-                      if(dummy >= COLCOUNT)dummy -= COLCOUNT;
-                      if(fields[r][dummy]._foggy == true){
-                        shipPlaced = true;
-                      }
-                      else{shipPlaced = false;}
-                    }
-                    if(shipPlaced == true){
-                      //füge Schiff in die Liste mit Schiffen ein
-                      //Füge das Schiff in die Entity ein oder in was ähnliches
-                    }
-
-                    checkRight = true;
-                  }
-                }
-                break;
-              case 2:
-                {
-                  if (checkDown == false) {
-                    for (int y = 0; y < length; y++) {
-                      if(fields[r + y][c]._foggy == true){
-                        shipPlaced = true;
-                      }
-                      else{shipPlaced = false;}
-                    }
-                    if(shipPlaced == true){
-                      //füge Schiff in die Liste mit Schiffen ein
-                      //Füge das Schiff in die Entity ein oder in was ähnliches
-                    }
-
-                    checkDown = true;
-                  }
-                }
-                break;
-              case 3:
-                {
-                  if (checkLeft == false) {
-                    for (int y = 0; y < length; y++) {
-                      dummy = c - y;
-                      if(dummy < 0)dummy += COLCOUNT;
-                      if(fields[r][dummy]._foggy == true){
-                        shipPlaced = true;
-                      }
-                      else{shipPlaced = false;}
-                    }
-                    if(shipPlaced == true){
-                      //füge Schiff in die Liste mit Schiffen ein
-                      //Füge das Schiff in die Entity ein oder in was ähnliches
-                    }
-                    checkLeft = true;
-                  }
-                }
-                break;
-            }
-
-            if(checkUp == false || checkRight == false ||
-                checkDown == false || checkLeft == false){
-              shipCouldBePlaced = true;
-            }
-            else{
-              shipCouldBePlaced = false;
-            }
-          }
-        }
-      }
-    }
-  }
-  */
-
-  void placeShips(PlayingField pf) {
+  void placeShips(PlayingField pf) {  // It's possible, that a ship can't be placed, because there's no more space left on the playing field
     for (int i = 0; i < pf.enemyShipLengths.length; i++) {
       while(pf.enemyShipCount() < pf.enemyShipLengths.length) {
         Field f = pf.randomField(0, pf.rowCount ~/ 2);
@@ -213,8 +72,17 @@ class Enemy {
   }
 
   void makeMove() {
-    mediocreMove();
-    // implement strategy
+    switch (_strategy) {
+      case 0:
+        randomMove();
+        break;
+      case 1:
+        mediocreMove();
+        break;
+      case 2:
+        cleverMove();
+        break;
+    }
   }
 
   void randomMove() {
@@ -457,10 +325,7 @@ class PlayingField {
 
   operator [](int index) => _fields[index];
 
-  //List<List<Field>> get fields => _fields;
-  //set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
-  //set ships(List<Ship> ships) => _ships = ships;
   List<int> get playerShipLengths => _playerShipLengths;
   List<int> get enemyShipLengths => _enemyShipLengths;
   int get rowCount => _rowCount;
@@ -571,13 +436,7 @@ class PlayingField {
   }
 
   bool gameOver() {
-    int friendly = 0;
-    int enemy = 0;
-    for (int i = 0; i < ships.length; i++) {
-      if (ships[i].friendly) friendly++;
-      else enemy++;
-    }
-    return friendly <= 0 || enemy <= 0;
+    return enemyShipCount() <= 0 || playerShipCount() <= 0;
   }
 
   int enemyShipCount() {
@@ -788,8 +647,7 @@ class Rock extends Entity {
   }
 }
 
-// The type of powerup is determined randomly on activation
-class PowerUp extends Entity {
+class PowerUp extends Entity { // The type of powerup is determined randomly on activation
   Field _field;
 
   Field get field => _field;
