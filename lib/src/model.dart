@@ -210,7 +210,7 @@ class Enemy {
       field = pf.randomField(pf.rowCount ~/ 2, pf.rowCount);
     }
     while (field.hit);
-    model.fireAt(field.row, field.col)
+    model.fireAt(field.row, field.col);
   }
 
   void mediocreMove() { // for a lack of a better name
