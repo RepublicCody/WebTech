@@ -19,7 +19,6 @@ class GameModel {
     _enemy = new Enemy(this, [4, 3, 3, 2, 2]);
     levelMap(); // TODO: try/catch
     print(levels);
-    //enemy = new Enemy(); later
   }
 
   void generatePlayingField(int level) {
@@ -487,30 +486,35 @@ class PlayingField {
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
-    var row;
-    var col;
-    var border = rowCount ~/ 2;
-    print(border);
-    var rng = new Random();
+
     for (int i = 0; i < level["playerRocks"]; i++) {
-      col = rng.nextInt(colCount);
-      row = border + rng.nextInt(rowCount - border);
-      if (fields[row][col].entity == null) {
-        new Rock(this, row, col).place();
+      Field f = randomField(0, rowCount ~/ 2);
+      if (f.entity == null) {
+        f.entity = new Rock(this, f.row, f.col);
+        print("new Rock at ${f.row} - ${f.col}");
       } else {
         i--;
       }
     }
-    for (int i = 0; i < level["enemyRocks"]; i++) {
-      col = rng.nextInt(colCount);
-      row = rng.nextInt(border);
-      if (fields[row][col].entity == null) {
-        new Rock(this, row, col).place();
-        print("${row}, ${col}");
+
+    for (int i = 0; i < level["playerRocks"]; i++) {
+      Field f = randomField(rowCount ~/ 2, rowCount);
+      if (f.entity == null) {
+        f.entity = new Rock(this, f.row, f.col);
+        print("new Rock at ${f.row} - ${f.col}");
       } else {
         i--;
       }
     }
+  }
+
+  Field randomField(int minRow, int maxRow) {
+    Random rng = new Random();
+    int row;
+    int col;
+    col = rng.nextInt(colCount);
+    row = minRow + rng.nextInt(maxRow - minRow);
+    return fields[row][col];
   }
 
   bool shipBuildingComplete() {
@@ -754,7 +758,7 @@ class Rock extends Entity {
 
   Field get field => _field;
 
-  Rock(PlayingField field, int row, int col) : super(field) {
+  Rock(PlayingField field, int row, int col) : super(field) { // maybe construct via field and not via row/col
     _field = field.fields[row][col];
   }
 
