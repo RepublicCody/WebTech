@@ -12,15 +12,15 @@ class GameView {
   List<List<HtmlElement>> fields;
 
   void generateField(PlayingField playingField) {
-    List<List<Field>> tiles = playingField.fields;
-    int text = tiles[0].length - 1;
+    //List<List<Field>> tiles = playingField.fields;
+    int text = playingField.colCount - 1;
     String table = "<tbody><tr><th colspan='$text' id='text'></th> <th id='back' class='back'></th></tr>";
-    for (int row = 0; row < tiles.length; row++) {
-      table += "<tr>";        //Ich wäre dafür tr noch die class enemy und player zu geben, zumindest kann ich mir gut vorstellen, dass man damit später beim Schiffe platzieren leichtes Spiel hat
-      for (int col = 0; col < tiles[row].length; col++) {
-        var terrain = tiles[row][col].entity;
+    for (int row = 0; row < playingField.rowCount; row++) {
+      table += "<tr>";
+      for (int col = 0; col < playingField[row].length; col++) {
+        var terrain = playingField[row][col].entity;
         var position = "field_${row}_${col}";
-        table += "<td id ='${position}' class='${cssClass(tiles[row][col])}'></td>";
+        table += "<td id ='${position}' class='${cssClass(playingField[row][col])}'></td>";
       }
       table += "</tr>";
     }
@@ -28,14 +28,13 @@ class GameView {
     gameTable.innerHtml = table;
     fieldSize();
 
-    fields = new List<List<HtmlElement>>(tiles.length);
-    for (int row = 0; row < tiles.length; row++) {
+    fields = new List<List<HtmlElement>>(playingField.rowCount);
+    for (int row = 0; row < playingField.rowCount; row++) {
       fields[row] = new List<HtmlElement>();
-      for(int col = 0; col < tiles[row].length; col++) {
+      for(int col = 0; col < playingField[row].length; col++) {
         fields[row].add(querySelector("#field_${row}_${col}"));
       }
     }
-    //TODO: width und height des gameTables anpassen
   }
 
 
@@ -70,17 +69,19 @@ class GameView {
 
   void generateMessage() {
     String messageString;
-    messageString = '<div id="messageText">Bitte platziere deine Schiffe im unteren Spielfeld</div>';
+    messageString = '<div id="messageBox">';
+    messageString += '<div id="messageText">Bitte platziere deine Schiffe im unteren Spielfeld</div>';
     messageString += '<input type="button" id="messageNext" class="button" value="Weiter"></input>';
+    messageString += '</div>';
 
     message.innerHtml = messageString;
   }
 
   void update(PlayingField playingField) {
-    List<List<Field>> tiles = playingField.fields;
+    //List<List<Field>> tiles = playingField.fields;
     for (int row = 0; row < fields.length; row++) {
       for (int col = 0; col < fields[row].length; col++) {
-        this.fields[row][col].attributes["class"] = cssClass(tiles[row][col]);
+        this.fields[row][col].attributes["class"] = cssClass(playingField[row][col]);
       }
     }
   }
@@ -129,7 +130,8 @@ class GameView {
     }
     return "";
   }
-void fieldSize(){
+
+  void fieldSize(){
     String w;
     String h;
     int x;
@@ -154,7 +156,7 @@ void fieldSize(){
     querySelector("#back").style.width = w;
     querySelector("#back").style.height = h;
 
-}
+  }
 
   void showGame() {
     querySelector("#menu").style.display="none";

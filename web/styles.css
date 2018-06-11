@@ -224,17 +224,25 @@
         transform: translate(-50%, -50%);
     }
 
+    /* Message */
+
     #message {
-        position: fixed; /* Sit on top of the page content */
-        display: none; /* Hidden by default */
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: 2;
+    }
+
+    #messageBox {
+        position: fixed;
         top: 35%;
         left: 7.5%;
         right: 0;
         bottom: 0;
         border: 3px solid #FFFFFF;
         border-radius: 20px;
-        background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
-        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 2;
         height: 30%;
         width: 85%;
     }
@@ -243,7 +251,7 @@
         position: absolute;
         text-align: center;
         padding: 1%;
-        top: 25%;
+        top: 30%;
         left: 50%;
         width: 70vw;
         font-size: 140%;
@@ -254,14 +262,18 @@
     }
 
     #messageNext {
+        position: fixed;
         border: 3px solid #080808;
         font-size: 140%;
-        width: 50%;
-        margin: 40% 25% 5% 25%;
+        width: 50vw;
+        top: 57.5%;
+        left: 50%;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
     .win {
@@ -313,6 +325,38 @@
     background-size: 100%;
     background-image: url("images/back.png");
     /*background-image: url("images/objects/back.png");*/
+}
+
+/* rocks */
+
+.rock_1 {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_1.png");
+}
+
+.rock_1_hit {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_1.png");
+}
+
+.rock_2 {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_2.png");
+}
+
+.rock_2_hit {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_2.png");
+}
+
+.rock_3 {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_3.png");
+}
+
+.rock_3_hit {
+    background-size: 100%;
+    background-image: url("images/rocks/insel_3.png");
 }
 
 /*water_fog*/
