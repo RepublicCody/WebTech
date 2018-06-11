@@ -210,9 +210,9 @@ class Enemy {
     else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
     while(shot == false) {
       //int min = model.playingField.fields.length ~/ 2;
-      int row = halfROWCOUNT + _rng.nextInt(ROWCOUNT - halfROWCOUNT);
+      int row = halfROWCOUNT + rng.nextInt(ROWCOUNT - halfROWCOUNT);
       int col = _rng.nextInt(COLCOUNT);
-      if(model.playingField.fields[row][col]._hit == false) {
+      if(model.playingField.fields[row][col].hit == false) {
         model.fireAt(row, col);
         shot = true;
       }
@@ -233,11 +233,11 @@ class Enemy {
 
     if(hitMedicoreMove == false){
 
-      if(model.playingField.fields[row + halfROWCOUNT][col]._hit == false) {
+      if(model.playingField.fields[row + halfROWCOUNT][col].hit == false) {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField.fields[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField.fields[row + halfROWCOUNT][col].entity is Ship) {
           hitMedicoreMove = true;
           firstHitMedicoreMove[0] = (row+halfROWCOUNT);
           firstHitMedicoreMove[1] = col;
@@ -262,12 +262,12 @@ class Enemy {
           } else{
             col += 2;
           }print("row: $row und col $col");
-        } while(model.playingField.fields[row + halfROWCOUNT][col]._hit == true);
+        } while(model.playingField.fields[row + halfROWCOUNT][col].hit == true);
 
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField.fields[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField.fields[row + halfROWCOUNT][col].entity is Ship) {
           hitMedicoreMove = true;
           firstHitMedicoreMove[0] = (row+halfROWCOUNT);
           firstHitMedicoreMove[1] = col;
@@ -304,8 +304,8 @@ class Enemy {
 
         switch (lastDirectionMedicoreMove) {
           case "top":
-            if (model.playingField.fields[top][y]._hit == false &&
-                model.playingField.fields[top][y]._foggy == false) {
+            if (model.playingField.fields[top][y].hit == false &&
+                model.playingField.fields[top][y].foggy == false) {
               t = 0;
               shot = true;
             } else {
@@ -314,7 +314,7 @@ class Enemy {
             }
             break;
           case "right":
-            if (model.playingField.fields[x][right]._hit == false) {
+            if (model.playingField.fields[x][right].hit == false) {
               t = 1;
               shot = true;
             } else {
@@ -323,8 +323,8 @@ class Enemy {
             }
             break;
           case "down":
-            if (model.playingField.fields[down][y]._hit == false &&
-                model.playingField.fields[down][y]._foggy == false) {
+            if (model.playingField.fields[down][y].hit == false &&
+                model.playingField.fields[down][y].foggy == false) {
               t = 2;
               shot = true;
             } else {
@@ -333,7 +333,7 @@ class Enemy {
             }
             break;
           case "left":
-            if (model.playingField.fields[x][left]._hit == false) {
+            if (model.playingField.fields[x][left].hit == false) {
               t = 3;
               shot = true;
             } else {
@@ -366,7 +366,7 @@ class Enemy {
               lastHitMedicoreMove[0] = -1;
               lastDirectionMedicoreMove = "no direction";
             }
-            if(model.playingField.fields[top][y]._entity is Ship) {
+            if(model.playingField.fields[top][y].entity is Ship) {
               lastHitMedicoreMove[0] = top;
               lastHitMedicoreMove[1] = y;
             }
@@ -381,7 +381,7 @@ class Enemy {
               lastHitMedicoreMove[0] = -1;
               lastDirectionMedicoreMove = "no direction";
             }
-            if(model.playingField.fields[x][right]._entity is Ship) {
+            if(model.playingField.fields[x][right].entity is Ship) {
               lastHitMedicoreMove[0] = x;
               lastHitMedicoreMove[1] = right;
             }
@@ -397,7 +397,7 @@ class Enemy {
               lastHitMedicoreMove[0] = -1;
               lastDirectionMedicoreMove = "no direction";
             }
-            if(model.playingField.fields[down][y]._entity is Ship) {
+            if(model.playingField.fields[down][y].entity is Ship) {
               lastHitMedicoreMove[0] = down;
               lastHitMedicoreMove[1] = y;
             }
@@ -413,7 +413,7 @@ class Enemy {
               lastHitMedicoreMove[0] = -1;
               lastDirectionMedicoreMove = "no direction";
             }
-            if(model.playingField.fields[x][left]._entity is Ship) {
+            if(model.playingField.fields[x][left].entity is Ship) {
               lastHitMedicoreMove[0] = x;
               lastHitMedicoreMove[1] = left;
             }
@@ -445,6 +445,7 @@ class PlayingField {
   ShipBuilder _builder;
   int _rowCount;
   int _colCount;
+
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
@@ -542,9 +543,9 @@ class PlayingField {
   // just for testing purposes
   String toString() {
     var fieldString = "";
-    for (int i = 0; i < fields.length; i++) {
+    for (int i = 0; i < rowCount; i++) {
       fieldString += "\n";
-      for (int j = 0; j < fields[i].length; j++) {
+      for (int j = 0; j < colCount; j++) {
         fieldString += fields[i][j].toString();
         fieldString += " ";
       }
@@ -668,7 +669,7 @@ class Ship extends Entity {
     bool last = false;
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].col == 0) first = true;
-      if (fields[i].col == playingField.fields[fields[i].row].length - 1)
+      if (fields[i].col == playingField.colCount - 1)
         last = true;
     }
     return first && last;
@@ -683,7 +684,7 @@ class Ship extends Entity {
         bool hasNext = false;
         for (int j = 0; j < fields.length; j++) {
           if (fields[j].col == fields[i].col + 1) hasNext = true;
-          if (fields[i].col == playingField.fields.first.length - 1 &&
+          if (fields[i].col == playingField.colCount - 1 &&
               fields[j].col == 0) hasNext = true;
         }
         if (!hasNext) {
@@ -802,9 +803,9 @@ class ShipBuilder extends Entity{
     //add fields to the list
     fields.add(field.fields[row][col]);                                                   // center
     fields.add(row - 1 >= 0 ? field.fields[row - 1][col] : null);                         // north
-    fields.add(field.fields[row][col + 1 < field.fields[row].length ? col + 1 : 0]);      // east
-    fields.add(row + 1 < field.fields.length ? field.fields[row + 1][col] : null);        // south
-    fields.add(field.fields[row][col - 1 >= 0 ? col - 1 : field.fields[row].length - 1]); // west
+    fields.add(field.fields[row][col + 1 < field.colCount ? col + 1 : 0]);      // east
+    fields.add(row + 1 < field.rowCount ? field.fields[row + 1][col] : null);        // south
+    fields.add(field.fields[row][col - 1 >= 0 ? col - 1 : field.colCount - 1]); // west
 
     // check if direction is blocked or foggy, remove if it is
     for (int dir = 1; dir < fields.length; dir++) {
@@ -819,9 +820,9 @@ class ShipBuilder extends Entity{
           colDiff = 1;
         }
         for (int r = row, c = col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
-          if (c < 0) c = field.fields[row].length - 1;
-          if (c >= field.fields[row].length) c = 0;
-          if (r >= field.fields.length || r < 0) {
+          if (c < 0) c = field.colCount - 1;
+          if (c >= field.colCount) c = 0;
+          if (r >= field.rowCount || r < 0) {
             unOccupied = false;
           } else if (field.fields[r][c].entity != null || field.fields[r][c].foggy) {
             unOccupied = false;
@@ -865,9 +866,9 @@ class ShipBuilder extends Entity{
       for (int r = centerRow, c = centerCol, i = 0; i < shipLength;
       r -= rowDiff, c -= colDiff, i++) {
         if (c < 0) {
-          c = playingField.fields[centerRow].length - 1;
+          c = playingField.colCount - 1;
         }
-        if (c >= playingField.fields[centerRow].length) {
+        if (c >= playingField.colCount) {
           c = 0;
         }
         shipFields.add(playingField.fields[r][c]);
