@@ -622,8 +622,10 @@ class Enemy {
     int col = postionHitRandomHardcoreMove[1];
 
     if(strategieRandomHardcoreMove == false){
-      col = _rng.nextInt(COLCOUNT);
-      row = _rng.nextInt(halfROWCOUNT);
+     // col = _rng.nextInt(COLCOUNT);
+     // row = _rng.nextInt(halfROWCOUNT);
+      col = 0;
+      row = 0;
       strategieRandomHardcoreMove = true;
     }
 
@@ -690,7 +692,7 @@ class Enemy {
         if(lastHitRandomHardcoreMove[0] == -1){
           x = firstHitRandomHardcoreMove[0];
           y = firstHitRandomHardcoreMove[1];
-
+print("x: $x y: $y");
         }else{
           x = lastHitRandomHardcoreMove[0];
           y = lastHitRandomHardcoreMove[1];
@@ -723,19 +725,25 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
-                for(int p = 0; p < allHitsRowRandomHardcoreMove.length; p++) {
+                int l = allHitsRowRandomHardcoreMove.length;
+                for(int p = 0; p < l; p++) {
                   for (int z = 0; z <= 5; z++) {
-                    if (allHitsRowRandomHardcoreMove[p] == top - z + halfROWCOUNT) {
-                      //allHitsRowRandomHardcoreMove.removeAt(p);
-                      //allHitsColRandomHardcoreMove.removeAt(p);
-                      print(allHitsRowRandomHardcoreMove.length.toString() + "test");
+                    if(allHitsRowRandomHardcoreMove.length > p) {
+                      if (allHitsRowRandomHardcoreMove[p] == (top + z) && allHitsColRandomHardcoreMove[p] == y) {
+                        allHitsRowRandomHardcoreMove.removeAt(p);
+                        allHitsColRandomHardcoreMove.removeAt(p);
+                        z = 0;
+                        l--;
+                      }
                     }
                   }
-                }print(allHitsRowRandomHardcoreMove.length);
+                }
                 if(allHitsRowRandomHardcoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
+                  lastHitRandomHardcoreMove[0] = -1;
+                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
 
@@ -754,16 +762,25 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
-                for(int z = 0; z < allHitsRowRandomHardcoreMove.length; z++){
-                  if(allHitsColRandomHardcoreMove[z] == right-z){
-                    allHitsRowRandomHardcoreMove.removeAt(z);
-                    allHitsColRandomHardcoreMove.removeAt(z);
+                int l = allHitsRowRandomHardcoreMove.length;
+                for(int p = 0; p < l; p++) {
+                  for (int z = 0; z <= 5; z++) {
+                    if(allHitsRowRandomHardcoreMove.length > p) {
+                      if(allHitsColRandomHardcoreMove[p] == right-z && allHitsRowRandomHardcoreMove[p] == x){
+                        allHitsRowRandomHardcoreMove.removeAt(p);
+                        allHitsColRandomHardcoreMove.removeAt(p);
+                        z = 0;
+                        l--;
+                      }
+                    }
                   }
                 }
                 if(allHitsRowRandomHardcoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
+                  lastHitRandomHardcoreMove[0] = -1;
+                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
               if(model.playingField.fields[x][right]._entity is Ship) {
@@ -795,19 +812,25 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
-                for(int p = 0; p < allHitsRowRandomHardcoreMove.length; p++) {
+                int l = allHitsRowRandomHardcoreMove.length;
+                for(int p = 0; p < l; p++) {
                   for (int z = 0; z <= 5; z++) {
-                    if (allHitsRowRandomHardcoreMove[p] == down + z + halfROWCOUNT) {
-                      //allHitsRowRandomHardcoreMove.removeAt(p);
-                      //allHitsColRandomHardcoreMove.removeAt(p);
-                      print(allHitsRowRandomHardcoreMove.length.toString() + "test");
+                    if(allHitsRowRandomHardcoreMove.length > p) {
+                      if (allHitsRowRandomHardcoreMove[p] == (down - z) && allHitsColRandomHardcoreMove[p] == y) {
+                        allHitsRowRandomHardcoreMove.removeAt(p);
+                        allHitsColRandomHardcoreMove.removeAt(p);
+                        z = 0;
+                        l--;
+                      }
                     }
                   }
-                }print(allHitsRowRandomHardcoreMove.length);
+                }
                 if(allHitsRowRandomHardcoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
+                  lastHitRandomHardcoreMove[0] = -1;
+                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
 
@@ -826,16 +849,25 @@ class Enemy {
                 hitRandomHardcoreMove = false;
                 lastHitRandomHardcoreMove[0] = -1;
                 lastDirectionRandomHardcoreMove = "no direction";
-                for(int z = 0; z < allHitsRowRandomHardcoreMove.length; z++){
-                  if(allHitsColRandomHardcoreMove[z] == left+z){
-                    allHitsRowRandomHardcoreMove.removeAt(z);
-                    allHitsColRandomHardcoreMove.removeAt(z);
+                int l = allHitsRowRandomHardcoreMove.length;
+                for(int p = 0; p < l; p++) {
+                  for (int z = 0; z <= 5; z++) {
+                    if(allHitsRowRandomHardcoreMove.length > p) {
+                      if(allHitsColRandomHardcoreMove[p] == left+z && allHitsRowRandomHardcoreMove[p] == x){
+                        allHitsRowRandomHardcoreMove.removeAt(p);
+                        allHitsColRandomHardcoreMove.removeAt(p);
+                        z = 0;
+                        l--;
+                      }
+                    }
                   }
                 }
                 if(allHitsRowRandomHardcoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowRandomHardcoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[0] = allHitsRowRandomHardcoreMove[0];
+                  firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
+                  lastHitRandomHardcoreMove[0] = -1;
+                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
               if(model.playingField.fields[x][left]._entity is Ship) {
