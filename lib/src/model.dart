@@ -1,4 +1,6 @@
+
 part of warships;
+
 // TODO: move this to enemy class
 bool hitMedicoreMove = false;
 List<int> firstHitMedicoreMove = [0, 0];
@@ -15,7 +17,7 @@ class GameModel {
   set playingField(PlayingField field) => _playingField = field;
 
   GameModel() {
-    playingField = new PlayingField(ROWCOUNT, COLCOUNT);
+    playingField = new PlayingField(16, 8);
     _enemy = new Enemy(this, [4, 3, 3, 2, 2]);
     levelMap(); // TODO: try/catch
     print(levels);
@@ -23,9 +25,10 @@ class GameModel {
 
   void generatePlayingField(int level) {
     playingField.newGame();
-    enemy.placeShips(playingField);
     playingField.generateField(levels["level_${level}"]);
+    enemy.placeShips(playingField);
   }
+
 
   Future<Map> levelMap() async {
     var url = "levels.json";  //TODO: move this to a better location
@@ -33,6 +36,7 @@ class GameModel {
     levels = JSON.decode(response.responseText);
     return JSON.decode(response.responseText);
   }
+
 
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
@@ -57,7 +61,7 @@ class Enemy {
     _rng = new Random();
     this.shipLengths = shipLengths;
   }
-
+  /*
   void placeShips(PlayingField fields) {// Es kann passieren, dass ein Schiff nicht platziert werden kann, weil es keine Möglichkeiten mehr gibt
     /*
     //This will generate a List of 12 int from 0 to 99
@@ -197,6 +201,16 @@ class Enemy {
       }
     }
   }
+  */
+
+  void placeShips(PlayingField pf) {
+    for (int i = 0; i < pf.enemyShipLengths.length; i++) {
+      while(pf.enemyShipCount() < pf.enemyShipLengths.length) {
+        Field f = pf.randomField(0, pf.rowCount ~/ 2);
+        pf.buildShip(f.row, f.col, false);
+      }
+    }
+  }
 
   void makeMove() {
     mediocreMove();
@@ -312,8 +326,8 @@ class Enemy {
               t = 1;
               shot = true;
             } else {
-                lastDirectionMedicoreMove = "left";
-                lastHitMedicoreMove[0] = -1;
+              lastDirectionMedicoreMove = "left";
+              lastHitMedicoreMove[0] = -1;
             }
             break;
           case "down":
@@ -322,8 +336,8 @@ class Enemy {
               t = 2;
               shot = true;
             } else {
-                lastDirectionMedicoreMove = "right";
-                lastHitMedicoreMove[0] = -1;
+              lastDirectionMedicoreMove = "right";
+              lastHitMedicoreMove[0] = -1;
             }
             break;
           case "left":
@@ -331,16 +345,16 @@ class Enemy {
               t = 3;
               shot = true;
             } else {
-                print("scheiße");
+              print("scheiße");
             }
             break;
           case "no direction":
 
-              lastDirectionMedicoreMove = "top";
+            lastDirectionMedicoreMove = "top";
             break;
           default:
-          lastHitMedicoreMove[0] = -1;
-          t = 4;
+            lastHitMedicoreMove[0] = -1;
+            t = 4;
             break;
         }
       }
@@ -350,75 +364,75 @@ class Enemy {
 
 
 
-        switch (t) {
-          case 0:
-            sLength = model.playingField.ships.length;
-            model.fireAt(top, y);
+      switch (t) {
+        case 0:
+          sLength = model.playingField.ships.length;
+          model.fireAt(top, y);
 
-            if(sLength > model.playingField.ships.length) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-            }
-            if(model.playingField[top][y].entity is Ship) {
-              lastHitMedicoreMove[0] = top;
-              lastHitMedicoreMove[1] = y;
-            }
+          if(sLength > model.playingField.ships.length) {
+            hitMedicoreMove = false;
+            lastHitMedicoreMove[0] = -1;
+            lastDirectionMedicoreMove = "no direction";
+          }
+          if(model.playingField[top][y].entity is Ship) {
+            lastHitMedicoreMove[0] = top;
+            lastHitMedicoreMove[1] = y;
+          }
 
-            break;
-          case 1:
-            sLength = model.playingField.ships.length;
-            model.fireAt(x, right);
+          break;
+        case 1:
+          sLength = model.playingField.ships.length;
+          model.fireAt(x, right);
 
-            if(sLength > model.playingField.ships.length) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-            }
-            if(model.playingField[x][right].entity is Ship) {
-              lastHitMedicoreMove[0] = x;
-              lastHitMedicoreMove[1] = right;
-            }
-
-
-            break;
-          case 2:
-            sLength = model.playingField.ships.length;
-            model.fireAt(down, y);
-
-            if(sLength > model.playingField.ships.length) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-            }
-            if(model.playingField[down][y].entity is Ship) {
-              lastHitMedicoreMove[0] = down;
-              lastHitMedicoreMove[1] = y;
-            }
+          if(sLength > model.playingField.ships.length) {
+            hitMedicoreMove = false;
+            lastHitMedicoreMove[0] = -1;
+            lastDirectionMedicoreMove = "no direction";
+          }
+          if(model.playingField[x][right].entity is Ship) {
+            lastHitMedicoreMove[0] = x;
+            lastHitMedicoreMove[1] = right;
+          }
 
 
-            break;
-          case 3:
-            sLength = model.playingField.ships.length;
-            model.fireAt(x, left);
+          break;
+        case 2:
+          sLength = model.playingField.ships.length;
+          model.fireAt(down, y);
 
-            if(sLength > model.playingField.ships.length) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-            }
-            if(model.playingField[x][left].entity is Ship) {
-              lastHitMedicoreMove[0] = x;
-              lastHitMedicoreMove[1] = left;
-            }
-
-            break;
+          if(sLength > model.playingField.ships.length) {
+            hitMedicoreMove = false;
+            lastHitMedicoreMove[0] = -1;
+            lastDirectionMedicoreMove = "no direction";
+          }
+          if(model.playingField[down][y].entity is Ship) {
+            lastHitMedicoreMove[0] = down;
+            lastHitMedicoreMove[1] = y;
+          }
 
 
-          case 4:
-            print("Hier passiert nichts");
-            break;
-        }
+          break;
+        case 3:
+          sLength = model.playingField.ships.length;
+          model.fireAt(x, left);
+
+          if(sLength > model.playingField.ships.length) {
+            hitMedicoreMove = false;
+            lastHitMedicoreMove[0] = -1;
+            lastDirectionMedicoreMove = "no direction";
+          }
+          if(model.playingField[x][left].entity is Ship) {
+            lastHitMedicoreMove[0] = x;
+            lastHitMedicoreMove[1] = left;
+          }
+
+          break;
+
+
+        case 4:
+          print("Hier passiert nichts");
+          break;
+      }
 
 
     }
@@ -436,7 +450,8 @@ class PlayingField {
   List<Ship> _ships;
   List<int> _playerShipLengths;
   List<int> _enemyShipLengths;
-  ShipBuilder _builder;
+  ShipBuilder _playerBuilder;
+  ShipBuilder _enemyBuilder;
   int _rowCount;
   int _colCount;
 
@@ -482,7 +497,7 @@ class PlayingField {
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
-
+    print(enemyShipLengths);
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
@@ -493,7 +508,7 @@ class PlayingField {
       }
     }
 
-    for (int i = 0; i < level["playerRocks"]; i++) {
+    for (int i = 0; i < level["enemyRocks"]; i++) {
       Field f = randomField(rowCount ~/ 2, rowCount);
       if (f.entity == null) {
         f.entity = new Rock(this, f.row, f.col);
@@ -522,11 +537,18 @@ class PlayingField {
     ship.place();
   }
 
-  bool buildShip(int row, int col) {
+  bool buildShip(int row, int col, bool friendly) {
     Field f = _fields[row][col];
-    if (f.entity == null && !f.foggy) {
-      if (_builder != null)_builder.remove();
-      _builder = new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()]);
+    if (f.entity == null/* && !f.foggy*/) {
+      if (friendly) {
+        if (_playerBuilder != null) _playerBuilder.remove();
+        _playerBuilder = new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()], true);
+      } else {
+        if (_enemyBuilder != null) _enemyBuilder.remove();
+        _enemyBuilder = new ShipBuilder(this, row, col, enemyShipLengths[enemyShipCount()], false);
+        Field dir = _enemyBuilder.randomDirection();
+        return buildShip(dir.row, dir.col, false);
+      }
     } else if(f.entity is ShipBuilder) {
       ShipBuilder sb = f.entity;
       sb.buildShip(f);
@@ -626,7 +648,7 @@ class Entity {
     this.playingField = playingField;
     //this.fields = fields;
   }
-  /*
+/*
   void place() {
     for (int i = 0; i < fields.length; i++) {
       fields[i].entity = this;
@@ -785,13 +807,13 @@ class PowerUp extends Entity {
     int type = rng.nextInt(3);
     switch(type) {
       case 0:
-        //activate pu0
+      //activate pu0
         break;
       case 1:
-        //activate pu1
+      //activate pu1
         break;
       case 2:
-        //activate pu2
+      //activate pu2
         break;
     }
     //remove powerup
@@ -804,20 +826,22 @@ class ShipBuilder extends Entity{
   int centerRow;
   int centerCol;
   List<Field> _fields;
+  bool _friendly;
 
   List<Field> get fields => _fields;
   set fields(List<Field> fields) => _fields = fields;
 
-  ShipBuilder(PlayingField field, int row, int col, int shipLength) : super(field) {
+  ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) : super(field) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
     this.centerRow = row;
     this.centerCol = col;
+    this._friendly = friendly;
     //add fields to the list
-    fields.add(field[row][col]);                                                   // center
-    fields.add(row - 1 >= 0 ? field[row - 1][col] : null);                         // north
+    fields.add(field[row][col]);                                         // center
+    fields.add(row - 1 >= 0 ? field[row - 1][col] : null);               // north
     fields.add(field[row][col + 1 < field.colCount ? col + 1 : 0]);      // east
-    fields.add(row + 1 < field.rowCount ? field[row + 1][col] : null);        // south
+    fields.add(row + 1 < field.rowCount ? field[row + 1][col] : null);   // south
     fields.add(field[row][col - 1 >= 0 ? col - 1 : field.colCount - 1]); // west
 
     // check if direction is blocked or foggy, remove if it is
@@ -837,7 +861,9 @@ class ShipBuilder extends Entity{
           if (c >= field.colCount) c = 0;
           if (r >= field.rowCount || r < 0) {
             unOccupied = false;
-          } else if (field[r][c].entity != null || field[r][c].foggy) {
+          } else if (field[r][c].entity != null
+              || (_friendly && field[r][c].foggy)
+              || (!_friendly && !field[r][c].foggy)) {
             unOccupied = false;
           }
         }
@@ -845,7 +871,7 @@ class ShipBuilder extends Entity{
           fields[dir] = null;
         }
       }
-      }
+    }
     place();
   }
 
@@ -887,8 +913,17 @@ class ShipBuilder extends Entity{
         shipFields.add(playingField[r][c]);
       }
       remove();
-      playingField.addShip(new Ship(playingField, shipFields, true));
+      playingField.addShip(new Ship(playingField, shipFields, _friendly));
     }
+  }
+
+  Field randomDirection() {
+    var fieldsClean = fields;
+    fieldsClean.removeWhere((f) => f == null);
+    if (fieldsClean.length == null) return null;  // in case no direction is possible
+    var rng = new Random();
+    var index = rng.nextInt(fieldsClean.length);
+    return fieldsClean[index];
   }
 
 }

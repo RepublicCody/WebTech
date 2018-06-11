@@ -104,7 +104,7 @@ class GameController{
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
-      bool completed = model.playingField.buildShip(rc[0], rc[1]);
+      bool completed = model.playingField.buildShip(rc[0], rc[1], true);
       if (completed && model.playingField.playerShipCount() < model.playingField.playerShipLengths.length) {
         view.setInGameText(
             "${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}er Schiff setzen");
