@@ -622,10 +622,9 @@ class Enemy {
     int col = postionHitRandomHardcoreMove[1];
 
     if(strategieRandomHardcoreMove == false){
-     // col = _rng.nextInt(COLCOUNT);
-     // row = _rng.nextInt(halfROWCOUNT);
-      col = 0;
-      row = 0;
+      col = _rng.nextInt(COLCOUNT);
+      row = _rng.nextInt(ROWCOUNT - halfROWCOUNT);
+      print("randRow: $row randCol: $col");
       strategieRandomHardcoreMove = true;
     }
 
@@ -692,7 +691,6 @@ class Enemy {
         if(lastHitRandomHardcoreMove[0] == -1){
           x = firstHitRandomHardcoreMove[0];
           y = firstHitRandomHardcoreMove[1];
-print("x: $x y: $y");
         }else{
           x = lastHitRandomHardcoreMove[0];
           y = lastHitRandomHardcoreMove[1];
@@ -743,7 +741,6 @@ print("x: $x y: $y");
                   firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
                   lastHitRandomHardcoreMove[0] = -1;
-                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
 
@@ -780,7 +777,6 @@ print("x: $x y: $y");
                   firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
                   lastHitRandomHardcoreMove[0] = -1;
-                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
               if(model.playingField.fields[x][right]._entity is Ship) {
@@ -830,7 +826,6 @@ print("x: $x y: $y");
                   firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
                   lastHitRandomHardcoreMove[0] = -1;
-                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
 
@@ -867,7 +862,6 @@ print("x: $x y: $y");
                   firstHitRandomHardcoreMove[1] = allHitsColRandomHardcoreMove[0];
                   hitRandomHardcoreMove = true;
                   lastHitRandomHardcoreMove[0] = -1;
-                  print("row: " + allHitsRowRandomHardcoreMove[0].toString() + " col: " + allHitsColRandomHardcoreMove[0].toString());
                 }
               }
               if(model.playingField.fields[x][left]._entity is Ship) {
@@ -893,7 +887,6 @@ print("x: $x y: $y");
       }
 
     }
-    print("Länge von: " + allHitsColRandomHardcoreMove.length.toString());
     postionHitRandomHardcoreMove[0] = row;
     postionHitRandomHardcoreMove[1] = col;
   }
