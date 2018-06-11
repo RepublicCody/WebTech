@@ -210,7 +210,7 @@ class Enemy {
     else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
     while(shot == false) {
       //int min = model.playingField.fields.length ~/ 2;
-      int row = halfROWCOUNT + rng.nextInt(ROWCOUNT - halfROWCOUNT);
+      int row = halfROWCOUNT + _rng.nextInt(ROWCOUNT - halfROWCOUNT);
       int col = _rng.nextInt(COLCOUNT);
       if(model.playingField.fields[row][col].hit == false) {
         model.fireAt(row, col);
@@ -445,6 +445,8 @@ class PlayingField {
   ShipBuilder _builder;
   int _rowCount;
   int _colCount;
+
+  operator [](int index) => _fields[index];
 
   List<List<Field>> get fields => _fields;
   set fields(List<List<Field>> fields) => _fields = fields;
