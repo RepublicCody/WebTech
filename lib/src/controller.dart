@@ -98,7 +98,6 @@ class GameController{
     querySelector("#back").onClick.listen((Event e) {
       goBack();
     });
-    //querySelectorAll('td').onClick.listen(fireAt);
   }
 
   void buildShip(MouseEvent e) {

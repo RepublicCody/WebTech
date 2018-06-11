@@ -1,5 +1,5 @@
 part of warships;
-
+// TODO: move this to enemy class
 bool hitMedicoreMove = false;
 List<int> firstHitMedicoreMove = [0, 0];
 List<int> lastHitMedicoreMove = [-1, 0];
@@ -204,19 +204,13 @@ class Enemy {
   }
 
   void randomMove() {
-    bool shot = false;
-    int halfROWCOUNT;
-    if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
-    else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
-    while(shot == false) {
-      //int min = model.playingField.fields.length ~/ 2;
-      int row = halfROWCOUNT + _rng.nextInt(ROWCOUNT - halfROWCOUNT);
-      int col = _rng.nextInt(COLCOUNT);
-      if(model.playingField[row][col].hit == false) {
-        model.fireAt(row, col);
-        shot = true;
-      }
+    PlayingField pf = model.playingField;
+    Field field;
+    do {
+      field = pf.randomField(pf.rowCount ~/ 2, pf.rowCount);
     }
+    while (field.hit);
+    model.fireAt(field.row, field.col)
   }
 
   void mediocreMove() { // for a lack of a better name
@@ -449,9 +443,9 @@ class PlayingField {
   operator [](int index) => _fields[index];
 
   //List<List<Field>> get fields => _fields;
-  set fields(List<List<Field>> fields) => _fields = fields;
+  //set fields(List<List<Field>> fields) => _fields = fields;
   List<Ship> get ships => _ships;
-  set ships(List<Ship> ships) => _ships = ships;
+  //set ships(List<Ship> ships) => _ships = ships;
   List<int> get playerShipLengths => _playerShipLengths;
   List<int> get enemyShipLengths => _enemyShipLengths;
   int get rowCount => _rowCount;
@@ -460,14 +454,13 @@ class PlayingField {
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
     this._colCount = cols;
-    fields = initializeFields(rows, cols);
-    ships = new List<Ship>();
-    //terrain = new List<Entity>();
+    _fields = initializeFields(rows, cols);
+    _ships = new List<Ship>();
   }
 
   void newGame() {
-    fields = initializeFields(rowCount, colCount);
-    ships = new List<Ship>();
+    _fields = initializeFields(rowCount, colCount);
+    _ships = new List<Ship>();
   }
 
   List<List<Field>> initializeFields(int rows, int cols) {
@@ -608,6 +601,9 @@ class Field{
     if (entity is Ship) {
       Ship s = entity;
       s.fireAt(this);
+    } else if (entity is PowerUp) {
+      PowerUp p = entity;
+      p.activate();
     } else {
       hit = true;
     }
@@ -770,6 +766,7 @@ class Rock extends Entity {
   }
 }
 
+// The type of powerup is determined randomly on activation
 class PowerUp extends Entity {
   Field _field;
 
@@ -784,7 +781,21 @@ class PowerUp extends Entity {
   }
 
   void activate() {
-    // TODO: activate the powerups effect
+    Random rng = new Random();
+    int type = rng.nextInt(3);
+    switch(type) {
+      case 0:
+        //activate pu0
+        break;
+      case 1:
+        //activate pu1
+        break;
+      case 2:
+        //activate pu2
+        break;
+    }
+    //remove powerup
+    field.entity = null;
   }
 }
 
