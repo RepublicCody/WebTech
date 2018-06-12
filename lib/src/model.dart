@@ -144,7 +144,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitMedicoreMove = true;
           firstHitMedicoreMove[0] = (row+halfROWCOUNT);
           firstHitMedicoreMove[1] = col;
@@ -177,7 +177,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitMedicoreMove = true;
           firstHitMedicoreMove[0] = (row+halfROWCOUNT);
           firstHitMedicoreMove[1] = col;
@@ -221,7 +221,7 @@ class Enemy {
                 lastHitMedicoreMove[0] = -1;
                 lastDirectionMedicoreMove = "no direction";
               }
-              if(model.playingField[top][y]._entity is Ship) {
+              if(model.playingField[top][y]._entity != null) {
                 lastHitMedicoreMove[0] = top;
                 lastHitMedicoreMove[1] = y;
               }
@@ -241,7 +241,7 @@ class Enemy {
                 lastHitMedicoreMove[0] = -1;
                 lastDirectionMedicoreMove = "no direction";
               }
-              if(model.playingField[x][right]._entity is Ship) {
+              if(model.playingField[x][right]._entity != null) {
                 lastHitMedicoreMove[0] = x;
                 lastHitMedicoreMove[1] = right;
               }
@@ -262,7 +262,7 @@ class Enemy {
                 lastHitMedicoreMove[0] = -1;
                 lastDirectionMedicoreMove = "no direction";
               }
-              if(model.playingField[down][y]._entity is Ship) {
+              if(model.playingField[down][y]._entity != null) {
                 lastHitMedicoreMove[0] = down;
                 lastHitMedicoreMove[1] = y;
               }
@@ -282,13 +282,18 @@ class Enemy {
                 lastHitMedicoreMove[0] = -1;
                 lastDirectionMedicoreMove = "no direction";
               }
-              if(model.playingField[x][left]._entity is Ship) {
+              if(model.playingField[x][left]._entity != null) {
                 lastHitMedicoreMove[0] = x;
                 lastHitMedicoreMove[1] = left;
               }
               shot = true;
             } else {
-              print("scheiße");
+              hitMedicoreMove = false;
+              lastHitMedicoreMove[0] = -1;
+              lastDirectionMedicoreMove = "no direction";
+              shot = true;
+              print("muss wohl ein Felsen sein");
+              mediocreMove();
             }
             break;
           case "no direction":
@@ -332,7 +337,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitHardcoreMove = true;
           firstHitHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitHardcoreMove[1] = col;
@@ -365,7 +370,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitHardcoreMove = true;
           firstHitHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitHardcoreMove[1] = col;
@@ -409,7 +414,7 @@ class Enemy {
                 lastHitHardcoreMove[0] = -1;
                 lastDirectionHardcoreMove = "no direction";
               }
-              if(model.playingField[top][y]._entity is Ship) {
+              if(model.playingField[top][y]._entity != null) {
                 lastHitHardcoreMove[0] = top;
                 lastHitHardcoreMove[1] = y;
               }
@@ -429,7 +434,7 @@ class Enemy {
                 lastHitHardcoreMove[0] = -1;
                 lastDirectionHardcoreMove = "no direction";
               }
-              if(model.playingField[x][right]._entity is Ship) {
+              if(model.playingField[x][right]._entity != null) {
                 lastHitHardcoreMove[0] = x;
                 lastHitHardcoreMove[1] = right;
               }
@@ -450,7 +455,7 @@ class Enemy {
                 lastHitHardcoreMove[0] = -1;
                 lastDirectionHardcoreMove = "no direction";
               }
-              if(model.playingField[down][y]._entity is Ship) {
+              if(model.playingField[down][y]._entity != null) {
                 lastHitHardcoreMove[0] = down;
                 lastHitHardcoreMove[1] = y;
               }
@@ -470,13 +475,18 @@ class Enemy {
                 lastHitHardcoreMove[0] = -1;
                 lastDirectionHardcoreMove = "no direction";
               }
-              if(model.playingField[x][left]._entity is Ship) {
+              if(model.playingField[x][left]._entity != null) {
                 lastHitHardcoreMove[0] = x;
                 lastHitHardcoreMove[1] = left;
               }
               shot = true;
             } else {
-              print("scheiße");
+              hitHardcoreMove = false;
+              lastHitHardcoreMove[0] = -1;
+              lastDirectionHardcoreMove = "no direction";
+              shot = true;
+              print("muss wohl ein Felsen sein");
+              hardcoreMove();
             }
             break;
           case "no direction":
@@ -521,7 +531,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitRandomHardcoreMove = true;
           firstHitRandomHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitRandomHardcoreMove[1] = col;
@@ -556,7 +566,7 @@ class Enemy {
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
 
-        if(model.playingField[row + halfROWCOUNT][col]._entity is Ship) {
+        if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
           hitRandomHardcoreMove = true;
           firstHitRandomHardcoreMove[0] = (row+halfROWCOUNT);
           firstHitRandomHardcoreMove[1] = col;
@@ -596,7 +606,7 @@ class Enemy {
               sLength = model.playingField.ships.length;
               model.fireAt(top, y);
 
-              if(model.playingField[top][y]._entity is Ship) {
+              if(model.playingField[top][y]._entity != null) {
                 lastHitRandomHardcoreMove[0] = top;
                 lastHitRandomHardcoreMove[1] = y;
                 allHitsRowRandomHardcoreMove.add(top);
@@ -663,7 +673,7 @@ class Enemy {
                   lastHitRandomHardcoreMove[0] = -1;
                 }
               }
-              if(model.playingField[x][right]._entity is Ship) {
+              if(model.playingField[x][right]._entity != null) {
                 lastHitRandomHardcoreMove[0] = x;
                 lastHitRandomHardcoreMove[1] = right;
                 allHitsRowRandomHardcoreMove.add(x);
@@ -681,7 +691,7 @@ class Enemy {
               sLength = model.playingField.ships.length;
               model.fireAt(down, y);
 
-              if(model.playingField[down][y]._entity is Ship) {
+              if(model.playingField[down][y]._entity != null) {
                 lastHitRandomHardcoreMove[0] = down;
                 lastHitRandomHardcoreMove[1] = y;
                 allHitsRowRandomHardcoreMove.add(down);
@@ -748,7 +758,7 @@ class Enemy {
                   lastHitRandomHardcoreMove[0] = -1;
                 }
               }
-              if(model.playingField[x][left]._entity is Ship) {
+              if(model.playingField[x][left]._entity != null) {
                 lastHitRandomHardcoreMove[0] = x;
                 lastHitRandomHardcoreMove[1] = left;
                 allHitsRowRandomHardcoreMove.add(x);
@@ -756,7 +766,12 @@ class Enemy {
               }
               shot = true;
             } else {
-              print("scheiße");
+              hitHardcoreMove = false;
+              lastHitHardcoreMove[0] = -1;
+              lastDirectionHardcoreMove = "no direction";
+              shot = true;
+              print("muss wohl ein Felsen sein");
+              randomHardcoreMove();
             }
             break;
           case "no direction":

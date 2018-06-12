@@ -45,7 +45,7 @@ class GameController{
       var rc = rowCol(element.id);
       if(rc[0] < halfROWCOUNT){
         model.fireAt(rc[0], rc[1]);
-        view.setInGameText("${model.playingField.enemyShipCount()} feindliche Schiffe übrig");
+        view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
         if (model.playingField.gameOver()) {
           view.update(model.playingField);
           gameoverScreen();
