@@ -11,7 +11,7 @@ class GameModel {
 
   GameModel() {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
-    _enemy = new Enemy(this, [4, 3, 3, 2, 2]);
+    _enemy = new Enemy(this);
     levelMap(); // TODO: try/catch
     print(levels);
   }
@@ -72,11 +72,10 @@ class Enemy {
   set model(GameModel value) => _model = value;
   GameModel get model => _model;
 
-  Enemy(GameModel model, List<int> shipLengths) {
+  Enemy(GameModel model) {
     this.model = model;
     this.strategy = 0;
     _rng = new Random();
-    this.shipLengths = shipLengths;
   }
 
   void placeShips(PlayingField pf) {  // It's possible, that a ship can't be placed, because there's no more space left on the playing field

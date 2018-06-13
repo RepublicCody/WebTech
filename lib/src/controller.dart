@@ -12,12 +12,15 @@ class GameController{
   int lastPlayed = 0;
 
   GameController() {
+    JsObject jsObject = new JsObject.fromBrowserObject(querySelector("#menu"));
+    int scrollHeight = jsObject['scrollHeight'];
+    jsObject['scrollTop'] = '${scrollHeight}';
     view.generateMenu();
     view.generateField(model.playingField);
     view.generateGameoverscreen();
     view.generateMessage();
     view.showMenu();
-    querySelector("#level_1").onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("#gameTable"));});
+    //querySelector("#level_1").onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("#gameTable"));});
     //view.showGame();
     //iew.showGameover();
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
