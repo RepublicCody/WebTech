@@ -820,6 +820,9 @@ class PlayingField {
   int _colCount;
   int _enemyRows;
 
+  int _radiusPuRounds;
+  //int _visionPuRounds;
+
   operator [](int index) => _fields[index];
 
   List<Ship> get ships => _ships;
@@ -829,12 +832,17 @@ class PlayingField {
   int get colCount => _colCount;
   int get enemyRows => _enemyRows;
 
+  set radiusPuRounds(int rounds) => _radiusPuRounds = rounds;
+  //set visionPuRounds(int rounds) => _radiusPuRounds = rounds;
+
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
     this._colCount = cols;
     _enemyRows = rowCount ~/ 2;
     _fields = initializeFields(rows, cols);
     _ships = new List<Ship>();
+    _radiusPuRounds = 0;
+    //_visionPuRounds = 0;
   }
 
   void newGame() {
@@ -855,16 +863,31 @@ class PlayingField {
   }
 
   void fireAt(int row, int col) {
+    if (row <= _enemyRows) {
+      _fields[row][col].fireAt();
+      if (_radiusPuRounds > 0) {
+        print("RPU is being exectued");
+        _radiusPuRounds--;
+        _fields[row + 1 < enemyRows ? row + 1 : row][col].fireAt();
+        _fields[row - 1 > 0 ? row - 1 : row][col].fireAt();
+        _fields[row][col + 1 < colCount ? col + 1 : 0].fireAt();
+        _fields[row][col - 1 > 0 ? col - 1 : colCount - 1].fireAt();
+      }
+      /*
+      if (_visionPuRounds > 0) {
+        _visionPuRounds--;
+      }
+      */
+    } else {
+      _fields[row][col].fireAt();
+
+    }
     print("fire at $row, $col");
-    _fields[row][col].fireAt();
   }
 
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
-    //TODO: remove this
-    new PowerUp(this, 0,0).place();
-    print(enemyShipLengths);
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
@@ -873,11 +896,20 @@ class PlayingField {
         i--;
       }
     }
-
     for (int i = 0; i < level["enemyRocks"]; i++) {
-      Field f = randomField(rowCount ~/ 2, rowCount);
+      Field f = randomField(enemyRows, rowCount);
       if (f.entity == null) {
         f.entity = new Rock(this, f.row, f.col);
+      } else {
+        i--;
+      }
+    }
+    for (int i = 0; i < level["enemyPowUps"]; i++) {
+      Field f = randomField(0, enemyRows);
+      if (f.entity == null) {
+        f.entity = new PowerUp(this, f.row, f.col);
+        print(f.row);
+        print(f.col);
       } else {
         i--;
       }
@@ -1186,24 +1218,20 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
 
   void activate() {
     Random rng = new Random();
-    int type = rng.nextInt(3);
-    /*
+    int type = rng.nextInt(2);
     switch(type) {
-      case 0: // attacks hit a larger area
+      case 0:
         radiusPu();
         break;
-      case 1: // show one enemy ship
+      case 1:
         visionPu();
         break;
-      case 2: //
+      case 2: // not reachable
       //activate pu2
         break;
     }
-    */
-    //remove powerup
-    //visionPu();
     print("PowerUp aktiviert");
-    //field.entity = null;
+    field.entity = null;
   }
 
   // makes one enemy Ship visible
@@ -1220,8 +1248,9 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     field.entity = null;
   }
 
-  void minePu() {
-
+  // increases radius of attacks
+  void radiusPu() {
+    playingField.radiusPuRounds = 2;
   }
 
 }
