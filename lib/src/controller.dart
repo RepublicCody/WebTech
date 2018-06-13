@@ -39,15 +39,10 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-
-    int halfROWCOUNT;
-    if(ROWCOUNT.isEven)halfROWCOUNT = (ROWCOUNT / 2).toInt();
-    else{halfROWCOUNT = ((ROWCOUNT+1) / 2).toInt();}
-
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
-      if(rc[0] < halfROWCOUNT){
+      if(rc[0] < model.playingField.enemyRows){
         model.fireAt(rc[0], rc[1]);
         view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
         if (model.playingField.gameOver()) {

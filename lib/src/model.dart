@@ -818,6 +818,7 @@ class PlayingField {
   ShipBuilder _enemyBuilder;
   int _rowCount;
   int _colCount;
+  int _enemyRows;
 
   operator [](int index) => _fields[index];
 
@@ -826,10 +827,12 @@ class PlayingField {
   List<int> get enemyShipLengths => _enemyShipLengths;
   int get rowCount => _rowCount;
   int get colCount => _colCount;
+  int get enemyRows => _enemyRows;
 
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
     this._colCount = cols;
+    _enemyRows = rowCount ~/ 2;
     _fields = initializeFields(rows, cols);
     _ships = new List<Ship>();
   }
@@ -844,7 +847,7 @@ class PlayingField {
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-        innerList[col] = row >= rows ~/ 2 ? new Field(row, col, false): new Field(row, col, true); // ??
+        innerList[col] = row >= _enemyRows ? new Field(row, col, false): new Field(row, col, true); // ??
       }
       outerList[row] = innerList;
     }
@@ -1198,7 +1201,7 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     }
     */
     //remove powerup
-    visionPu();
+    //visionPu();
     print("PowerUp aktiviert");
     //field.entity = null;
   }
@@ -1214,9 +1217,10 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
         break;
       }
     }
+    field.entity = null;
   }
 
-  void radiusPu() {
+  void minePu() {
 
   }
 
