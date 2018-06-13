@@ -139,7 +139,7 @@ class GameController{
       if (model.playingField.shipBuildingComplete()) {
         this.tableListener.cancel();
         this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
-        view.setInGameText("${model.playingField.enemyShipCount()} Gegnerische Schiffe übrig");
+        view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
       }
     }
   }
