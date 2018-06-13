@@ -17,6 +17,7 @@ class GameController{
     view.generateGameoverscreen();
     view.generateMessage();
     view.showMenu();
+    querySelector("#level_1").onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("#gameTable"));});
     //view.showGame();
     //iew.showGameover();
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
