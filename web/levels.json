@@ -1,11 +1,11 @@
 [
   {
     "level_1": {
-      "playerShips": [2, 2, 3, 3, 4],
+      "playerShips": [2, 2, 3, 3, 4, 4, 5, 5],
       "enemyShips": [2, 2, 3, 3, 4],
       "playerRocks": 3,
       "enemyRocks": 3,
-      "playerPowUps": 1,
+      "playerPowUps": 0,
       "enemyPowUps": 1,
       "enemyStrategy": 0
     }

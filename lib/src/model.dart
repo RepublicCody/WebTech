@@ -88,10 +88,10 @@ class Enemy {
   }
 
   void makeMove() {
-    mediocreMove();
+    //mediocreMove();
     //hardcoreMove();
     //randomHardcoreMove();
-/*
+
     switch (_strategy) {
       case 0:
         print("starte KI randomMove");
@@ -109,7 +109,7 @@ class Enemy {
         print("starte KI randomHardcoreMove");
         randomHardcoreMove();
         break;
-    }*/
+    }
   }
 
   void randomMove() {

@@ -62,7 +62,8 @@
         color: #FFFFFF;
         padding: 0.5%;
         margin: 0%;
-        border: 3px solid #080808;
+        border-bottom: 3px solid #080808;
+        border-top: 3px solid #080808;
         font-size: 200%;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #0b7499 0%, #626262 100%);
@@ -97,11 +98,21 @@
 
     /* Game Table */
     #gameTable {
+
         border-collapse: collapse;
         background-repeat: no-repeat;
         width: 100vw;
         height: 100vh;
         background-color: #626262;
+
+    }
+
+    tbody {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
     #text {
@@ -293,38 +304,32 @@
 
 .shipbuilder_north {
     background-size: 100%;
-    background-image: url("images/up.png");
-    /*background-image: url("images/objects/start_top.png");*/
+    background-image: url("images/objects/start_top.png");
 }
 
 .shipbuilder_east {
     background-size: 100%;
-    background-image: url("images/right.png");
-    /*background-image: url("images/objects/start_right.png");*/
+    background-image: url("images/objects/start_right.png");
 }
 
 .shipbuilder_south {
     background-size: 100%;
-    background-image: url("images/down.png");
-    /*background-image: url("images/objects/start_down.png");*/
+    background-image: url("images/objects/start_down.png");
 }
 
 .shipbuilder_west {
     background-size: 100%;
-    background-image: url("images/left.png");
-    /*background-image: url("images/objects/start_left.png");*/
+    background-image: url("images/objects/start_left.png");
 }
 
 .shipbuilder_center {
     background-size: 100%;
-    background-image: url("images/ship_start.png");
-    /*background-image: url("images/objects/ship_start.png");*/
+    background-image: url("images/objects/ship_start.png");
 }
 
 .back {
     background-size: 100%;
-    background-image: url("images/back.png");
-    /*background-image: url("images/objects/back.png");*/
+    background-image: url("images/objects/back.png");
 }
 
 /* rocks */
@@ -363,37 +368,32 @@
 
 .water {
     background-size: 100%;
-    background-image: url("images/wasser.png");
-    /*background-image: url("images/water_fog/water.png");*/
+    background-image: url("images/water_fog/wasser.png");
 }
 
 .water_miss {
     background-size: 100%;
-    background-image: url("images/wasser_getroffen_weiss.png");
-    /*background-image: url("images/water_fog/water_getroffen_weiß.png");*/
+    background-image: url("images/water_fog/wasser_getroffen_weiß.png");
 }
 
 .water_hit {
     background-size: 100%;
-    /*background-image: url("images/water_fog/water_getroffen_rot.png");*/
+    background-image: url("images/water_fog/wasser_getroffen_rot.png");
 }
 
 .fog {
     background-size: 100%;
-    background-image: url("images/nebel.png");
-    /*background-image: url("images/water_fog/nebel.png");*/
+    background-image: url("images/water_fog/nebel.png");
 }
 
 .fog_miss {
     background-size: 100%;
-    background-image: url("images/nebel_getroffen_weiss.png");
-    /*background-image: url("images/water_fog/nebel_getroffen_weiß.png");*/
+    background-image: url("images/water_fog/nebel_getroffen_weiß.png");
 }
 
 .fog_hit {
     background-size: 100%;
-    background-image: url("images/nebel_getroffen_rot.png");
-    /*background-image: url("images/water_fog/nebel_getroffen_rot.png");*/
+    background-image: url("images/water_fog/nebel_getroffen_rot.png");
 }
 
 /* powerups */
@@ -705,72 +705,4 @@
 .ship_5_vertical_front_hit {
     background-size: 100%;
     background-image: url("images/ships/five/boot5_vertikal_vorne_getroffen.png");
-}
-
-
-
-
-
-
-
-
-
-.ship_vertical_front {
-    background-size: 100%;
-    background-image: url("images/schiff_vorne_vertikal.png");
-}
-
-.ship_vertical {
-    background-size: 100%;
-    background-image: url("images/schiff_mitte_vertikal.png");
-}
-
-.ship_vertical_back {
-    background-size: 100%;
-    background-image: url("images/schiff_hinten_vertikal.png");
-}
-
-.ship_horizontal_front {
-    background-size: 100%;
-    background-image: url("images/schiff_vorne_horizontal.png");
-}
-
-.ship_horizontal {
-    background-size: 100%;
-    background-image: url("images/schiff_mitte_horizontal.png");
-}
-
-.ship_horizontal_back {
-    background-size: 100%;
-    background-image: url("images/schiff_hinten_horizontal.png");
-}
-
-.ship_vertical_front_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_vorne_vertikal.png");
-}
-
-.ship_vertical_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_mitte_vertikal.png");
-}
-
-.ship_vertical_back_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_hinten_vertikal.png");
-}
-
-.ship_horizontal_front_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_vorne_horizontal.png");
-}
-
-.ship_horizontal_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_mitte_horizontal.png");
-}
-
-.ship_horizontal_back_hit {
-    background-size: 100%;
-    background-image: url("images/schiff_getroffen_hinten_horizontal.png");
 }

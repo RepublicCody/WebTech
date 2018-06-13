@@ -87,21 +87,76 @@ class GameView {
   }
 
   String cssClass(Field f) {
-    if (f.foggy) {
+    if (f.foggy && f.entity is !PowerUp) {
       return f.hit ? f.entity == null ? "fog_miss" : "fog_hit" : "fog";
-    }
-    if (f.entity == null) {
+    }else if (f.entity == null) {
       return f.hit ? "water_miss" : "water";
-    }
-    if (f.entity is Ship) {
+    }else if (f.entity is Ship) {
       String css = "ship";
       Ship s = f.entity;
-      css += s.vertical ? "_vertical" : "_horizontal";
-      css += s.fields.first == f ? "_front" : s.fields.last == f ? "_back" : "";
+      if(f.entity is Destroyer && s.vertical == false){//Horizontal
+        css += "_2";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.last == f ? "_front" : s.fields.first == f ? "_back" : "_middel";
+      }else if(f.entity is Destroyer && s.vertical == true){//Vertikal
+        css += "_2";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.first == f ? "_front" : s.fields.last == f ? "_back" : "_middel";
+      }else if(f.entity is Submarine && s.vertical == false){//Horizontal
+        css += "_3";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.last == f ? "_front" : s.fields.first == f ? "_back" : "_middel";
+      }else if(f.entity is Submarine && s.vertical == true){//Vertiakl
+        css += "_3";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.first == f ? "_front" : s.fields.last == f ? "_back" : "_middel";
+      }else if(f.entity is BattleShip && s.vertical == false){//Vertikal
+        css += "_4";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.last == f ? "_front" : s.fields.first == f ? "_back" : "_middel";
+        if(s.fields[1] == f){
+          css += "_1";
+        }else if(s.fields[2] == f){
+          css += "_2";
+        }
+      }else if(f.entity is BattleShip && s.vertical == true) {//Horizontal
+        css += "_4";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.first == f ? "_front" : s.fields.last == f
+            ? "_back"
+            : "_middel";
+        if (s.fields[1] == f) {
+          css += "_2";
+        } else if (s.fields[2] == f) {
+          css += "_1";
+        }
+      }else if(f.entity is Carrier && s.vertical == false){//Vertikal
+        css += "_5";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.last == f ? "_front" : s.fields.first == f ? "_back" : "_middel";
+        if(s.fields[1] == f){
+          css += "_1";
+        }else if(s.fields[2] == f){
+          css += "_2";
+        }else if(s.fields[3] == f){
+          css += "_3";
+        }
+      }else if(f.entity is Carrier && s.vertical == true){//Horizontal
+        css += "_5";
+        css += s.vertical ? "_vertical" : "_horizontal";
+        css += s.fields.first == f ? "_front" : s.fields.last == f ? "_back" : "_middel";
+        if(s.fields[1] == f){
+          css += "_3";
+        }else if(s.fields[2] == f){
+          css += "_2";
+        }else if(s.fields[3] == f){
+          css += "_1";
+        }
+      }
+
       css += f.hit ? "_hit" : "";
       return css;
-    }
-    if (f.entity is ShipBuilder) {
+    }else if (f.entity is ShipBuilder) {
       String css = "shipbuilder";
       ShipBuilder sb = f.entity;
       switch (sb.fields.indexOf(f)) {
@@ -121,12 +176,19 @@ class GameView {
           css += "_west";
       }
       return css;
-    }
-    if (f.entity is Rock) {
-      return f.hit ? "rock_hit" : "rock";
-    }
-    if (f.entity is PowerUp) {
-      return "powerup";
+    }else if (f.entity is Rock) {
+      String r = "rock";
+      if(f._row.isEven && f._col.isEven)r += "_1";
+      if(f._row.isOdd && f._col.isEven || f._row.isEven && f._col.isOdd)r += "_2";
+      if(f._row.isOdd && f._col.isOdd)r += "_3";
+      r += f.hit ? "_hit" : "";
+      return r;
+    }else if (f.entity is PowerUp) {
+      String p = "powerup";
+      p += f.foggy ? "_fog" : "_water";
+      p += f._hit ? "_hit" : "";
+      print(p);
+      return p;
     }
     return "";
   }
@@ -155,6 +217,12 @@ class GameView {
 
     querySelector("#back").style.width = w;
     querySelector("#back").style.height = h;
+
+    double d = 0.0;
+    for(int p = 0; p < COLCOUNT; p++){
+      d += calculation+3;
+    }
+    querySelector("tbody").style.width = d.toString() + "px";
 
   }
 
