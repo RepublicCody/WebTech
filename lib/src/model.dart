@@ -859,6 +859,8 @@ class PlayingField {
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
+    //TODO: remove this
+    new PowerUp(this, 0,0).place();
     print(enemyShipLengths);
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
@@ -980,6 +982,7 @@ class Field{
     } else if (entity is PowerUp) {
       PowerUp p = entity;
       p.activate();
+      hit = true;
     } else {
       hit = true;
     }
@@ -991,24 +994,13 @@ class Field{
 
 class Entity {
   PlayingField _playingField;
-  //List<Field> _fields;
 
   PlayingField get playingField => _playingField;
   set playingField(PlayingField value) => _playingField = value;
-  //List<Field> get fields => _fields;
-  //set fields(List<Field> value) => _fields = value;
 
-  Entity(PlayingField playingField /*List<Field> fields*/) {
+  Entity(PlayingField playingField) {
     this.playingField = playingField;
-    //this.fields = fields;
   }
-/*
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      fields[i].entity = this;
-    }
-  }
-  */
 }
 
 class Ship extends Entity {
@@ -1192,20 +1184,42 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
   void activate() {
     Random rng = new Random();
     int type = rng.nextInt(3);
+    /*
     switch(type) {
-      case 0:
-      //activate pu0
+      case 0: // attacks hit a larger area
+        radiusPu();
         break;
-      case 1:
-      //activate pu1
+      case 1: // show one enemy ship
+        visionPu();
         break;
-      case 2:
+      case 2: //
       //activate pu2
         break;
     }
+    */
     //remove powerup
-    field.entity = null;
+    visionPu();
+    print("PowerUp aktiviert");
+    //field.entity = null;
   }
+
+  // makes one enemy Ship visible
+  void visionPu() {
+    Ship ship;
+    for (int i = 0; i < playingField.ships.length; i++) {
+      ship = playingField.ships[i];
+      if (!ship.friendly){
+        print("enemy ship found");
+        ship.fields.forEach((Field f) => f.foggy = false);
+        break;
+      }
+    }
+  }
+
+  void radiusPu() {
+
+  }
+
 }
 
 class ShipBuilder extends Entity{
