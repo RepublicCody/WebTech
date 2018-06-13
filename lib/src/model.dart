@@ -1032,6 +1032,24 @@ class Ship extends Entity {
     }
   }
 
+  static Ship makeShip(PlayingField pf, List<Field> fields, bool friendly) {
+    switch (fields.length) {
+      case 2:
+        return new Destroyer(pf, fields, friendly);
+        break;
+      case 3:
+        return new Submarine(pf, fields, friendly);
+        break;
+      case 4:
+        return new BattleShip(pf, fields, friendly);
+        break;
+      case 5:
+        return new Carrier(pf, fields, friendly);
+        break;
+    }
+    return null;
+  }
+
   void place() {
     for (int i = 0; i < fields.length; i++) {
       fields[i].entity = this;
@@ -1126,6 +1144,22 @@ class Ship extends Entity {
     sinkShip();
     playingField.addShip(new Ship(playingField, shipFields, _friendly));
   }
+}
+
+class Carrier extends Ship {
+  Carrier(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+}
+
+class BattleShip extends Ship {
+  BattleShip(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+}
+
+class Submarine extends Ship {
+  Submarine(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+}
+
+class Destroyer extends Ship {
+  Destroyer(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
 }
 
 class Rock extends Entity {
