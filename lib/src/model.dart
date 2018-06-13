@@ -1,10 +1,9 @@
-
 part of warships;
 
 class GameModel {
   Enemy _enemy;
   PlayingField _playingField;
-  Map levels;
+  List<Map> levels;
   Enemy get enemy => _enemy;
   PlayingField get playingField => _playingField;
   set playingField(PlayingField field) => _playingField = field;
@@ -12,19 +11,20 @@ class GameModel {
   GameModel() {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
     _enemy = new Enemy(this);
-    levelMap(); // TODO: try/catch
-    print(levels);
+    _enemy = new Enemy(this);
+    levelList(); // TODO: try/catch
   }
 
   void generatePlayingField(int level) {
     playingField.newGame();
-    playingField.generateField(levels["level_${level}"]);
+    playingField.generateField(levels[level - 1]["level_$level"]);
+    enemy.strategy = levels[level - 1]["level_$level"]["enemyStrategy"];
     enemy.placeShips(playingField);
     enemy.resetAI();
   }
 
 
-  Future<Map> levelMap() async {
+  Future<List> levelList() async {
     var url = "levels.json";  //TODO: move this to a better location
     var response = await HttpRequest.request(url, method:'GET');
     levels = JSON.decode(response.responseText);
@@ -98,7 +98,7 @@ class Enemy {
         randomMove();
         break;
       case 1:
-        print("starte KI medicoreMove");
+        print("starte KI mediocreMove");
         mediocreMove();
         break;
       case 2:
@@ -186,7 +186,7 @@ class Enemy {
       }
 
 
-    }else{
+    } else {
 
       while(shot == false) {
 
@@ -310,9 +310,6 @@ class Enemy {
     postionHitMedicoreMove[0] = row;
     postionHitMedicoreMove[1] = col;
   }
-
-
-
 
   void hardcoreMove() {
     int sLength;
@@ -503,8 +500,6 @@ class Enemy {
     postionHitHardcoreMove[0] = row;
     postionHitHardcoreMove[1] = col;
   }
-
-
 
   void randomHardcoreMove() {
     int sLength;
@@ -849,7 +844,7 @@ class PlayingField {
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-        innerList[col] = row >= rows / 2 ? new Field(row, col, false): new Field(row, col, true);
+        innerList[col] = row >= rows ~/ 2 ? new Field(row, col, false): new Field(row, col, true); // ??
       }
       outerList[row] = innerList;
     }
@@ -857,6 +852,7 @@ class PlayingField {
   }
 
   void fireAt(int row, int col) {
+    print("fire at $row, $col");
     _fields[row][col].fireAt();
   }
 
@@ -868,7 +864,6 @@ class PlayingField {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
         f.entity = new Rock(this, f.row, f.col);
-        print("new Rock at ${f.row} - ${f.col}");
       } else {
         i--;
       }
@@ -878,7 +873,6 @@ class PlayingField {
       Field f = randomField(rowCount ~/ 2, rowCount);
       if (f.entity == null) {
         f.entity = new Rock(this, f.row, f.col);
-        print("new Rock at ${f.row} - ${f.col}");
       } else {
         i--;
       }
