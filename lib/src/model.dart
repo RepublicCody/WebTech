@@ -1155,6 +1155,7 @@ class Ship extends Entity {
   }
 
   // TODO: not completed
+  /*
   void move(int distance) {
     List<Field> shipFields = new List<Field>();
     if (vertical) {
@@ -1171,6 +1172,7 @@ class Ship extends Entity {
     sinkShip();
     playingField.addShip(new Ship(playingField, shipFields, _friendly));
   }
+  */
 }
 
 class Carrier extends Ship {
@@ -1347,7 +1349,8 @@ class ShipBuilder extends Entity{
         shipFields.add(playingField[r][c]);
       }
       remove();
-      playingField.addShip(new Ship(playingField, shipFields, _friendly));
+      //playingField.addShip(new Ship(playingField, shipFields, _friendly));
+      playingField.addShip(Ship.makeShip(playingField, shipFields, _friendly));
     }
   }
 
