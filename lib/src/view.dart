@@ -190,6 +190,13 @@ class GameView {
       p += f._hit ? "_hit" : "";
       print(p);
       return p;
+    }else if (f.entity is ShipMover) {
+      ShipMover m = f.entity;
+      if (m.fields.indexOf(f) == 0) {
+        return m.ship.vertical ? "shipbuilder_north" : "shipbuilder_west";
+      } else {
+        return m.ship.vertical ? "shipbuilder_south" : "shipbuilder_east";
+      }
     }
     return "";
   }

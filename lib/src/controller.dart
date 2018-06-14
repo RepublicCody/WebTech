@@ -30,7 +30,6 @@ class GameController{
     addListeners();
   }
 
-  // this possibly belongs into the view,
   List<int> rowCol(String cssId) {
     RegExp re = new RegExp("field_([0-9]+)_([0-9]+)");
     Match m = re.firstMatch(cssId);
@@ -39,6 +38,7 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
+    print("FIREAT");
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
@@ -52,13 +52,37 @@ class GameController{
           this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         } else {
             model.enemy.makeMove();
+            view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
             view.update(model.playingField);
+
+            // TODO: ENEMY MOVE SHIP HERE
+            this.tableListener.cancel();
+            this.tableListener = querySelectorAll('td').onClick.listen(moveShip);
+            view.setInGameText("Bewege ein Schiff");
+
             if (model.playingField.gameOver()) {
               view.update(model.playingField);
               gameoverScreen();
               this.tableListener.cancel();
               this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
             }
+        }
+      }
+    }
+  }
+
+  void moveShip(MouseEvent e) {
+    if (e.target is Element) {
+      HtmlElement element = e.target;
+      print(element.className);
+      var rc = rowCol(element.id);
+      if (rc[0] >= model.playingField.enemyRows) {
+        bool completed = model.playingField.moveShip(rc[0], rc[1]);
+        view.update(model.playingField);
+        if (completed) {
+          this.tableListener.cancel();
+          this.tableListener = querySelectorAll('td').onClick.listen(fireAt);
+          view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
         }
       }
     }
