@@ -55,10 +55,12 @@ class GameController{
             view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
             view.update(model.playingField);
 
-            // TODO: ENEMY MOVE SHIP HERE
-            this.tableListener.cancel();
-            this.tableListener = querySelectorAll('td').onClick.listen(moveShip);
-            view.setInGameText("Bewege ein Schiff");
+            if (model.playingField.moveShips) {
+              this.tableListener.cancel();
+              this.tableListener =
+                  querySelectorAll('td').onClick.listen(moveShip);
+              view.setInGameText("Bewege ein Schiff");
+            }
 
             if (model.playingField.gameOver()) {
               view.update(model.playingField);
@@ -101,12 +103,16 @@ class GameController{
     if (e.target is Element){
       HtmlElement element = e.target;
       RegExp re = new RegExp("level_([0-9]+)");
-      Match m = re.firstMatch(element.id);
-      // TODO: implement random level
-      print("start level ${m.group(1)}");
-      model.generatePlayingField(int.parse(m.group(1)));
+      if (re.hasMatch(element.id)) {
+        Match m = re.firstMatch(element.id);
+        model.generatePlayingField(int.parse(m.group(1)));
+        lastPlayed = int.parse(m.group(1));
+      } else {
+        int lvl = model.randomLevel();
+        model.generatePlayingField(lvl);
+        lastPlayed = lvl;
+      }
       view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
-      lastPlayed = int.parse(m.group(1));
       view.setInGameLevel("Level $lastPlayed");
       view.update(model.playingField);
       view.showMessage();

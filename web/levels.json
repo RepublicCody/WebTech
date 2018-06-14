@@ -7,7 +7,8 @@
       "enemyRocks": 3,
       "playerPowUps": 0,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   },
   {
@@ -18,7 +19,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 1
+      "enemyStrategy": 1,
+      "moveShips": true
     }
   },
   {
@@ -29,7 +31,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 2
+      "enemyStrategy": 2,
+      "moveShips": false
     }
   },
   {
@@ -40,7 +43,8 @@
       "enemyRocks": 5,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 3
+      "enemyStrategy": 3,
+      "moveShips": false
     }
   },
   {
@@ -51,7 +55,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   },
   {
@@ -62,7 +67,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   },
   {
@@ -73,7 +79,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   },
   {
@@ -84,7 +91,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   },
   {
@@ -95,7 +103,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 0,
+      "moveShips": false
     }
   }
 ]
