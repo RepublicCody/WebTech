@@ -144,6 +144,8 @@ class GameController{
   }
 
   void goBack() {
+    this.tableListener.cancel();
+    this.tableListener = querySelectorAll('td').onClick.listen(buildShip);
     view.showMenu();
   }
 
