@@ -894,7 +894,7 @@ class PlayingField {
   }
 
   void fireAt(int row, int col) {
-    if (row <= _enemyRows) {
+    if (row < _enemyRows) {
       _fields[row][col].fireAt();
       if (_radiusPuRounds > 0) {
         print("RPU is being exectued");
@@ -904,11 +904,6 @@ class PlayingField {
         _fields[row][col + 1 < colCount ? col + 1 : 0].fireAt();
         _fields[row][col - 1 > 0 ? col - 1 : colCount - 1].fireAt();
       }
-      /*
-      if (_visionPuRounds > 0) {
-        _visionPuRounds--;
-      }
-      */
     } else {
       _fields[row][col].fireAt();
 
