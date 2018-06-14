@@ -153,25 +153,33 @@ class Enemy {
 
 
       }else{
-        do {
-          if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-2) {
-            row = 0;
-            col = 0;
-          } else if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-1) {
-            row = 0;
-            col = 1;
-          } else if(col == COLCOUNT-1){
-            row++;
-            col = 1;
-
-          } else if(col == COLCOUNT-2){
-            row++;
-            col = 0;
-
-          } else{
-            col += 2;
-          }print("row: $row und col $col");
-        } while(model.playingField[row + halfROWCOUNT][col]._hit == true);
+          do {
+            if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 2) {
+              row = 0;
+              if(ROWCOUNT.isOdd) {
+                col = COLCOUNT.isEven ? 1 : 0;
+              }else{
+                col = COLCOUNT.isEven ? 0 : 1;
+              }
+            } else
+            if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 1) {
+              row = 0;
+              if(ROWCOUNT.isOdd) {
+                col = COLCOUNT.isEven ? 0 : 1;
+              }else{
+                col = COLCOUNT.isEven ? 1 : 0;
+              }
+            } else if (col == COLCOUNT - 1) {
+              row++;
+              col = COLCOUNT.isEven ? 0 : 1;
+            } else if (col == COLCOUNT - 2) {
+              row++;
+              col = COLCOUNT.isEven ? 1 : 0;
+            } else {
+              col += 2;
+            }
+            print("row: $row und col $col");
+          } while (model.playingField[row + halfROWCOUNT][col]._hit == true);
 
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
@@ -344,24 +352,32 @@ class Enemy {
 
       }else{
         do {
-          if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-2) {
+          if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 2) {
             row = 0;
-            col = 0;
-          } else if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-1) {
+            if(ROWCOUNT.isOdd) {
+              col = COLCOUNT.isEven ? 1 : 0;
+            }else{
+              col = COLCOUNT.isEven ? 0 : 1;
+            }
+          } else
+          if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 1) {
             row = 0;
-            col = 1;
-          } else if(col == COLCOUNT-1){
+            if(ROWCOUNT.isOdd) {
+              col = COLCOUNT.isEven ? 0 : 1;
+            }else{
+              col = COLCOUNT.isEven ? 1 : 0;
+            }
+          } else if (col == COLCOUNT - 1) {
             row++;
-            col = 1;
-
-          } else if(col == COLCOUNT-2){
+            col = COLCOUNT.isEven ? 0 : 1;
+          } else if (col == COLCOUNT - 2) {
             row++;
-            col = 0;
-
-          } else{
+            col = COLCOUNT.isEven ? 1 : 0;
+          } else {
             col += 2;
-          }print("row: $row und col $col");
-        } while(model.playingField[row + halfROWCOUNT][col]._hit == true);
+          }
+          print("row: $row und col $col");
+        } while (model.playingField[row + halfROWCOUNT][col]._hit == true);
 
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
@@ -538,24 +554,32 @@ class Enemy {
 
       }else{
         do {
-          if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-2) {
+          if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 2) {
             row = 0;
-            col = 0;
-          } else if(row + halfROWCOUNT == ROWCOUNT-1 && col == COLCOUNT-1) {
+            if(ROWCOUNT.isOdd) {
+              col = COLCOUNT.isEven ? 1 : 0;
+            }else{
+              col = COLCOUNT.isEven ? 0 : 1;
+            }
+          } else
+          if (row + halfROWCOUNT == ROWCOUNT - 1 && col == COLCOUNT - 1) {
             row = 0;
-            col = 1;
-          } else if(col == COLCOUNT-1){
+            if(ROWCOUNT.isOdd) {
+              col = COLCOUNT.isEven ? 0 : 1;
+            }else{
+              col = COLCOUNT.isEven ? 1 : 0;
+            }
+          } else if (col == COLCOUNT - 1) {
             row++;
-            col = 1;
-
-          } else if(col == COLCOUNT-2){
+            col = COLCOUNT.isEven ? 0 : 1;
+          } else if (col == COLCOUNT - 2) {
             row++;
-            col = 0;
-
-          } else{
+            col = COLCOUNT.isEven ? 1 : 0;
+          } else {
             col += 2;
           }
-        } while(model.playingField[row + halfROWCOUNT][col]._hit == true);
+          print("row: $row und col $col");
+        } while (model.playingField[row + halfROWCOUNT][col]._hit == true);
 
         sLength = model.playingField.ships.length;
         model.fireAt(row + halfROWCOUNT, col);
