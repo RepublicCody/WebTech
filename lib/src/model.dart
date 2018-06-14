@@ -840,6 +840,7 @@ class PlayingField {
   List<int> _enemyShipLengths;
   ShipBuilder _playerBuilder;
   ShipBuilder _enemyBuilder;
+  ShipMover _mover;
   int _rowCount;
   int _colCount;
   int _enemyRows;
@@ -866,7 +867,6 @@ class PlayingField {
     _fields = initializeFields(rows, cols);
     _ships = new List<Ship>();
     _radiusPuRounds = 0;
-    //_visionPuRounds = 0;
   }
 
   void newGame() {
@@ -978,6 +978,19 @@ class PlayingField {
     return false;
   }
 
+  bool moveShip(int row, int col) {
+    if (_fields[row][col].entity is Ship) {
+      Ship s = _fields[row][col].entity;
+      if (_mover != null)_mover.remove();
+      _mover = new ShipMover(this, s);
+    } else if (_fields[row][col].entity is ShipMover){
+      ShipMover m = _fields[row][col].entity;
+      m.moveShip(_fields[row][col]);
+      return true;
+    }
+    return false;
+  }
+
   // just for testing purposes
   String toString() {
     var fieldString = "";
@@ -1005,6 +1018,37 @@ class PlayingField {
 
   int playerShipCount() {
     return ships.length - enemyShipCount();
+  }
+
+  Field north(Field f) {
+    if (_fields[f.row][f.col] != null) {
+      if (f.row - 1 < 0) return null;
+      else return _fields[f.row - 1][f.col];
+    }
+    return null;
+  }
+  Field east(Field f) {
+    if (_fields[f.row][f.col] != null) {
+      if (f.col + 1 >= colCount) return _fields[f.row][0];
+      else return _fields[f.row][f.col + 1];
+    }
+    return null;
+  }
+  Field south(Field f) {
+    if (_fields[f.row][f.col] != null) {
+      if (f.row + 1 >= rowCount) return null;
+      else return _fields[f.row + 1][f.col];
+    }
+    return null;
+  }
+  Field west(Field f) {
+    if (_fields[f.row][f.col] != null) {
+      if (f.col - 1 < 0)
+        return _fields[f.row][colCount - 1];
+      else
+        return _fields[f.row ][f.col - 1];
+    }
+    return null;
   }
 }
 
@@ -1046,9 +1090,6 @@ class Field{
       hit = true;
     }
   }
-
-  // just for testing purposes
-  String toString() => entity == null ? "." : entity is Ship ? "S" : entity is Rock ? "R" : entity is ShipBuilder ? "B" : "P";
 }
 
 class Entity {
@@ -1178,25 +1219,22 @@ class Ship extends Entity {
     playingField.ships.remove(this);
   }
 
-  // TODO: not completed
-  /*
-  void move(int distance) {
-    List<Field> shipFields = new List<Field>();
-    if (vertical) {
-      for (int i = 0; i < fields.length; i++) {
-        shipFields.add(
-            playingField[fields[i + distance].row][fields[i].col]);
-      }
-    } else {
-      for (int i = 0; i < fields.length; i++) {
-        shipFields.add(
-            playingField[fields[i].row][fields[i + distance].col]);
-      }
+  //TODO: not tested
+  void move(int dir) {
+    List<Field> newShip = new List<Field>();
+    for (int i = 0; i < fields.length; i++) {
+        Field f = fields[i];
+        if (dir < 0) {
+          newShip.add(vertical ? playingField.north(f) : playingField.west(f));
+        } else if (dir > 0){
+          newShip.add(vertical ? playingField.south(f) : playingField.east(f));
+        }
     }
     sinkShip();
-    playingField.addShip(new Ship(playingField, shipFields, _friendly));
+    playingField.addShip(Ship.makeShip(playingField, newShip, friendly));
   }
-  */
+
+
 }
 
 class Carrier extends Ship {
@@ -1387,4 +1425,51 @@ class ShipBuilder extends Entity{
     return fieldsClean[index];
   }
 
+}
+
+class ShipMover extends Entity {
+  Ship _ship;
+  List<Field> _fields;
+  List<Field> get fields => _fields;
+  Ship get ship => _ship;
+
+
+  ShipMover(PlayingField pf, Ship ship) : super(pf) {
+    _ship = ship;
+    _fields = new List<Field>();
+    if (!ship.isDamaged()) {
+      if (!ship.vertical) {
+        _fields.add(pf.west(ship.fields.first));
+        _fields.add(pf.east(ship.fields.last));
+      } else {
+        _fields.add(pf.north(ship.fields.first));
+       // _fields.add(null);
+        _fields.add(pf.south(ship.fields.last));
+      }
+
+      //place
+      for (int i = 0; i < _fields.length; i++) {
+        if (fields[i].entity == null) {
+          _fields[i].entity = this;
+        }
+      }
+    }
+  }
+
+  void moveShip(Field direction) {
+    remove();
+    if (_fields.indexOf(direction) == 0) {
+      _ship.move(-1);
+    } else {
+      _ship.move(1);
+    }
+  }
+
+  void remove() {
+    for (int i = 0; i < _fields.length; i++) {
+      if (_fields[i].entity == this) {
+        _fields[i].entity = null;
+      }
+    }
+  }
 }
