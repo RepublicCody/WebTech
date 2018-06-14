@@ -29,18 +29,18 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 2
+      "enemyStrategy": 1
     }
   },
   {
     "level_4": {
-      "playerShips": [2, 3, 4, 5, 6],
-      "enemyShips": [2, 3, 4, 5, 6],
+      "playerShips": [2, 3, 4, 5, 5],
+      "enemyShips": [2, 3, 4, 5, 5],
       "playerRocks": 5,
       "enemyRocks": 5,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 3
+      "enemyStrategy": 2
     }
   },
   {
@@ -51,7 +51,7 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 2
     }
   },
   {
@@ -59,43 +59,43 @@
       "playerShips": [3, 3, 3, 3],
       "enemyShips": [3, 3, 3, 3],
       "playerRocks": 6,
-      "enemyRocks": 3,
+      "enemyRocks": 7,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 2
     }
   },
   {
     "level_7": {
       "playerShips": [2, 2],
       "enemyShips": [2, 2],
-      "playerRocks": 7,
-      "enemyRocks": 3,
+      "playerRocks": 3,
+      "enemyRocks": 4,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 3
     }
   },
   {
     "level_8": {
       "playerShips": [2, 2],
-      "enemyShips": [2, 2],
-      "playerRocks": 7,
+      "enemyShips": [2, 2, 4, 5],
+      "playerRocks": 2,
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 3
     }
   },
   {
     "level_9": {
       "playerShips": [2, 2],
-      "enemyShips": [2, 2],
-      "playerRocks": 7,
-      "enemyRocks": 3,
+      "enemyShips": [2, 2, 2, 3, 4, 5],
+      "playerRocks": 2,
+      "enemyRocks": 7,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-      "enemyStrategy": 0
+      "enemyStrategy": 3
     }
   }
 ]
