@@ -789,9 +789,9 @@ class Enemy {
               }
               shot = true;
             } else {
-              hitHardcoreMove = false;
-              lastHitHardcoreMove[0] = -1;
-              lastDirectionHardcoreMove = "no direction";
+              hitRandomHardcoreMove = false;
+              lastHitRandomHardcoreMove[0] = -1;
+              lastDirectionRandomHardcoreMove = "no direction";
               shot = true;
               print("muss wohl ein Felsen sein");
               randomHardcoreMove();
