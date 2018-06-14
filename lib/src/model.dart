@@ -897,12 +897,12 @@ class PlayingField {
     if (row < _enemyRows) {
       _fields[row][col].fireAt();
       if (_radiusPuRounds > 0) {
-        print("RPU is being exectued");
         _radiusPuRounds--;
-        _fields[row + 1 < enemyRows ? row + 1 : row][col].fireAt();
-        _fields[row - 1 > 0 ? row - 1 : row][col].fireAt();
-        _fields[row][col + 1 < colCount ? col + 1 : 0].fireAt();
-        _fields[row][col - 1 > 0 ? col - 1 : colCount - 1].fireAt();
+        Field f = _fields[row][col];
+        if (north(f) != null) north(f).fireAt();
+        east(f).fireAt();
+        if (south(f).row < enemyRows)south(f).fireAt();
+        west(f).fireAt();
       }
     } else {
       _fields[row][col].fireAt();
