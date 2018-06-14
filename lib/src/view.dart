@@ -70,6 +70,7 @@ class GameView {
   void generateMessage() {
     String messageString;
     messageString = '<div id="messageBox">';
+    messageString += '<div id="messageLevel"></div>';
     messageString += '<div id="messageText">Bitte platziere deine Schiffe im unteren Spielfeld</div>';
     messageString += '<input type="button" id="messageNext" class="button" value="Weiter"></input>';
     messageString += '</div>';
@@ -260,6 +261,10 @@ class GameView {
 
   void setInGameText(String s) {
     querySelector('#text').innerHtml = s;
+  }
+
+  void setInGameLevel(String s) {
+    querySelector('#messageLevel').innerHtml = s;
   }
 
   void fullscreenWorkaround(Element element) {

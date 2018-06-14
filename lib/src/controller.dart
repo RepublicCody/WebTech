@@ -83,6 +83,7 @@ class GameController{
       model.generatePlayingField(int.parse(m.group(1)));
       view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
       lastPlayed = int.parse(m.group(1));
+      view.setInGameLevel("Level $lastPlayed");
       view.update(model.playingField);
       view.showMessage();
     }
@@ -97,15 +98,17 @@ class GameController{
         model.generatePlayingField(lastPlayed + 1);
         view.setInGameText(
             "${model.playingField.playerShipLengths[0]}er Schiff setzen");
+        view.setInGameLevel("Level " + (lastPlayed+1).toString());
         lastPlayed++;
         view.update(model.playingField);
-        view.showGame();
+        view.showMessage();
       } else if (element.id == "restartGameover") {
         model.generatePlayingField(lastPlayed);
         view.setInGameText(
             "${model.playingField.playerShipLengths[0]}er Schiff setzen");
+        view.setInGameLevel("Level $lastPlayed");
         view.update(model.playingField);
-        view.showGame();
+        view.showMessage();
       }
     }
   }
@@ -117,7 +120,7 @@ class GameController{
   //  this can be disposed of once all listeners are implemented properly
   void addListeners() {
     querySelector("#zufall").onClick.listen((Event e) {
-      view.showGame();
+      view.showMessage();
     });
 
     querySelector("#back").onClick.listen((Event e) {

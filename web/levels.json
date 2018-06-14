@@ -1,7 +1,7 @@
 [
   {
     "level_1": {
-      "playerShips": [2, 2, 3, 3, 4, 4, 5, 5],
+      "playerShips": [2, 2, 3, 3, 4],
       "enemyShips": [2, 2, 3, 3, 4],
       "playerRocks": 3,
       "enemyRocks": 3,

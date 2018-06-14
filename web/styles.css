@@ -142,7 +142,7 @@
     #gameover {
         position: fixed; /* Sit on top of the page content */
         display: none; /* Hidden by default */
-        top: 25%;
+        top: 22.5%;
         left: 7.5%;
         right: 0;
         bottom: 0;
@@ -150,7 +150,7 @@
         border-radius: 20px;
         background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
         z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-        height: 50%;
+        height: 55%;
         width: 85%;
     }
 
@@ -258,11 +258,25 @@
         width: 85%;
     }
 
+    #messageLevel {
+        position: absolute;
+        text-align: center;
+        padding: 1%;
+        top: 14%;
+        left: 50%;
+        width: 70vw;
+        font-size: 240%;
+        color: #FFFFFF;
+        text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+
     #messageText {
         position: absolute;
         text-align: center;
         padding: 1%;
-        top: 30%;
+        top: 42%;
         left: 50%;
         width: 70vw;
         font-size: 140%;
@@ -276,9 +290,10 @@
         position: fixed;
         border: 3px solid #080808;
         font-size: 140%;
-        width: 50vw;
         top: 57.5%;
         left: 50%;
+        width: 40%;
+        margin: 0;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
