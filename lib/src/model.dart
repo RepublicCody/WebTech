@@ -1418,7 +1418,8 @@ class ShipMover extends Entity {
         _fields.add(pf.west(ship.fields.first));
         _fields.add(pf.east(ship.fields.last));
       } else {
-        if (ship.fields.first.row - 1 >= pf.enemyRows)_fields.add(pf.north(ship.fields.first));
+        _fields.add(pf.north(ship.fields.first));
+       // _fields.add(null);
         _fields.add(pf.south(ship.fields.last));
       }
 
