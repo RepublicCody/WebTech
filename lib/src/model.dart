@@ -1433,7 +1433,7 @@ class ShipMover extends Entity {
 
       //place
       for (int i = 0; i < _fields.length; i++) {
-        if (fields[i].entity == null) {
+        if (fields[i].entity == null && !fields[i].hit) {
           _fields[i].entity = this;
         }
       }
