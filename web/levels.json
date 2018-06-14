@@ -31,12 +31,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 1
-=======
-      "enemyStrategy": 2,
+      "enemyStrategy": 1,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -47,12 +43,8 @@
       "enemyRocks": 5,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 2
-=======
-      "enemyStrategy": 3,
+      "enemyStrategy": 2,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -63,12 +55,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 2
-=======
-      "enemyStrategy": 0,
+      "enemyStrategy": 2,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -79,12 +67,8 @@
       "enemyRocks": 7,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 2
-=======
-      "enemyStrategy": 0,
+      "enemyStrategy": 2,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -95,12 +79,8 @@
       "enemyRocks": 4,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 3
-=======
-      "enemyStrategy": 0,
+      "enemyStrategy": 3,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -111,12 +91,8 @@
       "enemyRocks": 3,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 3
-=======
-      "enemyStrategy": 0,
+      "enemyStrategy": 3,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   },
   {
@@ -127,12 +103,8 @@
       "enemyRocks": 2,
       "playerPowUps": 1,
       "enemyPowUps": 1,
-<<<<<<< HEAD
-      "enemyStrategy": 3
-=======
-      "enemyStrategy": 0,
+      "enemyStrategy": 3,
       "moveShips": false
->>>>>>> e22cc899f3e6d5e501f2ddcf78844c7f8f73beba
     }
   }
 ]
