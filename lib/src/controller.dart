@@ -44,7 +44,7 @@ class GameController{
       var rc = rowCol(element.id);
       if(rc[0] < model.playingField.enemyRows){
         model.fireAt(rc[0], rc[1]);
-        view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
+        view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
         if (model.playingField.gameOver()) {
           view.update(model.playingField);
           gameoverScreen();
@@ -52,14 +52,14 @@ class GameController{
           this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         } else {
             model.enemy.makeMove();
-            view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
+            view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
             view.update(model.playingField);
 
             if (model.playingField.moveShips) {
               this.tableListener.cancel();
               this.tableListener =
                   querySelectorAll('td').onClick.listen(moveShip);
-              view.setInGameText("Bewege ein Schiff");
+              view.setInGameText("Move a Ship");
             }
 
             if (model.playingField.gameOver()) {
@@ -84,14 +84,14 @@ class GameController{
         if (completed) {
           this.tableListener.cancel();
           this.tableListener = querySelectorAll('td').onClick.listen(fireAt);
-          view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
+          view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
         }
       }
     }
   }
 
   void gameoverScreen(){
-    String text = model.playingField.enemyShipCount() == 0 ? "Du hast gewonnen!" : "Du hast verloren!";
+    String text = model.playingField.enemyShipCount() == 0 ? "YOU WIN!" : "YOU LOST!";
     querySelector('#gameoverText').attributes["class"] = model.playingField.enemyShipCount() == 0 ? "win" : "loose";
     querySelector('#nextGameover').style.display = model.playingField.enemyShipCount() == 0 ? "block" : "none";
     querySelector('#restartGameover').style.display = model.playingField.enemyShipCount() == 0 ? "none" : "block";
@@ -151,7 +151,7 @@ class GameController{
 
   //  this can be disposed of once all listeners are implemented properly
   void addListeners() {
-    querySelector("#zufall").onClick.listen((Event e) {
+    querySelector("#Random").onClick.listen((Event e) {
       view.showMessage();
     });
 
@@ -173,7 +173,7 @@ class GameController{
       if (model.playingField.shipBuildingComplete()) {
         this.tableListener.cancel();
         this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
-        view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
+        view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
       }
     }
   }

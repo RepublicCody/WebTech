@@ -52,7 +52,7 @@ class GameView {
     }
     menuString +=
     '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
-    menuString += '<input type="button" id="zufall" class="button" value="Zufall"></input>';
+    menuString += '<input type="button" id="zufall" class="button" value="Random"></input>';
 
     menu.innerHtml = menuString;
   }
@@ -61,9 +61,9 @@ class GameView {
     String gameoverString;
     gameoverString = '<div id="gameover_head">Game Over!</div><br>';
     gameoverString += '<div id="gameoverText"></div><br>';
-    gameoverString += '<input type="button" id="menuGameover" class="button" value="Menü"></input> <br>';
-    gameoverString += '<input type="button" id="nextGameover" class="button" value="Nächstes Spiel"></input>';
-    gameoverString += '<input type="button" id="restartGameover" class="button" value="Neuer Versuch"></input>';
+    gameoverString += '<input type="button" id="menuGameover" class="button" value="Menu"></input> <br>';
+    gameoverString += '<input type="button" id="nextGameover" class="button" value="Next Game"></input>';
+    gameoverString += '<input type="button" id="restartGameover" class="button" value="Restart"></input>';
     gameover.innerHtml = gameoverString;
   }
 
@@ -71,7 +71,7 @@ class GameView {
     String messageString;
     messageString = '<div id="messageBox">';
     messageString += '<div id="messageLevel"></div>';
-    messageString += '<div id="messageText">Bitte platziere deine Schiffe im unteren Spielfeld</div>';
+    messageString += '<div id="messageText">Place your ships in the lower field</div>';
     messageString += '<input type="button" id="messageNext" class="button" value="Weiter"></input>';
     messageString += '</div>';
 
