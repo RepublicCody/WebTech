@@ -1012,11 +1012,13 @@ class PlayingField {
   }
 
   int enemyShipCount() {
+
     int count = 0;
     for (int i = 0; i < ships.length; i++) {
-      if (!ships[i].friendly) count++;
+      if (!ships[i].friendly && !ships[i].sunk) count++;
     }
     return count;
+
   }
 
   int playerShipCount() {
@@ -1110,18 +1112,20 @@ class Ship extends Entity {
   bool destroyed;
   bool _vertical;
   bool _friendly;
+  bool _sunk;
   List<Field> fields;
 
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
   bool get friendly => _friendly;
+  bool get sunk => _sunk;
 
   Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField) {
     destroyed = false;
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
     this.fields = fields;
-
+    _sunk = false;
     if (fields.last != back()) {
       this.fields = fields.reversed.toList();
     }
@@ -1219,7 +1223,8 @@ class Ship extends Entity {
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].entity == this) fields[i].entity = null;
     }
-    playingField.ships.remove(this);
+    //playingField.ships.remove(this);
+    _sunk = true;
   }
 
   //TODO: not tested
