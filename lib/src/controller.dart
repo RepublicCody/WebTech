@@ -151,7 +151,7 @@ class GameController{
 
   //  this can be disposed of once all listeners are implemented properly
   void addListeners() {
-    querySelector("#Random").onClick.listen((Event e) {
+    querySelector("#zufall").onClick.listen((Event e) {
       view.showMessage();
     });
 
