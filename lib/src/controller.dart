@@ -38,7 +38,6 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-    print("FIREAT");
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
@@ -76,7 +75,6 @@ class GameController{
   void moveShip(MouseEvent e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
-      print(element.className);
       var rc = rowCol(element.id);
       if (rc[0] >= model.playingField.enemyRows) {
         bool completed = model.playingField.moveShip(rc[0], rc[1]);
