@@ -863,7 +863,13 @@ class PlayingField {
   }
 
   bool gameOver() {
-    return enemyShipCount() <= 0 || playerShipCount() <= 0;
+    int counterFriend = 0;
+    int counterEnemy = 0;
+    for(int i = 0; i < ships.length; i++){
+      if(ships[i].sunk == true && ships[i].friendly == true)counterFriend++;
+      if(ships[i].sunk == true && ships[i].friendly == false)counterEnemy++;
+    }
+    return counterFriend == playerShipLengths.length || counterEnemy == enemyShipLengths.length;
   }
 
   int enemyShipCount() {
