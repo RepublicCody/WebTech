@@ -45,18 +45,16 @@ class GameModel {
 
 class Enemy {
 
-  bool hitMedicoreMove = false;
-  List<int> firstHitMedicoreMove = [0, 0];
-  List<int> lastHitMedicoreMove = [-1, 0];
-  List<int> postionHitMedicoreMove = [0, 0];
-  String lastDirectionMedicoreMove = "no direction";
+  bool hitMove = false;
+  List<int> firstHitMove = [0, 0];
+  List<int> lastHitMove = [-1, 0];
+  List<int> postionHitMove = [0, 0];
+  String lastDirectionMove = "no direction";
   
-  bool strategieHardcoreMove = false;
+  bool strategieMove = false;
 
-  bool strategieMedicoreMove = false;
-
-  List<int> allHitsColMedicoreMove = [];
-  List<int> allHitsRowMedicoreMove = [];
+  List<int> allHitsColMove = [];
+  List<int> allHitsRowMove = [];
 
   int sunkShipCount = 0;
 
@@ -86,9 +84,6 @@ class Enemy {
   }
 
   void makeMove() {
-    //mediocreMove();
-    //hardcoreMove();
-    //randomHardcoreMove();
 
     switch (_strategy) {
       case 0:
@@ -101,7 +96,7 @@ class Enemy {
         hardcoreMove();
         break;
       case 3:
-        randomHardcoreMove();
+        randomMove();
         break;
     }
   }
@@ -123,291 +118,84 @@ class Enemy {
 
   void mediocreMove() { // for a lack of a better name
 
-    int row = postionHitMedicoreMove[0];
-    int col = postionHitMedicoreMove[1];
+    int row = postionHitMove[0];
+    int col = postionHitMove[1];
     List<int> list = [0, 0];
 
     list = [row, col];
-    if(hitMedicoreMove == false){
+    if(hitMove == false){
 
       template(list);
 
     } else {
       foundShip();
     }
-    postionHitMedicoreMove[0] = row;
-    postionHitMedicoreMove[1] = col;
+    postionHitMove[0] = row;
+    postionHitMove[1] = col;
   }
 
   void hardcoreMove() {
 
-    int row = postionHitMedicoreMove[0];
-    int col = postionHitMedicoreMove[1];
+    int row = postionHitMove[0];
+    int col = postionHitMove[1];
     List<int> list = [0, 0];
 
-    if(strategieHardcoreMove == false){
+    if(strategieMove == false){
       col = _rng.nextInt(2);
-      strategieHardcoreMove = true;
+      strategieMove = true;
     }
 
     list = [row, col];
-    if(hitMedicoreMove == false){
+    if(hitMove == false){
 
       template(list);
 
     } else {
       foundShip();
     }
-    postionHitMedicoreMove[0] = row;
-    postionHitMedicoreMove[1] = col;
+    postionHitMove[0] = row;
+    postionHitMove[1] = col;
   }
 
   void randomHardcoreMove() {
 
-    int row = postionHitMedicoreMove[0];
-    int col = postionHitMedicoreMove[1];
+    int row = postionHitMove[0];
+    int col = postionHitMove[1];
     List<int> list = [0, 0];
 
-    if(strategieMedicoreMove == false){
+    if(strategieMove == false){
       col = _rng.nextInt(model.playingField._colCount);
       row = _rng.nextInt(model.playingField._rowCount - model.playingField._enemyRows);
-      strategieMedicoreMove = true;
+      strategieMove = true;
     }
 
     list = [row, col];
-    if(hitMedicoreMove == false){
+    if(hitMove == false){
 
       template(list);
 
     }else{
 
       foundShip();
-/*
-      while(shot == false) {
-
-        if(lastHitMedicoreMove[0] == -1){
-          x = firstHitMedicoreMove[0];
-          y = firstHitMedicoreMove[1];
-        }else{
-          x = lastHitMedicoreMove[0];
-          y = lastHitMedicoreMove[1];
-        }
-
-        top = x - 1;
-        if(top <= halfROWCOUNT){}
-        right = y + 1;
-        if(right >= COLCOUNT)right -= COLCOUNT;
-        down = x + 1;
-        if(down >= ROWCOUNT)down -= ROWCOUNT;
-        left = y - 1;
-        if(left < 0)left += COLCOUNT;
-
-        switch (lastDirectionMedicoreMove) {
-          case "top":
-            if (model.playingField[top][y]._hit == false &&
-                model.playingField[top][y]._foggy == false) {
-              sLength = model.playingField.ships.length;
-              model.fireAt(top, y);
-
-              if(model.playingField[top][y]._entity != null) {
-                lastHitMedicoreMove[0] = top;
-                lastHitMedicoreMove[1] = y;
-                allHitsRowMedicoreMove.add(top);
-                allHitsColMedicoreMove.add(y);
-              }
-
-              if(sLength > model.playingField.ships.length) {
-                hitMedicoreMove = false;
-                lastHitMedicoreMove[0] = -1;
-                lastDirectionMedicoreMove = "no direction";
-                int l = allHitsRowMedicoreMove.length;
-                for(int p = 0; p < l; p++) {
-                  for (int z = 0; z <= 5; z++) {
-                    if(allHitsRowMedicoreMove.length > p) {
-                      if (allHitsRowMedicoreMove[p] == (top + z) && allHitsColMedicoreMove[p] == y) {
-                        allHitsRowMedicoreMove.removeAt(p);
-                        allHitsColMedicoreMove.removeAt(p);
-                        z = 0;
-                        l--;
-                      }
-                    }
-                  }
-                }
-                if(allHitsRowMedicoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                  hitMedicoreMove = true;
-                  lastHitMedicoreMove[0] = -1;
-                }
-              }
-
-              shot = true;
-            } else {
-              lastDirectionMedicoreMove = "down";
-              lastHitMedicoreMove[0] = -1;
-            }
-            break;
-          case "right":
-            if (model.playingField[x][right]._hit == false) {
-              sLength = model.playingField.ships.length;
-              model.fireAt(x, right);
-
-              if(sLength > model.playingField.ships.length) {
-                hitMedicoreMove = false;
-                lastHitMedicoreMove[0] = -1;
-                lastDirectionMedicoreMove = "no direction";
-                int l = allHitsRowMedicoreMove.length;
-                for(int p = 0; p < l; p++) {
-                  for (int z = 0; z <= 5; z++) {
-                    if(allHitsRowMedicoreMove.length > p) {
-                      if(allHitsColMedicoreMove[p] == right-z && allHitsRowMedicoreMove[p] == x){
-                        allHitsRowMedicoreMove.removeAt(p);
-                        allHitsColMedicoreMove.removeAt(p);
-                        z = 0;
-                        l--;
-                      }
-                    }
-                  }
-                }
-                if(allHitsRowMedicoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                  hitMedicoreMove = true;
-                  lastHitMedicoreMove[0] = -1;
-                }
-              }
-              if(model.playingField[x][right]._entity != null) {
-                lastHitMedicoreMove[0] = x;
-                lastHitMedicoreMove[1] = right;
-                allHitsRowMedicoreMove.add(x);
-                allHitsColMedicoreMove.add(right);
-              }
-              shot = true;
-            } else {
-              lastDirectionMedicoreMove = "left";
-              lastHitMedicoreMove[0] = -1;
-            }
-            break;
-          case "down":
-            if (model.playingField[down][y]._hit == false &&
-                model.playingField[down][y]._foggy == false) {
-              sLength = model.playingField.ships.length;
-              model.fireAt(down, y);
-
-              if(model.playingField[down][y]._entity != null) {
-                lastHitMedicoreMove[0] = down;
-                lastHitMedicoreMove[1] = y;
-                allHitsRowMedicoreMove.add(down);
-                allHitsColMedicoreMove.add(y);
-              }
-
-              if(sLength > model.playingField.ships.length) {
-                hitMedicoreMove = false;
-                lastHitMedicoreMove[0] = -1;
-                lastDirectionMedicoreMove = "no direction";
-                int l = allHitsRowMedicoreMove.length;
-                for(int p = 0; p < l; p++) {
-                  for (int z = 0; z <= 5; z++) {
-                    if(allHitsRowMedicoreMove.length > p) {
-                      if (allHitsRowMedicoreMove[p] == (down - z) && allHitsColMedicoreMove[p] == y) {
-                        allHitsRowMedicoreMove.removeAt(p);
-                        allHitsColMedicoreMove.removeAt(p);
-                        z = 0;
-                        l--;
-                      }
-                    }
-                  }
-                }
-                if(allHitsRowMedicoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                  hitMedicoreMove = true;
-                  lastHitMedicoreMove[0] = -1;
-                }
-              }
-
-              shot = true;
-            } else {
-              lastDirectionMedicoreMove = "right";
-              lastHitMedicoreMove[0] = -1;
-            }
-            break;
-          case "left":
-            if (model.playingField[x][left]._hit == false) {
-              sLength = model.playingField.ships.length;
-              model.fireAt(x, left);
-
-              if(sLength > model.playingField.ships.length) {
-                hitMedicoreMove = false;
-                lastHitMedicoreMove[0] = -1;
-                lastDirectionMedicoreMove = "no direction";
-                int l = allHitsRowMedicoreMove.length;
-                for(int p = 0; p < l; p++) {
-                  for (int z = 0; z <= 5; z++) {
-                    if(allHitsRowMedicoreMove.length > p) {
-                      if(allHitsColMedicoreMove[p] == left+z && allHitsRowMedicoreMove[p] == x){
-                        allHitsRowMedicoreMove.removeAt(p);
-                        allHitsColMedicoreMove.removeAt(p);
-                        z = 0;
-                        l--;
-                      }
-                    }
-                  }
-                }
-                if(allHitsRowMedicoreMove.length != 0){
-                  firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                  firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                  hitMedicoreMove = true;
-                  lastHitMedicoreMove[0] = -1;
-                }
-              }
-              if(model.playingField[x][left]._entity != null) {
-                lastHitMedicoreMove[0] = x;
-                lastHitMedicoreMove[1] = left;
-                allHitsRowMedicoreMove.add(x);
-                allHitsColMedicoreMove.add(left);
-              }
-              shot = true;
-            } else {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-              shot = true;
-              print("muss wohl ein Felsen sein");
-              randomHardcoreMove();
-            }
-            break;
-          case "no direction":
-
-            lastDirectionMedicoreMove = "top";
-            break;
-          default:
-            lastHitMedicoreMove[0] = -1;
-            print("Hier passiert nichts");
-            break;
-        }
-      }*/
 
     }
-    postionHitMedicoreMove[0] = row;
-    postionHitMedicoreMove[1] = col;
+    postionHitMove[0] = row;
+    postionHitMove[1] = col;
   }
 
   void resetAI(){
 
     sunkShipCount = 0;
 
-    hitMedicoreMove = false;
-    firstHitMedicoreMove = [0, 0];
-    lastHitMedicoreMove = [-1, 0];
-    postionHitMedicoreMove = [0, 0];
-    lastDirectionMedicoreMove = "no direction";
+    hitMove = false;
+    firstHitMove = [0, 0];
+    lastHitMove = [-1, 0];
+    postionHitMove = [0, 0];
+    lastDirectionMove = "no direction";
 
-    strategieHardcoreMove = false;
-
-    strategieMedicoreMove = false;
-    allHitsColMedicoreMove = [];
-    allHitsRowMedicoreMove = [];
+    strategieMove = false;
+    allHitsColMove = [];
+    allHitsRowMove = [];
   }
 
   bool checkSunkShip(){
@@ -433,12 +221,12 @@ class Enemy {
       model.fireAt(row + halfROWCOUNT, col);
 
       if(model.playingField[row + halfROWCOUNT][col]._entity != null) {
-        hitMedicoreMove = true;
-        firstHitMedicoreMove[0] = (row+halfROWCOUNT);
-        firstHitMedicoreMove[1] = col;
-        allHitsRowMedicoreMove.add(row+halfROWCOUNT);
-        allHitsColMedicoreMove.add(col);
-        if(checkSunkShip() == true)hitMedicoreMove = false;
+        hitMove = true;
+        firstHitMove[0] = (row+halfROWCOUNT);
+        firstHitMove[1] = col;
+        allHitsRowMove.add(row+halfROWCOUNT);
+        allHitsColMove.add(col);
+        if(checkSunkShip() == true)hitMove = false;
       }
     }else {
       do {
@@ -470,12 +258,12 @@ class Enemy {
       model.fireAt(row + halfROWCOUNT, col);
 
       if (model.playingField[row + halfROWCOUNT][col]._entity != null) {
-        hitMedicoreMove = true;
-        firstHitMedicoreMove[0] = (row + halfROWCOUNT);
-        firstHitMedicoreMove[1] = col;
-        allHitsRowMedicoreMove.add(row+halfROWCOUNT);
-        allHitsColMedicoreMove.add(col);
-        if (checkSunkShip() == true) hitMedicoreMove = false;
+        hitMove = true;
+        firstHitMove[0] = (row + halfROWCOUNT);
+        firstHitMove[1] = col;
+        allHitsRowMove.add(row+halfROWCOUNT);
+        allHitsColMove.add(col);
+        if (checkSunkShip() == true) hitMove = false;
       }
     }
   }
@@ -490,13 +278,13 @@ class Enemy {
 
     while(shot == false) {
 
-      if(lastHitMedicoreMove[0] == -1){
-        x = firstHitMedicoreMove[0];
-        y = firstHitMedicoreMove[1];
+      if(lastHitMove[0] == -1){
+        x = firstHitMove[0];
+        y = firstHitMove[1];
 
       }else{
-        x = lastHitMedicoreMove[0];
-        y = lastHitMedicoreMove[1];
+        x = lastHitMove[0];
+        y = lastHitMove[1];
       }
 
       top = x - 1;
@@ -508,48 +296,48 @@ class Enemy {
       left = y - 1;
       if(left < 0)left += colcount;
 
-      switch (lastDirectionMedicoreMove) {
+      switch (lastDirectionMove) {
         case "top":
           if (model.playingField[top][y]._hit == false &&
               model.playingField[top][y]._foggy == false) {
             model.fireAt(top, y);
 
             if(model.playingField[top][y]._entity != null) {
-              lastHitMedicoreMove[0] = top;
-              lastHitMedicoreMove[1] = y;
-              allHitsRowMedicoreMove.add(top);
-              allHitsColMedicoreMove.add(y);
+              lastHitMove[0] = top;
+              lastHitMove[1] = y;
+              allHitsRowMove.add(top);
+              allHitsColMove.add(y);
             }
 
             if(checkSunkShip() == true) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-              int l = allHitsRowMedicoreMove.length;
+              hitMove = false;
+              lastHitMove[0] = -1;
+              lastDirectionMove = "no direction";
+              int l = allHitsRowMove.length;
               for(int p = 0; p < l; p++) {
                 for (int z = 0; z <= 5; z++) {
-                  if(allHitsRowMedicoreMove.length > p) {
-                    if (allHitsRowMedicoreMove[p] == (top + z) && allHitsColMedicoreMove[p] == y) {
-                      allHitsRowMedicoreMove.removeAt(p);
-                      allHitsColMedicoreMove.removeAt(p);
+                  if(allHitsRowMove.length > p) {
+                    if (allHitsRowMove[p] == (top + z) && allHitsColMove[p] == y) {
+                      allHitsRowMove.removeAt(p);
+                      allHitsColMove.removeAt(p);
                       z = 0;
                       l--;
                     }
                   }
                 }
               }
-              if(allHitsRowMedicoreMove.length != 0){
-                firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                hitMedicoreMove = true;
-                lastHitMedicoreMove[0] = -1;
+              if(allHitsRowMove.length != 0){
+                firstHitMove[0] = allHitsRowMove[0];
+                firstHitMove[1] = allHitsColMove[0];
+                hitMove = true;
+                lastHitMove[0] = -1;
               }
             }
 
             shot = true;
           } else {
-            lastDirectionMedicoreMove = "down";
-            lastHitMedicoreMove[0] = -1;
+            lastDirectionMove = "down";
+            lastHitMove[0] = -1;
           }
           break;
         case "right":
@@ -557,41 +345,41 @@ class Enemy {
             model.fireAt(x, right);
 
             if(model.playingField[x][right]._entity != null) {
-              lastHitMedicoreMove[0] = x;
-              lastHitMedicoreMove[1] = right;
-              allHitsRowMedicoreMove.add(x);
-              allHitsColMedicoreMove.add(right);
+              lastHitMove[0] = x;
+              lastHitMove[1] = right;
+              allHitsRowMove.add(x);
+              allHitsColMove.add(right);
             }
 
             if(checkSunkShip() == true) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-              int l = allHitsRowMedicoreMove.length;
+              hitMove = false;
+              lastHitMove[0] = -1;
+              lastDirectionMove = "no direction";
+              int l = allHitsRowMove.length;
               for(int p = 0; p < l; p++) {
                 for (int z = 0; z <= 5; z++) {
-                  if(allHitsRowMedicoreMove.length > p) {
-                    if(allHitsColMedicoreMove[p] == right-z && allHitsRowMedicoreMove[p] == x){
-                      allHitsRowMedicoreMove.removeAt(p);
-                      allHitsColMedicoreMove.removeAt(p);
+                  if(allHitsRowMove.length > p) {
+                    if(allHitsColMove[p] == right-z && allHitsRowMove[p] == x){
+                      allHitsRowMove.removeAt(p);
+                      allHitsColMove.removeAt(p);
                       z = 0;
                       l--;
                     }
                   }
                 }
               }
-              if(allHitsRowMedicoreMove.length != 0){
-                firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                hitMedicoreMove = true;
-                lastHitMedicoreMove[0] = -1;
+              if(allHitsRowMove.length != 0){
+                firstHitMove[0] = allHitsRowMove[0];
+                firstHitMove[1] = allHitsColMove[0];
+                hitMove = true;
+                lastHitMove[0] = -1;
               }
             }
 
             shot = true;
           } else {
-            lastDirectionMedicoreMove = "left";
-            lastHitMedicoreMove[0] = -1;
+            lastDirectionMove = "left";
+            lastHitMove[0] = -1;
           }
           break;
         case "down":
@@ -600,41 +388,41 @@ class Enemy {
             model.fireAt(down, y);
 
             if(model.playingField[down][y]._entity != null) {
-              lastHitMedicoreMove[0] = down;
-              lastHitMedicoreMove[1] = y;
-              allHitsRowMedicoreMove.add(down);
-              allHitsColMedicoreMove.add(y);
+              lastHitMove[0] = down;
+              lastHitMove[1] = y;
+              allHitsRowMove.add(down);
+              allHitsColMove.add(y);
             }
 
             if(checkSunkShip() == true) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-              int l = allHitsRowMedicoreMove.length;
+              hitMove = false;
+              lastHitMove[0] = -1;
+              lastDirectionMove = "no direction";
+              int l = allHitsRowMove.length;
               for(int p = 0; p < l; p++) {
                 for (int z = 0; z <= 5; z++) {
-                  if(allHitsRowMedicoreMove.length > p) {
-                    if (allHitsRowMedicoreMove[p] == (down - z) && allHitsColMedicoreMove[p] == y) {
-                      allHitsRowMedicoreMove.removeAt(p);
-                      allHitsColMedicoreMove.removeAt(p);
+                  if(allHitsRowMove.length > p) {
+                    if (allHitsRowMove[p] == (down - z) && allHitsColMove[p] == y) {
+                      allHitsRowMove.removeAt(p);
+                      allHitsColMove.removeAt(p);
                       z = 0;
                       l--;
                     }
                   }
                 }
               }
-              if(allHitsRowMedicoreMove.length != 0){
-                firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                hitMedicoreMove = true;
-                lastHitMedicoreMove[0] = -1;
+              if(allHitsRowMove.length != 0){
+                firstHitMove[0] = allHitsRowMove[0];
+                firstHitMove[1] = allHitsColMove[0];
+                hitMove = true;
+                lastHitMove[0] = -1;
               }
             }
 
             shot = true;
           } else {
-            lastDirectionMedicoreMove = "right";
-            lastHitMedicoreMove[0] = -1;
+            lastDirectionMove = "right";
+            lastHitMove[0] = -1;
           }
           break;
         case "left":
@@ -642,42 +430,42 @@ class Enemy {
             model.fireAt(x, left);
 
             if(model.playingField[x][left]._entity != null) {
-              lastHitMedicoreMove[0] = x;
-              lastHitMedicoreMove[1] = left;
-              allHitsRowMedicoreMove.add(x);
-              allHitsColMedicoreMove.add(left);
+              lastHitMove[0] = x;
+              lastHitMove[1] = left;
+              allHitsRowMove.add(x);
+              allHitsColMove.add(left);
             }
 
             if(checkSunkShip() == true) {
-              hitMedicoreMove = false;
-              lastHitMedicoreMove[0] = -1;
-              lastDirectionMedicoreMove = "no direction";
-              int l = allHitsRowMedicoreMove.length;
+              hitMove = false;
+              lastHitMove[0] = -1;
+              lastDirectionMove = "no direction";
+              int l = allHitsRowMove.length;
               for(int p = 0; p < l; p++) {
                 for (int z = 0; z <= 5; z++) {
-                  if(allHitsRowMedicoreMove.length > p) {
-                    if(allHitsColMedicoreMove[p] == left+z && allHitsRowMedicoreMove[p] == x){
-                      allHitsRowMedicoreMove.removeAt(p);
-                      allHitsColMedicoreMove.removeAt(p);
+                  if(allHitsRowMove.length > p) {
+                    if(allHitsColMove[p] == left+z && allHitsRowMove[p] == x){
+                      allHitsRowMove.removeAt(p);
+                      allHitsColMove.removeAt(p);
                       z = 0;
                       l--;
                     }
                   }
                 }
               }
-              if(allHitsRowMedicoreMove.length != 0){
-                firstHitMedicoreMove[0] = allHitsRowMedicoreMove[0];
-                firstHitMedicoreMove[1] = allHitsColMedicoreMove[0];
-                hitMedicoreMove = true;
-                lastHitMedicoreMove[0] = -1;
+              if(allHitsRowMove.length != 0){
+                firstHitMove[0] = allHitsRowMove[0];
+                firstHitMove[1] = allHitsColMove[0];
+                hitMove = true;
+                lastHitMove[0] = -1;
               }
             }
 
             shot = true;
           } else {
-            hitMedicoreMove = false;
-            lastHitMedicoreMove[0] = -1;
-            lastDirectionMedicoreMove = "no direction";
+            hitMove = false;
+            lastHitMove[0] = -1;
+            lastDirectionMove = "no direction";
             shot = true;
             print("muss wohl ein Felsen sein");
             mediocreMove();
@@ -685,10 +473,10 @@ class Enemy {
           break;
         case "no direction":
 
-          lastDirectionMedicoreMove = "top";
+          lastDirectionMove = "top";
           break;
         default:
-          lastHitMedicoreMove[0] = -1;
+          lastHitMove[0] = -1;
           print("Hier passiert nichts");
           break;
       }
