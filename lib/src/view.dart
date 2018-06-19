@@ -59,8 +59,7 @@ class GameView {
 
   void generateGameoverscreen() {
     String gameoverString;
-    gameoverString = '<div id="gameover_head">Game Over!</div><br>';
-    gameoverString += '<div id="gameoverText"></div><br>';
+    gameoverString = '<div id="gameoverText"></div><br>';
     gameoverString += '<input type="button" id="menuGameover" class="button" value="Menu"></input> <br>';
     gameoverString += '<input type="button" id="nextGameover" class="button" value="Next Game"></input>';
     gameoverString += '<input type="button" id="restartGameover" class="button" value="Restart"></input>';
@@ -72,7 +71,7 @@ class GameView {
     messageString = '<div id="messageBox">';
     messageString += '<div id="messageLevel"></div>';
     messageString += '<div id="messageText">Place your ships in the lower field</div>';
-    messageString += '<input type="button" id="messageNext" class="button" value="Weiter"></input>';
+    messageString += '<input type="button" id="messageNext" class="button" value="Play"></input>';
     messageString += '</div>';
 
     message.innerHtml = messageString;

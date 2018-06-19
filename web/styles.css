@@ -5,6 +5,9 @@
         width: 100vw;
         margin: 0;
         padding: 0;
+        font-size: 20px;
+        background-repeat: no-repeat;
+        font-family: "Franklin Gothic Medium";
     }
 
 @media all and (orientation:landscape) {
@@ -40,7 +43,6 @@
         height: 100vh;
         z-index: 3;
         background-size: 40%;
-        background-repeat: no-repeat;
         background-color: #080808;
         background-image: url("images/device.png");
         background-position: center center;
@@ -51,7 +53,6 @@
     #menu {
         background-image: url("images/Menu.png");
         background-position: center bottom;
-        background-repeat: no-repeat;
         background-size: 100%;
         height: 100vh;
         width: 100vw;
@@ -64,7 +65,7 @@
         margin: 0%;
         border-bottom: 3px solid #080808;
         border-top: 3px solid #080808;
-        font-size: 200%;
+        font-size: 160%;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #0b7499 0%, #626262 100%);
         background: -webkit-linear-gradient(top, #0b7499 0%, #626262 100%);
@@ -76,7 +77,7 @@
         margin: 0.5% 5% 0.5% 2.5%;
         width: 42.5%;
         border: 3px solid #080808;
-        font-size: 150%;
+        font-size: 120%;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
@@ -89,7 +90,7 @@
         margin: 0.5% 2.5% 0.5% 5%;
         width: 42.5%;
         border: 3px solid #080808;
-        font-size: 150%;
+        font-size: 120%;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         background: linear-gradient(top, #3c3c3c 0%, #222222 100%);
@@ -100,7 +101,6 @@
     #gameTable {
 
         border-collapse: collapse;
-        background-repeat: no-repeat;
         width: 100vw;
         height: 100vh;
         background-color: #626262;
@@ -123,33 +123,34 @@
     th {
         background: linear-gradient(top, #0b7499 0%, #626262 100%);
         background: -webkit-linear-gradient(top, #0b7499 0%, #626262 100%);
-        font-size: 140%;
+        /*font-size: 140%;*/
         border: 1px solid black;
     }
 
     td {
         background-position: center center;
-        background-repeat: no-repeat;
         border: 1px solid black;
     }
 
     #back {
         background-position: center center;
-        background-repeat: no-repeat;
     }
 
+
+
     /* Gameover */
+
     #gameover {
-        position: fixed; /* Sit on top of the page content */
-        display: none; /* Hidden by default */
+        position: fixed;
+        display: none;
         top: 22.5%;
         left: 7.5%;
         right: 0;
         bottom: 0;
         border: 3px solid #FFFFFF;
         border-radius: 20px;
-        background-color: rgba(0, 0, 0, 0.6); /* Black background with opacity */
-        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 2;
         height: 55%;
         width: 85%;
     }
@@ -157,7 +158,7 @@
     #menuGameover {
         position: absolute;
         border: 3px solid #080808;
-        font-size: 140%;
+        /*font-size: 140%;*/
         top: 70%;
         left: 50%;
         margin: 0% 0% 5% 0%;
@@ -174,7 +175,7 @@
         display: none;
         width: 70%;
         border: 3px solid #080808;
-        font-size: 140%;
+        /*font-size: 140%;*/
         top: 85%;
         left: 50%;
         margin: 2% 0% 5% 0%;
@@ -190,7 +191,7 @@
         position: absolute;
         display: none;
         border: 3px solid #080808;
-        font-size: 140%;
+        /*font-size: 140%;*/
         width: 70%;
         top: 85%;
         left: 50%;
@@ -210,7 +211,7 @@
         top: 50%;
         left: 50%;
         width: 70vw;
-        font-size: 140%;
+        /*font-size: 140%;*/
         color: #FFFFFF;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         /*    background: linear-gradient(top, #ffffff 0%, #626262 100%);
@@ -219,20 +220,6 @@
         border-radius: 20px;
         transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
-    }
-
-    #gameover_head {
-        position: absolute;
-        text-transform: uppercase;
-        text-align: center;
-        font-size: 300%;
-        color: #FFFFFF;
-        text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
-        font-weight: bold;
-        top: 20%;
-        left: 50%;
-        webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
     }
 
     /* Message */
@@ -246,26 +233,26 @@
 
     #messageBox {
         position: fixed;
-        top: 35%;
-        left: 7.5%;
+        top: 15vh;
+        left: 7.5vw;
         right: 0;
         bottom: 0;
         border: 3px solid #FFFFFF;
         border-radius: 20px;
         background-color: rgba(0, 0, 0, 0.6);
         z-index: 2;
-        height: 30%;
-        width: 85%;
+        height: 70vh;
+        width: 85vw;
     }
 
     #messageLevel {
         position: absolute;
         text-align: center;
         padding: 1%;
-        top: 14%;
+        top: 10vh;
         left: 50%;
         width: 70vw;
-        font-size: 240%;
+        /*font-size: 240%;*/
         color: #FFFFFF;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         transform: translate(-50%, -50%);
@@ -276,10 +263,10 @@
         position: absolute;
         text-align: center;
         padding: 1%;
-        top: 42%;
+        top: 25vh;
         left: 50%;
         width: 70vw;
-        font-size: 140%;
+        /*font-size: 140%;*/
         color: #FFFFFF;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
         transform: translate(-50%, -50%);
@@ -289,10 +276,10 @@
     #messageNext {
         position: fixed;
         border: 3px solid #080808;
-        font-size: 140%;
-        top: 57.5%;
-        left: 50%;
-        width: 40%;
+        /*font-size: 140%;*/
+        top: 90vh;
+        left: 50vw;
+        width: 40vw;
         margin: 0;
         border-radius: 20px;
         text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
