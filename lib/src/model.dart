@@ -709,6 +709,7 @@ class PlayingField {
 class Field{
   int _row;
   int _col;
+  int _hitCounter = 0;
   bool _hit;
   bool _foggy;
   Entity _entity;
@@ -717,6 +718,8 @@ class Field{
   set row(int row) => _row = row;
   int get col => _col;
   set col(int col) => _col = col;
+  int get hitCounter => _hitCounter;
+  set hitCounter(int hitCounter) => _hitCounter = hitCounter;
   bool get hit => _hit;
   set hit(bool hit) => _hit = hit;
   Entity get entity => _entity;
@@ -733,6 +736,7 @@ class Field{
   }
 
   void fireAt() {
+    hitCounter++;
     if (entity is Ship) {
       Ship s = entity;
       s.fireAt(this);

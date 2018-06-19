@@ -92,7 +92,8 @@ class GameView {
     }else if (f.entity == null) {
       return f.hit ? "water_miss" : "water";
     }else if (f.entity is Ship) {
-      String css = "ship";
+      String css = "";
+      css = "ship";
       Ship s = f.entity;
       if(f.entity is Destroyer && s.vertical == false){//Horizontal
         css += "_2";
@@ -155,6 +156,13 @@ class GameView {
       }
 
       css += f.hit ? "_hit" : "";
+
+      if(f._hitCounter == 1 && f._foggy){
+        css = "fog_explosion";
+      }else if(f._hitCounter == 1 && f._foggy == false){
+        css = "water_explosion";
+      }
+
       return css;
     }else if (f.entity is ShipBuilder) {
       String css = "shipbuilder";
