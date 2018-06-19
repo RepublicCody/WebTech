@@ -156,13 +156,13 @@ class GameView {
       }
 
       css += f.hit ? "_hit" : "";
-
+/*
       if(f._hitCounter == 1 && f._foggy){
         css = "fog_explosion";
       }else if(f._hitCounter == 1 && f._foggy == false){
         css = "water_explosion";
       }
-
+*/
       return css;
     }else if (f.entity is ShipBuilder) {
       String css = "shipbuilder";

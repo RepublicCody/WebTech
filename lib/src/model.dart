@@ -874,7 +874,7 @@ class Ship extends Entity {
 
   void sinkShip() {
     for (int i = 0; i < fields.length; i++) {
-      if (fields[i].entity == this) fields[i].entity = null;
+      //if (fields[i].entity == this) fields[i].entity = null;
     }
     //playingField.ships.remove(this);
     _sunk = true;
