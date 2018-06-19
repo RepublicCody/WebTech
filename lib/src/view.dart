@@ -70,7 +70,7 @@ class GameView {
     String messageString;
     messageString = '<div id="messageBox">';
     messageString += '<div id="messageLevel"></div>';
-    messageString += '<div id="messageText">Place your ships in the lower field</div>';
+    messageString += '<div id="messageText">Place your ships in the lower field and take care of islands, they may look like ships</div>';
     messageString += '<input type="button" id="messageNext" class="button" value="Play"></input>';
     messageString += '</div>';
 
