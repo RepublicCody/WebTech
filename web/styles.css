@@ -396,6 +396,16 @@
     background-image: url("images/water_fog/nebel_getroffen_rot.png");
 }
 
+.water_explosion {
+    background-size: 100%;
+    background-image: url("images/water_fog/nebel_getroffen_weiß.png");
+}
+
+.fog_explosion {
+    background-size: 100%;
+    background-image: url("images/water_fog/wasser_getroffen_weiß.png");
+}
+
 /* powerups */
 
 .powerup_water {
