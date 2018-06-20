@@ -71,6 +71,15 @@ class GameView {
     messageString = '<div id="messageBox">';
     messageString += '<div id="messageLevel"></div>';
     messageString += '<div id="messageText">Place your ships in the lower field and take care of islands, they may look like ships</div>';
+    messageString += '<div id="match"><div id="player">Player</div><div id="vs">VS</div><div id="enemyplayer"></div>';
+    messageString += '<div id="playerside"><div id="playerdestroyer"><div id="pdpicture"></div><div id="pdcount"></div></div>'
+        '<div id="playersubmarine"><div id="pspicture"></div><div id="pscount"></div></div>'
+        '<div id="playerbattleship"><div id="pbpicture"></div><div id="pbcount"></div></div>'
+        '<div id="playercarrier"><div id="pcpicture"></div><div id="pccount"></div></div></div>';
+    messageString += '<div id="enemyside"><div id="enemydestroyer"><div id="edpicture"></div><div id="edcount"></div></div>'
+        '<div id="enemysubmarine"><div id="espicture"></div><div id="escount"></div></div>'
+        '<div id="enemybattleship"><div id="ebpicture"></div><div id="ebcount"></div></div>'
+        '<div id="enemycarrier"><div id="ecpicture"></div><div id="eccount"></div></div></div></div>';
     messageString += '<input type="button" id="messageNext" class="button" value="Play"></input>';
     messageString += '</div>';
 
@@ -156,13 +165,7 @@ class GameView {
       }
 
       css += f.hit ? "_hit" : "";
-/*
-      if(f._hitCounter == 1 && f._foggy){
-        css = "fog_explosion";
-      }else if(f._hitCounter == 1 && f._foggy == false){
-        css = "water_explosion";
-      }
-*/
+
       return css;
     }else if (f.entity is ShipBuilder) {
       String css = "shipbuilder";
@@ -279,6 +282,22 @@ class GameView {
 
   void setInGameLevel(String s) {
     querySelector('#messageLevel').innerHtml = s;
+  }
+
+  void setMessageEnemy(String s) {
+    querySelector('#enemyplayer').innerHtml = s;
+  }
+
+  void setShipCount(List<String> s) {
+    querySelector('#pdcount').innerHtml = s[0];
+    querySelector('#pscount').innerHtml = s[1];
+    querySelector('#pbcount').innerHtml = s[2];
+    querySelector('#pccount').innerHtml = s[3];
+
+    querySelector('#edcount').innerHtml = s[4];
+    querySelector('#escount').innerHtml = s[5];
+    querySelector('#ebcount').innerHtml = s[6];
+    querySelector('#eccount').innerHtml = s[7];
   }
 
   void fullscreenWorkaround(Element element) {

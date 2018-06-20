@@ -20,9 +20,7 @@ class GameController{
     view.generateGameoverscreen();
     view.generateMessage();
     view.showMenu();
-    //querySelector("#level_1").onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("#gameTable"));});
-    //view.showGame();
-    //iew.showGameover();
+    window.onResize.listen((e) => view.fieldSize());
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('td').onClick.listen(buildShip);
@@ -113,6 +111,7 @@ class GameController{
       view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
       view.setInGameLevel("Level $lastPlayed");
       view.update(model.playingField);
+      setMessage();
       view.showMessage();
     }
   }
@@ -129,6 +128,7 @@ class GameController{
         view.setInGameLevel("Level " + (lastPlayed+1).toString());
         lastPlayed++;
         view.update(model.playingField);
+        setMessage();
         view.showMessage();
       } else if (element.id == "restartGameover") {
         model.generatePlayingField(lastPlayed);
@@ -136,6 +136,7 @@ class GameController{
             "${model.playingField.playerShipLengths[0]}er Schiff setzen");
         view.setInGameLevel("Level $lastPlayed");
         view.update(model.playingField);
+        setMessage();
         view.showMessage();
       }
     }
@@ -150,6 +151,7 @@ class GameController{
   //  this can be disposed of once all listeners are implemented properly
   void addListeners() {
     querySelector("#zufall").onClick.listen((Event e) {
+      setMessage();
       view.showMessage();
     });
 
@@ -176,6 +178,66 @@ class GameController{
     }
   }
 
+  void setMessage(){
+    List<String> s = ["0", "0", "0", "0", "0", "0", "0", "0"];
+    List<int> c = [0,0,0,0,0,0,0,0];
+
+    for(int i = 0; i < model.playingField.ships.length; i++){
+      if(model.playingField.ships[i] is Destroyer){
+        if(model.playingField.ships[i]._friendly == true){
+          c[0]++;
+        }else{c[4]++;}
+      }else if(model.playingField.ships[i] is Submarine){
+        if(model.playingField.ships[i]._friendly == true){
+          c[1]++;
+        }else{c[5]++;}
+      }else if(model.playingField.ships[i] is BattleShip){
+        if(model.playingField.ships[i]._friendly == true){
+          c[2]++;
+        }else{c[6]++;}
+      }else if(model.playingField.ships[i] is Carrier){
+        if(model.playingField.ships[i]._friendly == true){
+          c[3]++;
+        }else{c[7]++;}
+      }
+    }
+
+    for(int i = 0; i < model.playingField.playerShipLengths.length; i++){
+      if(model.playingField.playerShipLengths[i] == 2){
+          c[0]++;
+      }else if(model.playingField.playerShipLengths[i] == 3){
+          c[1]++;
+      }else if(model.playingField.playerShipLengths[i] == 4){
+          c[2]++;
+      }else if(model.playingField.playerShipLengths[i] == 5){
+          c[3]++;
+      }
+    }
+
+    for(int x = 0; x < c.length; x++){
+      s[x] = "x " + c[x].toString();
+    }
+    String t = "";
+
+    switch(model.enemy._strategy){
+      case 0:
+        t = "Easy Bot";
+        break;
+      case 1:
+        t = "Medium Bot";
+        break;
+      case 2:
+        t = "Hard Bot";
+        break;
+      case 3:
+        t = "Very Hard Bot";
+        break;
+    }
+
+    view.setMessageEnemy(t);
+    view.setShipCount(s);
+
+  }
 }
 
 
