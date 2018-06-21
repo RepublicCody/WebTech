@@ -9,6 +9,8 @@ class GameView {
 
   final message = querySelector("#message");
 
+  final device = querySelector("#device");
+
   List<List<HtmlElement>> fields;
 
   void generateField(PlayingField playingField) {
@@ -36,6 +38,10 @@ class GameView {
         fields[row].add(querySelector("#field_${row}_${col}"));
       }
     }
+  }
+
+  void generateDevice(){
+    device.innerHtml = "<input type='button' id='deviceButton' value='Ignore Device Message'></input>";
   }
 
 
@@ -232,14 +238,14 @@ class GameView {
     String h;
     int x;
     double calculation;
-
+/*
     if(window.innerHeight < window.innerWidth){
       x = window.innerWidth - 1;
       calculation = (x / (ROWCOUNT + 1)) - 3;
-    }else {
+    }else {*/
       x = window.innerHeight - 1;
       calculation = (x / (ROWCOUNT + 1)) - 3;
-    }
+    //}
 
     w = calculation.toString() + "px";
     h = calculation.toString() + "px";
@@ -286,6 +292,10 @@ class GameView {
     querySelector("#gameTable").style.display="block";
     querySelector("#message").style.display="block";
     querySelector("#gameover").style.display="none";
+  }
+
+  void hideDevice(){
+    querySelector("#device").style.display="none";
   }
 
   void setGameoverText(String s) {

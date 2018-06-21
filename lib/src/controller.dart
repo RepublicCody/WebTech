@@ -8,6 +8,7 @@ class GameController{
   var tableListener;
   var gameoverListener;
   var messageListener;
+  var deviceListener;
 
   int lastPlayed = 0;
 
@@ -19,9 +20,11 @@ class GameController{
     view.generateField(model.playingField);
     view.generateGameoverscreen();
     view.generateMessage();
+    view.generateDevice();
     view.showMenu();
     window.onResize.listen((e) => view.fieldSize());
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
+    deviceListener = querySelector('#deviceButton').onClick.listen((MouseEvent e) {view.hideDevice();});
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('td').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
@@ -108,7 +111,7 @@ class GameController{
         model.generatePlayingField(lvl);
         lastPlayed = lvl;
       }
-      view.setInGameText("${model.playingField.playerShipLengths[0]}er Schiff setzen");
+      view.setInGameText("Place a ${model.playingField.playerShipLengths[0]}-part");
       view.setInGameLevel("Level $lastPlayed");
       view.update(model.playingField);
       setMessage();
@@ -124,7 +127,7 @@ class GameController{
       } else if (element.id == "nextGameover") {
         model.generatePlayingField(lastPlayed + 1);
         view.setInGameText(
-            "${model.playingField.playerShipLengths[0]}er Schiff setzen");
+            "Place a ${model.playingField.playerShipLengths[0]}-part");
         view.setInGameLevel("Level " + (lastPlayed+1).toString());
         lastPlayed++;
         view.update(model.playingField);
@@ -133,7 +136,7 @@ class GameController{
       } else if (element.id == "restartGameover") {
         model.generatePlayingField(lastPlayed);
         view.setInGameText(
-            "${model.playingField.playerShipLengths[0]}er Schiff setzen");
+            "Place a ${model.playingField.playerShipLengths[0]}-part");
         view.setInGameLevel("Level $lastPlayed");
         view.update(model.playingField);
         setMessage();
@@ -167,7 +170,7 @@ class GameController{
       bool completed = model.playingField.buildShip(rc[0], rc[1], true);
       if (completed && model.playingField.playerShipCount() < model.playingField.playerShipLengths.length) {
         view.setInGameText(
-            "${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}er Schiff setzen");
+            "Place a ${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}-part");
       }
       view.update(model.playingField);
       if (model.playingField.shipBuildingComplete()) {
