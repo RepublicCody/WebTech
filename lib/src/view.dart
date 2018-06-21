@@ -20,7 +20,8 @@ class GameView {
       for (int col = 0; col < playingField[row].length; col++) {
         var terrain = playingField[row][col].entity;
         var position = "field_${row}_${col}";
-        table += "<td id ='${position}' class='${cssClass(playingField[row][col])}'></td>";
+        var positiondiv = "d_${row}_${col}";
+        table += "<td id ='${position}' class='${cssClass(playingField[row][col])}'><div id='${positiondiv}'></div></td>";
       }
       table += "</tr>";
     }
@@ -91,15 +92,35 @@ class GameView {
     for (int row = 0; row < fields.length; row++) {
       for (int col = 0; col < fields[row].length; col++) {
         this.fields[row][col].attributes["class"] = cssClass(playingField[row][col]);
+        querySelector("#d_${row}_${col}").attributes["class"] = animation(playingField[row][col]);
       }
     }
   }
 
+  String animation(Field f){
+    if (f.foggy && f.entity is !PowerUp) {
+      return f.hit ? f.entity == null ? "animationWhite" : "animationRed" : "empty";
+    }else if (f.entity == null) {
+      return f.hit ? "animationWhite" : "empty";
+    }else if (f.entity is Ship) {
+      return f.hit ? "animationRed" : "empty";
+    }else if (f.entity is ShipBuilder) {
+      return "empty";
+    }else if (f.entity is Rock) {
+      return f.hit ? "animationRed" : "empty";
+    }else if (f.entity is PowerUp) {
+      return f.hit ? "animationRed" : "empty";
+    }else if (f.entity is ShipMover) {
+      return "empty";
+    }
+    return "empty";
+  }
+
   String cssClass(Field f) {
     if (f.foggy && f.entity is !PowerUp) {
-      return f.hit ? f.entity == null ? "fog_miss" : "fog_hit" : "fog";
+      return "fog";
     }else if (f.entity == null) {
-      return f.hit ? "water_miss" : "water";
+      return "water";
     }else if (f.entity is Ship) {
       String css = "";
       css = "ship";
@@ -164,8 +185,6 @@ class GameView {
         }
       }
 
-      css += f.hit ? "_hit" : "";
-
       return css;
     }else if (f.entity is ShipBuilder) {
       String css = "shipbuilder";
@@ -192,13 +211,10 @@ class GameView {
       if(f._row.isEven && f._col.isEven)r += "_1";
       if(f._row.isOdd && f._col.isEven || f._row.isEven && f._col.isOdd)r += "_2";
       if(f._row.isOdd && f._col.isOdd)r += "_3";
-      r += f.hit ? "_hit" : "";
       return r;
     }else if (f.entity is PowerUp) {
       String p = "powerup";
       p += f.foggy ? "_fog" : "_water";
-      p += f._hit ? "_hit" : "";
-      print(p);
       return p;
     }else if (f.entity is ShipMover) {
       ShipMover m = f.entity;
