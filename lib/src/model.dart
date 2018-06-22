@@ -96,7 +96,7 @@ class Enemy {
         hardcoreMove();
         break;
       case 3:
-        randomMove();
+        randomHardcoreMove();
         break;
     }
   }

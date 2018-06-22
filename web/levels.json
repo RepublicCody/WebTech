@@ -20,7 +20,7 @@
       "playerPowUps": 1,
       "enemyPowUps": 1,
       "enemyStrategy": 1,
-      "moveShips": true
+      "moveShips": false
     }
   },
   {

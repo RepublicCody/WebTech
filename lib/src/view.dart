@@ -260,6 +260,8 @@ class GameView {
     querySelector("#back").style.width = w;
     querySelector("#back").style.height = h;
 
+    querySelector("body").style.height = (window.innerWidth).toString();
+
     double d = 0.0;
     for(int p = 0; p < COLCOUNT; p++){
       d += calculation+3;
