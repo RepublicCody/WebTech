@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
     body, html {
-        height: 100vh;
+        /*height: 100vh;*/
         max-width: 600px;
         margin: 0;
         padding: 0;
@@ -42,6 +42,11 @@
         display: none;
     }
 }
+
+    img{
+        display: none;
+    }
+
 
     /* Device */
     #device {
@@ -143,6 +148,16 @@
         background-repeat: no-repeat;
         cursor:pointer;
         background-image: url("images/fullscreen.png");
+        z-index: 2;
+    }
+
+    #exitfullscreenbutton{
+        display: none;
+        background-size: 60%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor:pointer;
+        background-image: url("images/exit_fullscreen.png");
         z-index: 2;
     }
 

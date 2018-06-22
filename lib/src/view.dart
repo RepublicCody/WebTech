@@ -61,6 +61,7 @@ class GameView {
     '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
     menuString += '<input type="button" id="zufall" class="button" value="Random"></input>';
     menuString += '<input type="button" id="fullscreenbutton" class="fullscreen"></input>';
+    menuString += '<input type="button" id="exitfullscreenbutton" class="fullscreen"></input>';
     menuString += '<div id="fullscreendiv" class="fullscreen"></div>';
 
     menu.innerHtml = menuString;
@@ -260,7 +261,8 @@ class GameView {
     querySelector("#back").style.width = w;
     querySelector("#back").style.height = h;
 
-    querySelector("body").style.height = (window.innerWidth).toString();
+    querySelector("#body").style.height = (window.innerHeight).toString() + "px";
+    menu.style.height = (window.innerHeight).toString() + "px";
 
     double d = 0.0;
     for(int p = 0; p < COLCOUNT; p++){
@@ -298,6 +300,16 @@ class GameView {
     querySelector("#gameover").style.display="none";
   }
 
+  void changeButton(int i){
+    if(i == 0) {
+      querySelector("#exitfullscreenbutton").style.display="block";
+      querySelector("#fullscreenbutton").style.display="none";
+    }else {
+      querySelector("#exitfullscreenbutton").style.display="none";
+      querySelector("#fullscreenbutton").style.display="block";
+    }
+  }
+
   void hideDevice(){
     querySelector("#device").style.display="none";
   }
@@ -330,24 +342,46 @@ class GameView {
     querySelector('#eccount').innerHtml = s[7];
   }
 
-  void fullscreenWorkaround(Element element) {
-    var elem = new JsObject.fromBrowserObject(element);
+  void fullscreenWorkaround(int i, Element element) {
+    if (i == 0) {
+      var elem = new JsObject.fromBrowserObject(element);
 
-    if (elem.hasProperty("requestFullscreen")) {
-      elem.callMethod("requestFullscreen");
-    }
-    else {
-      List<String> vendors = ['moz', 'webkit', 'ms', 'o'];
-      for (String vendor in vendors) {
-        String vendorFullscreen = "${vendor}RequestFullscreen";
-        if (vendor == 'moz') {
-          vendorFullscreen = "${vendor}RequestFullScreen";
-        }
-        if (elem.hasProperty(vendorFullscreen)) {
-          elem.callMethod(vendorFullscreen);
-          return;
+      if (elem.hasProperty("requestFullscreen")) {
+        elem.callMethod("requestFullscreen");
+      }
+      else {
+        List<String> vendors = ['moz', 'webkit', 'ms', 'o'];
+        for (String vendor in vendors) {
+          String vendorFullscreen = "${vendor}RequestFullscreen";
+          if (vendor == 'moz') {
+            vendorFullscreen = "${vendor}RequestFullScreen";
+          }
+          if (elem.hasProperty(vendorFullscreen)) {
+            elem.callMethod(vendorFullscreen);
+            return;
+          }
         }
       }
+    }else{
+      var elem = new JsObject.fromBrowserObject(element);
+      elem.callMethod("exitFullscreen");
+/*
+      if (elem.hasProperty("exitFullscreen")) {
+        elem.callMethod("exitFullscreen");
+      }
+      else {
+        List<String> vendors = ['moz', '_webkit', 'ms', 'o'];
+        for (String vendor in vendors) {
+          String vendorFullscreen = "${vendor}ExitFullscreen";
+          if (vendor == 'moz') {
+            vendorFullscreen = "${vendor}ExitFullScreen";
+          }
+          if (elem.hasProperty(vendorFullscreen)) {
+            elem.callMethod(vendorFullscreen);
+            return;
+          }
+        }
+      }*/
     }
   }
 }

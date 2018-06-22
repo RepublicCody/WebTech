@@ -10,6 +10,7 @@ class GameController{
   var messageListener;
   var deviceListener;
   var fullscreenListener;
+  var exitfullscreenListener;
 
   int lastPlayed = 0;
 
@@ -29,7 +30,8 @@ class GameController{
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('td').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
-    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("body"));});
+    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(0, querySelector("body"));});
+    exitfullscreenListener = querySelector('#exitfullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(1, querySelector("body"));});
     addListeners();
   }
 
@@ -242,6 +244,11 @@ class GameController{
     view.setMessageEnemy(t);
     view.setShipCount(s);
 
+  }
+
+  void fullscreenMode(int i, Element element){
+    view.changeButton(i);
+    view.fullscreenWorkaround(i, element);
   }
 }
 
