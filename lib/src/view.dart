@@ -60,6 +60,8 @@ class GameView {
     menuString +=
     '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
     menuString += '<input type="button" id="zufall" class="button" value="Random"></input>';
+    menuString += '<input type="button" id="fullscreenbutton" class="fullscreen"></input>';
+    menuString += '<div id="fullscreendiv" class="fullscreen"></div>';
 
     menu.innerHtml = menuString;
   }

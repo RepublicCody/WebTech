@@ -9,6 +9,7 @@ class GameController{
   var gameoverListener;
   var messageListener;
   var deviceListener;
+  var fullscreenListener;
 
   int lastPlayed = 0;
 
@@ -28,6 +29,7 @@ class GameController{
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('td').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
+    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {view.fullscreenWorkaround(querySelector("body"));});
     addListeners();
   }
 
@@ -111,7 +113,7 @@ class GameController{
         model.generatePlayingField(lvl);
         lastPlayed = lvl;
       }
-      view.setInGameText("Place a ${model.playingField.playerShipLengths[0]}-part");
+      view.setInGameText("Place a ${model.playingField.playerShipLengths[0]}-part ship");
       view.setInGameLevel("Level $lastPlayed");
       view.update(model.playingField);
       setMessage();
@@ -127,7 +129,7 @@ class GameController{
       } else if (element.id == "nextGameover") {
         model.generatePlayingField(lastPlayed + 1);
         view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[0]}-part");
+            "Place a ${model.playingField.playerShipLengths[0]}-part ship");
         view.setInGameLevel("Level " + (lastPlayed+1).toString());
         lastPlayed++;
         view.update(model.playingField);
@@ -136,7 +138,7 @@ class GameController{
       } else if (element.id == "restartGameover") {
         model.generatePlayingField(lastPlayed);
         view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[0]}-part");
+            "Place a ${model.playingField.playerShipLengths[0]}-part ship");
         view.setInGameLevel("Level $lastPlayed");
         view.update(model.playingField);
         setMessage();
@@ -170,7 +172,7 @@ class GameController{
       bool completed = model.playingField.buildShip(rc[0], rc[1], true);
       if (completed && model.playingField.playerShipCount() < model.playingField.playerShipLengths.length) {
         view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}-part");
+            "Place a ${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}-part ship");
       }
       view.update(model.playingField);
       if (model.playingField.shipBuildingComplete()) {
