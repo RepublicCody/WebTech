@@ -23,6 +23,7 @@ class GameController{
     view.generateGameoverscreen();
     view.generateMessage();
     view.generateDevice();
+    view.generateAnimatedMessage();
     view.showMenu();
     window.onResize.listen((e) => view.fieldSize());
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
@@ -249,6 +250,10 @@ class GameController{
   void fullscreenMode(int i, Element element){
     view.changeButton(i);
     view.fullscreenWorkaround(i, element);
+  }
+
+  void sunkShipAnimation(){
+
   }
 }
 

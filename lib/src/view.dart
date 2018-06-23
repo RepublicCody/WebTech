@@ -11,6 +11,8 @@ class GameView {
 
   final device = querySelector("#device");
 
+  final animatedMesage = querySelector("#animatedmessage");
+
   List<List<HtmlElement>> fields;
 
   void generateField(PlayingField playingField) {
@@ -55,7 +57,6 @@ class GameView {
         '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
         counter++;
       }
-     // menuString +='<br>';
     }
     menuString +=
     '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
@@ -96,8 +97,12 @@ class GameView {
     message.innerHtml = messageString;
   }
 
+  void generateAnimatedMessage(){
+    animatedMesage.innerHtml = '<div id="animatedmessagetext" value="Ship sunk"></div>';
+  }
+
+
   void update(PlayingField playingField) {
-    //List<List<Field>> tiles = playingField.fields;
     for (int row = 0; row < fields.length; row++) {
       for (int col = 0; col < fields[row].length; col++) {
         this.fields[row][col].attributes["class"] = cssClass(playingField[row][col]);
@@ -272,7 +277,7 @@ class GameView {
 
   }
 
-  void showGame() {
+  void showGame() {//TODO:kann man alles mit finals kürzer machen
     querySelector("#menu").style.display="none";
     querySelector("#gameTable").style.display="block";
     querySelector("#gameover").style.display="none";
@@ -298,6 +303,14 @@ class GameView {
     querySelector("#gameTable").style.display="block";
     querySelector("#message").style.display="block";
     querySelector("#gameover").style.display="none";
+  }
+
+  void showAnimatedMessage(){
+    animatedMesage.style.display="block";
+  }
+
+  void hideAnimatedMessage(){
+    animatedMesage.style.display="none";
   }
 
   void changeButton(int i){

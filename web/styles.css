@@ -162,6 +162,34 @@
         background: -webkit-linear-gradient(top, #3c3c3c 0%, #222222 100%);
     }
 
+    #animatedmessage{
+        display: none;
+        z-index: 2;
+    }
+
+    #animatedmessagetext{
+        -webkit-animation: animated 0.5s infinite;
+        -webkit-animation-iteration-count: 1;
+        animation: animated 0.5s infinite;
+        animation-iteration-count: 1;
+        position: absolute;
+        text-align: center;
+        top: 20vh;
+        left: 50%;
+        font-size: 7vw;
+        color: #FFFFFF;
+        text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+
+    @keyframes animated {
+        0% {opacity: 1}
+        20% {opacity: 0.75}
+        40% {opacity: 0.5}
+        60% {opacity: 0.25}
+        100% {opacity: 0}
+    }
 
     /* Game Table */
     #gameTable {
