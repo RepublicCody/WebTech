@@ -14,7 +14,11 @@ class GameView {
   final animatedMesage = querySelector("#animatedmessage");
 
   List<List<HtmlElement>> fields;
-
+  /**
+   * Generats html for the playing field screen
+   * Creats a List in a List which contains HtmlElements
+   * @param playingField TODO
+   */
   void generateField(PlayingField playingField) {
     //List<List<Field>> tiles = playingField.fields;
     int text = playingField.colCount - 1;
@@ -41,12 +45,18 @@ class GameView {
       }
     }
   }
-
+  /**
+   * Generats html for the device screen
+   * The screen conatins a button, which is not used yet
+   */
   void generateDevice(){
     device.innerHtml = "<input type='button' id='deviceButton' value='Ignore Device Message'></input>";
   }
 
-
+  /**
+   * Generats html for the menu
+   * The menu contains nine levels, a random level selector and a fullscreen button
+   */
   void generateMenu() {
     String menuString;
     int counter = 1;
@@ -67,7 +77,10 @@ class GameView {
 
     menu.innerHtml = menuString;
   }
-
+  /**
+   * Generats html for the gameover screen
+   * The screen contains a button for the menu, if the player won, a next level button, else a restart button
+   */
   void generateGameoverscreen() {
     String gameoverString;
     gameoverString = '<div id="gameoverText"></div><br>';
@@ -76,7 +89,10 @@ class GameView {
     gameoverString += '<input type="button" id="restartGameover" class="button" value="Restart"></input>';
     gameover.innerHtml = gameoverString;
   }
-
+  /**
+   * Generats html for the message screen
+   * The screen contains informations about the round, enemy and player ship count and how difficult it is
+   */
   void generateMessage() {
     String messageString;
     messageString = '<div id="messageBox">';
@@ -96,12 +112,17 @@ class GameView {
 
     message.innerHtml = messageString;
   }
-
+  /**
+   * Generats a div for an animated message, not used yet
+   */
   void generateAnimatedMessage(){
     animatedMesage.innerHtml = '<div id="animatedmessagetext" value="Ship sunk"></div>';
   }
 
-
+  /**
+   * update DOM tree
+   * @param playingFiled TODO
+   */
   void update(PlayingField playingField) {
     for (int row = 0; row < fields.length; row++) {
       for (int col = 0; col < fields[row].length; col++) {
@@ -110,7 +131,12 @@ class GameView {
       }
     }
   }
-
+  /**
+   * This method is for the div above a Field and contains explosion animations
+   * select a red or white cross
+   * @param f is a Field which contains informations about hit, entitiy, fog, powerup, rock, ship, shipBuilder, shipMover
+   * @returns String with class name
+   */
   String animation(Field f){
     if (f.foggy && f.entity is !PowerUp) {
       return f.hit ? f.entity == null ? "animationWhite" : "animationRed" : "empty";
@@ -129,7 +155,11 @@ class GameView {
     }
     return "empty";
   }
-
+  /**
+   * Select a class name for different entities
+   * @param f is a Field which contains informations about hit, entitiy, fog, powerup, rock, ship, shipBuilder, shipMover
+   * @returns String with class name
+   */
   String cssClass(Field f) {
     if (f.foggy && f.entity is !PowerUp) {
       return "fog";
@@ -241,6 +271,9 @@ class GameView {
     return "";
   }
 
+  /**
+   * Calculate the size of td, th, back and body element with window. innerHeigtt
+   */
   void fieldSize(){
     String w;
     String h;
@@ -277,42 +310,64 @@ class GameView {
 
   }
 
-  void showGame() {//TODO:kann man alles mit finals kürzer machen
-    querySelector("#menu").style.display="none";
-    querySelector("#gameTable").style.display="block";
-    querySelector("#gameover").style.display="none";
-    querySelector("#message").style.display="none";
+  /**
+   * Change display mode to show the playing field
+   */
+  void showGame() {
+    menu.style.display="none";
+    gameTable.style.display="block";
+    gameover.style.display="none";
+    message.style.display="none";
   }
 
+  /**
+   * Change display mode to show the menu
+   */
   void showMenu() {
-    querySelector("#menu").style.display="block";
-    querySelector("#gameTable").style.display="none";
-    querySelector("#gameover").style.display="none";
-    querySelector("#message").style.display="none";
+    menu.style.display="block";
+    gameTable.style.display="none";
+    gameover.style.display="none";
+    message.style.display="none";
   }
 
+  /**
+   * Change display mode to show the playing field and the gameover screen
+   */
   void showGameover(){
-    querySelector("#menu").style.display="none";
-    querySelector("#gameTable").style.display="block";
-    querySelector("#gameover").style.display="block";
-    querySelector("#message").style.display="none";
+    menu.style.display="none";
+    gameTable.style.display="block";
+    gameover.style.display="block";
+    message.style.display="none";
   }
 
+  /**
+   * Change display mode to show the playing field and the message screen
+   */
   void showMessage(){
-    querySelector("#menu").style.display="none";
-    querySelector("#gameTable").style.display="block";
-    querySelector("#message").style.display="block";
-    querySelector("#gameover").style.display="none";
+    menu.style.display="none";
+    gameTable.style.display="block";
+    message.style.display="block";
+    gameover.style.display="none";
   }
 
+  /**
+   * Change display mode to show the animated message
+   */
   void showAnimatedMessage(){
     animatedMesage.style.display="block";
   }
 
+  /**
+   * Change display mode to hide the animated message
+   */
   void hideAnimatedMessage(){
     animatedMesage.style.display="none";
   }
 
+  /**
+   * Change display mode for fullscreen or exit fullscreen
+   * @param i can be 0 or 1, 0 for exit fullscreen, 1 for fullscreen
+   */
   void changeButton(int i){
     if(i == 0) {
       querySelector("#exitfullscreenbutton").style.display="block";
@@ -323,26 +378,49 @@ class GameView {
     }
   }
 
+  /**
+   * Change display mode to hide the device screen
+   */
   void hideDevice(){
     querySelector("#device").style.display="none";
   }
 
+  /**
+   * Set text for gameover message
+   * @param s text for message
+   */
   void setGameoverText(String s) {
     querySelector('#gameoverText').innerHtml = s;
   }
 
+  /**
+   * Set text for ingame message
+   * @param s text for message
+   */
   void setInGameText(String s) {
     querySelector('#text').innerHtml = s;
   }
 
+  /**
+   * Set text for level in message screen
+   * @param s text for message
+   */
   void setInGameLevel(String s) {
     querySelector('#messageLevel').innerHtml = s;
   }
 
+  /**
+   * Set text for AI name
+   * @param s text for message
+   */
   void setMessageEnemy(String s) {
     querySelector('#enemyplayer').innerHtml = s;
   }
 
+  /**
+   * Set ship count for message screen
+   * @param s list which contains ship count
+   */
   void setShipCount(List<String> s) {
     querySelector('#pdcount').innerHtml = s[0];
     querySelector('#pscount').innerHtml = s[1];
@@ -355,6 +433,11 @@ class GameView {
     querySelector('#eccount').innerHtml = s[7];
   }
 
+  /**
+   * Make fullscreen request
+   * @param i can be 0 or 1, 0 for exit fullscreen, 1 for fullscreen
+   * @param element which should request for fullscreen
+   */
   void fullscreenWorkaround(int i, Element element) {
     if (i == 0) {
       var elem = new JsObject.fromBrowserObject(element);

@@ -49,7 +49,12 @@ class GameController{
       var rc = rowCol(element.id);
       if(rc[0] < model.playingField.enemyRows){
         model.fireAt(rc[0], rc[1]);
-        view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
+        if(model.playingField.enemyShipCount() == 1){
+          view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+        }else {
+          view.setInGameText(
+              "${model.playingField.enemyShipCount()} Ships left");
+        }
         if (model.playingField.gameOver()) {
           view.update(model.playingField);
           gameoverScreen();
@@ -57,7 +62,12 @@ class GameController{
           this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         } else {
             model.enemy.makeMove();
-            view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
+            if(model.playingField.enemyShipCount() == 1){
+              view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+            }else {
+              view.setInGameText(
+                  "${model.playingField.enemyShipCount()} Ships left");
+            }
             view.update(model.playingField);
 
             if (model.playingField.moveShips) {
@@ -88,7 +98,12 @@ class GameController{
         if (completed) {
           this.tableListener.cancel();
           this.tableListener = querySelectorAll('td').onClick.listen(fireAt);
-          view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
+          if(model.playingField.enemyShipCount() == 1){
+            view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+          }else {
+            view.setInGameText(
+                "${model.playingField.enemyShipCount()} Ships left");
+          }
         }
       }
     }
@@ -181,7 +196,12 @@ class GameController{
       if (model.playingField.shipBuildingComplete()) {
         this.tableListener.cancel();
         this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
-        view.setInGameText("${model.playingField.enemyShipCount()} Ships left");
+        if(model.playingField.enemyShipCount() == 1){
+          view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+        }else {
+          view.setInGameText(
+              "${model.playingField.enemyShipCount()} Ships left");
+        }
       }
     }
   }

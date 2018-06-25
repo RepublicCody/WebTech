@@ -42,8 +42,17 @@
         display: none;
     }
 }
+    /* Preload */
+
+    .preload{
+        display: none;
+        width: 0px;
+        height: 0px;
+        border: 0px;
+    }
 
     /* Device */
+
     #device {
         position: fixed;
         width: 100vw;
