@@ -999,17 +999,16 @@ class PlayingField {
   }
 
   int enemyShipCount() {
-
     int count = 0;
-    for (int i = 0; i < ships.length; i++) {
-      if (!ships[i].friendly && !ships[i].sunk) count++;
-    }
+    ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
+    ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
     return count;
-
   }
 
   int playerShipCount() {
-    return ships.length - enemyShipCount();
+    int count = 0;
+    ships.forEach((s) => count += s.friendly && !s.sunk ? 1 : 0);
+    return count;
   }
 
   Field north(Field f) {
