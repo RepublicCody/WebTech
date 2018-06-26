@@ -17,8 +17,8 @@ class GameModel {
 
   void generatePlayingField(int level) {
     playingField.newGame();
-    playingField.generateField(levels[level - 1]["level_$level"]);
-    enemy.strategy = levels[level - 1]["level_$level"]["enemyStrategy"];
+    playingField.generateField(levels[level - 1]);
+    enemy.strategy = levels[level - 1]["enemyStrategy"];
     enemy.placeShips(playingField);
     enemy.resetAI();
   }
@@ -89,9 +89,6 @@ class Enemy {
   }
 
   void makeMove() {
-    //mediocreMove();
-    //hardcoreMove();
-    //randomHardcoreMove();
 
     switch (_strategy) {
       case 0:
@@ -848,7 +845,6 @@ class PlayingField {
   bool moveShips;
 
   int _radiusPuRounds;
-  //int _visionPuRounds;
 
   operator [](int index) => _fields[index];
 
@@ -860,7 +856,6 @@ class PlayingField {
   int get enemyRows => _enemyRows;
 
   set radiusPuRounds(int rounds) => _radiusPuRounds = rounds;
-  //set visionPuRounds(int rounds) => _radiusPuRounds = rounds;
 
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
