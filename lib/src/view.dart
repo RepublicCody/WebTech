@@ -12,7 +12,6 @@ class GameView {
   List<List<HtmlElement>> fields;
 
   void generateField(PlayingField playingField) {
-    //List<List<Field>> tiles = playingField.fields;
     int text = playingField.colCount - 1;
     String table = "<tbody><tr><th colspan='$text' id='text'></th> <th id='back' class='back'></th></tr>";
     for (int row = 0; row < playingField.rowCount; row++) {
@@ -79,7 +78,6 @@ class GameView {
   }
 
   void update(PlayingField playingField) {
-    //List<List<Field>> tiles = playingField.fields;
     for (int row = 0; row < fields.length; row++) {
       for (int col = 0; col < fields[row].length; col++) {
         this.fields[row][col].attributes["class"] = cssClass(playingField[row][col]);

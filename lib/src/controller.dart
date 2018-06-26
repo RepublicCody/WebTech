@@ -54,10 +54,8 @@ class GameController{
           enemyMove();
         }
       } else if (model.playingField[rc[0]][rc[1]].entity is Ship) {
-        print("HALLO");
         Ship s = model.playingField[rc[0]][rc[1]].entity;
         if (s.friendly) {
-          print("HALLO");
           model.playingField.moveShip(rc[0], rc[1]);
           view.update(model.playingField);
         }
@@ -73,23 +71,6 @@ class GameController{
     model.enemy.makeMove();
     view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
     view.update(model.playingField);
-  }
-
-  void moveShip(MouseEvent e) {
-    if (e.target is Element) {
-      HtmlElement element = e.target;
-      print(element.className);
-      var rc = rowCol(element.id);
-      if (rc[0] >= model.playingField.enemyRows) {
-        bool completed = model.playingField.moveShip(rc[0], rc[1]);
-        view.update(model.playingField);
-        if (completed) {
-          this.tableListener.cancel();
-          this.tableListener = querySelectorAll('td').onClick.listen(fireAt);
-          view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
-        }
-      }
-    }
   }
 
   void gameoverScreen(){

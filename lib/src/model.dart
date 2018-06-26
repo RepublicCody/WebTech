@@ -998,19 +998,6 @@ class PlayingField {
     _mover.remove();
   }
 
-  // just for testing purposes
-  String toString() {
-    var fieldString = "";
-    for (int i = 0; i < rowCount; i++) {
-      fieldString += "\n";
-      for (int j = 0; j < colCount; j++) {
-        fieldString += _fields[i][j].toString();
-        fieldString += " ";
-      }
-    }
-    return fieldString;
-  }
-
   bool gameOver() {
     return enemyShipCount() <= 0 || playerShipCount() <= 0;
   }
@@ -1316,7 +1303,6 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     for (int i = 0; i < playingField.ships.length; i++) {
       ship = playingField.ships[i];
       if (!ship.friendly){
-        print("enemy ship found");
         ship.fields.forEach((Field f) => f.foggy = false);
         break;
       }
@@ -1423,7 +1409,6 @@ class ShipBuilder extends Entity{
         shipFields.add(playingField[r][c]);
       }
       remove();
-      //playingField.addShip(new Ship(playingField, shipFields, _friendly));
       playingField.addShip(Ship.makeShip(playingField, shipFields, _friendly));
     }
   }
