@@ -994,6 +994,10 @@ class PlayingField {
     return false;
   }
 
+  void removeMovers() {
+    _mover.remove();
+  }
+
   // just for testing purposes
   String toString() {
     var fieldString = "";

@@ -38,11 +38,11 @@ class GameController{
 
 
   void fireAt(MouseEvent e) {
-    print("FIREAT");
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       if(rc[0] < model.playingField.enemyRows){
+        model.playingField.removeMovers();
         model.fireAt(rc[0], rc[1]);
         view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
         if (model.playingField.gameOver()) {
@@ -51,26 +51,28 @@ class GameController{
           this.tableListener.cancel();
           this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         } else {
-            model.enemy.makeMove();
-            view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
-            view.update(model.playingField);
-
-            if (model.playingField.moveShips) {
-              this.tableListener.cancel();
-              this.tableListener =
-                  querySelectorAll('td').onClick.listen(moveShip);
-              view.setInGameText("Bewege ein Schiff");
-            }
-
-            if (model.playingField.gameOver()) {
-              view.update(model.playingField);
-              gameoverScreen();
-              this.tableListener.cancel();
-              this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
-            }
+          enemyMove();
         }
+      } else if (model.playingField[rc[0]][rc[1]].entity is Ship) {
+        print("HALLO");
+        Ship s = model.playingField[rc[0]][rc[1]].entity;
+        if (s.friendly) {
+          print("HALLO");
+          model.playingField.moveShip(rc[0], rc[1]);
+          view.update(model.playingField);
+        }
+      } else if (model.playingField[rc[0]][rc[1]].entity is ShipMover) {
+        model.playingField.moveShip(rc[0], rc[1]);
+        enemyMove();
+        view.update(model.playingField);
       }
     }
+  }
+
+  void enemyMove() {
+    model.enemy.makeMove();
+    view.setInGameText("${model.playingField.enemyShipCount()} Schiffe übrig");
+    view.update(model.playingField);
   }
 
   void moveShip(MouseEvent e) {
