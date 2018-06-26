@@ -3,7 +3,6 @@ library warships;
 import 'dart:html';
 import 'dart:convert';
 import 'dart:math';
-import 'dart:async';
 import 'dart:js';
 
 part 'src/model.dart';

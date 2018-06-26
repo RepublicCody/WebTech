@@ -36,7 +36,6 @@ class GameView {
     }
   }
 
-
   void generateMenu() {
     String menuString;
     int counter = 1;

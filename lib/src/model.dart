@@ -12,7 +12,7 @@ class GameModel {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
     _enemy = new Enemy(this);
     _enemy = new Enemy(this);
-    levelList(); // TODO: try/catch
+    loadLevels();
   }
 
   void generatePlayingField(int level) {
@@ -29,13 +29,9 @@ class GameModel {
     return 1 + rng.nextInt(lvlCount);
   }
 
-  Future<List> levelList() async {
-    var url = "levels.json";  //TODO: move this to a better location
-    var response = await HttpRequest.request(url, method:'GET');
-    levels = JSON.decode(response.responseText);
-    return JSON.decode(response.responseText);
+  void loadLevels() {
+    HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
   }
-
 
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
