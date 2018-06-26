@@ -20,7 +20,6 @@ class GameView {
    * @param playingField TODO
    */
   void generateField(PlayingField playingField) {
-    //List<List<Field>> tiles = playingField.fields;
     int text = playingField.colCount - 1;
     String table = "<tbody><tr><th colspan='$text' id='text'></th> <th id='back' class='back'></th></tr>";
     for (int row = 0; row < playingField.rowCount; row++) {
@@ -116,7 +115,7 @@ class GameView {
    * Generats a div for an animated message, not used yet
    */
   void generateAnimatedMessage(){
-    animatedMesage.innerHtml = '<div id="animatedmessagetext" value="Ship sunk"></div>';
+    animatedMesage.innerHtml = '<div id="animatedmessagetext">Ship sunk</div>';
   }
 
   /**

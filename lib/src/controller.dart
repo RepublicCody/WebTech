@@ -48,65 +48,35 @@ class GameController{
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
       if(rc[0] < model.playingField.enemyRows){
+        model.playingField.removeMovers();
         model.fireAt(rc[0], rc[1]);
-        if(model.playingField.enemyShipCount() == 1){
-          view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
-        }else {
-          view.setInGameText(
-              "${model.playingField.enemyShipCount()} Ships left");
-        }
+        shipsleftMessage();
         if (model.playingField.gameOver()) {
           view.update(model.playingField);
           gameoverScreen();
           this.tableListener.cancel();
           this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
         } else {
-            model.enemy.makeMove();
-            if(model.playingField.enemyShipCount() == 1){
-              view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
-            }else {
-              view.setInGameText(
-                  "${model.playingField.enemyShipCount()} Ships left");
-            }
-            view.update(model.playingField);
-
-            if (model.playingField.moveShips) {
-              this.tableListener.cancel();
-              this.tableListener =
-                  querySelectorAll('td').onClick.listen(moveShip);
-              view.setInGameText("Move a Ship");
-            }
-
-            if (model.playingField.gameOver()) {
-              view.update(model.playingField);
-              gameoverScreen();
-              this.tableListener.cancel();
-              this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
-            }
+          enemyMove();
         }
+      } else if (model.playingField[rc[0]][rc[1]].entity is Ship) {
+        Ship s = model.playingField[rc[0]][rc[1]].entity;
+        if (s.friendly) {
+          model.playingField.moveShip(rc[0], rc[1]);
+          view.update(model.playingField);
+        }
+      } else if (model.playingField[rc[0]][rc[1]].entity is ShipMover) {
+        model.playingField.moveShip(rc[0], rc[1]);
+        enemyMove();
+        view.update(model.playingField);
       }
     }
   }
 
-  void moveShip(MouseEvent e) {
-    if (e.target is Element) {
-      HtmlElement element = e.target;
-      var rc = rowCol(element.id);
-      if (rc[0] >= model.playingField.enemyRows) {
-        bool completed = model.playingField.moveShip(rc[0], rc[1]);
-        view.update(model.playingField);
-        if (completed) {
-          this.tableListener.cancel();
-          this.tableListener = querySelectorAll('td').onClick.listen(fireAt);
-          if(model.playingField.enemyShipCount() == 1){
-            view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
-          }else {
-            view.setInGameText(
-                "${model.playingField.enemyShipCount()} Ships left");
-          }
-        }
-      }
-    }
+  void enemyMove() {
+    model.enemy.makeMove();
+    shipsleftMessage();
+    view.update(model.playingField);
   }
 
   void gameoverScreen(){
@@ -196,12 +166,7 @@ class GameController{
       if (model.playingField.shipBuildingComplete()) {
         this.tableListener.cancel();
         this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
-        if(model.playingField.enemyShipCount() == 1){
-          view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
-        }else {
-          view.setInGameText(
-              "${model.playingField.enemyShipCount()} Ships left");
-        }
+        shipsleftMessage();
       }
     }
   }
@@ -265,6 +230,15 @@ class GameController{
     view.setMessageEnemy(t);
     view.setShipCount(s);
 
+  }
+
+  void shipsleftMessage(){
+    if(model.playingField.enemyShipCount() == 1){
+      view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+    }else {
+      view.setInGameText(
+          "${model.playingField.enemyShipCount()} Ships left");
+    }
   }
 
   void fullscreenMode(int i, Element element){

@@ -12,13 +12,13 @@ class GameModel {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
     _enemy = new Enemy(this);
     _enemy = new Enemy(this);
-    levelList(); // TODO: try/catch
+    loadLevels();
   }
 
   void generatePlayingField(int level) {
     playingField.newGame();
-    playingField.generateField(levels[level - 1]["level_$level"]);
-    enemy.strategy = levels[level - 1]["level_$level"]["enemyStrategy"];
+    playingField.generateField(levels[level - 1]);
+    enemy.strategy = levels[level - 1]["enemyStrategy"];
     enemy.placeShips(playingField);
     enemy.resetAI();
   }
@@ -29,13 +29,9 @@ class GameModel {
     return 1 + rng.nextInt(lvlCount);
   }
 
-  Future<List> levelList() async {
-    var url = "levels.json";  //TODO: move this to a better location
-    var response = await HttpRequest.request(url, method:'GET');
-    levels = JSON.decode(response.responseText);
-    return JSON.decode(response.responseText);
+  void loadLevels() {
+    HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
   }
-
 
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
@@ -498,7 +494,6 @@ class PlayingField {
   bool moveShips;
 
   int _radiusPuRounds;
-  //int _visionPuRounds;
 
   operator [](int index) => _fields[index];
 
@@ -510,7 +505,6 @@ class PlayingField {
   int get enemyRows => _enemyRows;
 
   set radiusPuRounds(int rounds) => _radiusPuRounds = rounds;
-  //set visionPuRounds(int rounds) => _radiusPuRounds = rounds;
 
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
@@ -637,17 +631,8 @@ class PlayingField {
     return false;
   }
 
-  // just for testing purposes
-  String toString() {
-    var fieldString = "";
-    for (int i = 0; i < rowCount; i++) {
-      fieldString += "\n";
-      for (int j = 0; j < colCount; j++) {
-        fieldString += _fields[i][j].toString();
-        fieldString += " ";
-      }
-    }
-    return fieldString;
+  void removeMovers() {
+    _mover.remove();
   }
 
   bool gameOver() {
@@ -661,17 +646,16 @@ class PlayingField {
   }
 
   int enemyShipCount() {
-
     int count = 0;
-    for (int i = 0; i < ships.length; i++) {
-      if (!ships[i].friendly && !ships[i].sunk) count++;
-    }
+    ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
+    ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
     return count;
-
   }
 
   int playerShipCount() {
-    return ships.length - enemyShipCount();
+    int count = 0;
+    ships.forEach((s) => count += s.friendly && !s.sunk ? 1 : 0);
+    return count;
   }
 
   Field north(Field f) {
@@ -868,7 +852,7 @@ class Ship extends Entity {
     }
     if (sunk) {
       sinkShip();
-      print("Schiff versenkt");
+      print("Schiff versenkt");//Hier könnte ihr animierter Code stehen
     }
   }
 
@@ -965,7 +949,6 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     for (int i = 0; i < playingField.ships.length; i++) {
       ship = playingField.ships[i];
       if (!ship.friendly){
-        print("enemy ship found");
         ship.fields.forEach((Field f) => f.foggy = false);
         break;
       }
@@ -1072,7 +1055,6 @@ class ShipBuilder extends Entity{
         shipFields.add(playingField[r][c]);
       }
       remove();
-      //playingField.addShip(new Ship(playingField, shipFields, _friendly));
       playingField.addShip(Ship.makeShip(playingField, shipFields, _friendly));
     }
   }

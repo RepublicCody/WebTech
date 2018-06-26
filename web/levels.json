@@ -1,110 +1,101 @@
 [
   {
-    "level_1": {
-      "playerShips": [2, 2, 3, 3, 4],
-      "enemyShips": [2, 2, 3, 3, 4],
-      "playerRocks": 3,
-      "enemyRocks": 3,
-      "playerPowUps": 0,
-      "enemyPowUps": 1,
-      "enemyStrategy": 0,
-      "moveShips": false
-    }
+    "id": "1",
+    "playerShips": [2, 2, 3, 3, 4],
+    "enemyShips": [2, 2, 3, 3, 4],
+    "playerRocks": 3,
+    "enemyRocks": 3,
+    "playerPowUps": 0,
+    "enemyPowUps": 1,
+    "enemyStrategy": 0,
+    "moveShips": false
   },
   {
-    "level_2": {
-      "playerShips": [2, 2, 2, 3, 3],
-      "enemyShips": [2, 2, 2, 3, 3],
-      "playerRocks": 4,
-      "enemyRocks": 3,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 1,
-      "moveShips": false
-    }
+    "id": "2",
+    "playerShips": [2, 2, 2, 3, 3],
+    "enemyShips": [2, 2, 2, 3, 3],
+    "playerRocks": 4,
+    "enemyRocks": 3,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 1,
+    "moveShips": true
   },
   {
-    "level_3": {
-      "playerShips": [3, 4, 5],
-      "enemyShips": [3, 4, 5],
-      "playerRocks": 4,
-      "enemyRocks": 3,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 1,
-      "moveShips": false
-    }
+    "id": "3",
+    "playerShips": [3, 4, 5],
+    "enemyShips": [3, 4, 5],
+    "playerRocks": 4,
+    "enemyRocks": 3,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 1,
+    "moveShips": false
   },
   {
-    "level_4": {
-      "playerShips": [2, 3, 4, 5, 5],
-      "enemyShips": [2, 3, 4, 5, 5],
-      "playerRocks": 5,
-      "enemyRocks": 5,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 2,
-      "moveShips": false
-    }
+    "id": "4",
+    "playerShips": [2, 3, 4, 5, 5],
+    "enemyShips": [2, 3, 4, 5, 5],
+    "playerRocks": 5,
+    "enemyRocks": 5,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 2,
+    "moveShips": false
   },
   {
-    "level_5": {
-      "playerShips": [2, 2, 5, 5],
-      "enemyShips": [2, 2, 5, 5],
-      "playerRocks": 5,
-      "enemyRocks": 3,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 2,
-      "moveShips": false
-    }
+    "id": "5",
+    "playerShips": [2, 2, 5, 5],
+    "enemyShips": [2, 2, 5, 5],
+    "playerRocks": 5,
+    "enemyRocks": 3,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 2,
+    "moveShips": false
   },
   {
-    "level_6": {
-      "playerShips": [3, 3, 3, 3],
-      "enemyShips": [3, 3, 3, 3],
-      "playerRocks": 7,
-      "enemyRocks": 7,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 2,
-      "moveShips": false
-    }
+    "id": "6",
+    "playerShips": [3, 3, 3, 3],
+    "enemyShips": [3, 3, 3, 3],
+    "playerRocks": 7,
+    "enemyRocks": 7,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 2,
+    "moveShips": false
   },
   {
-    "level_7": {
-      "playerShips": [2, 2],
-      "enemyShips": [2, 2],
-      "playerRocks": 5,
-      "enemyRocks": 4,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 3,
-      "moveShips": false
-    }
+    "id": "7",
+    "playerShips": [2, 2],
+    "enemyShips": [2, 2],
+    "playerRocks": 5,
+    "enemyRocks": 4,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 3,
+    "moveShips": false
   },
   {
-    "level_8": {
-      "playerShips": [2, 2],
-      "enemyShips": [2, 2, 4, 5],
-      "playerRocks": 5,
-      "enemyRocks": 3,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 3,
-      "moveShips": false
-    }
+    "id": "8",
+    "playerShips": [2, 2],
+    "enemyShips": [2, 2, 4, 5],
+    "playerRocks": 5,
+    "enemyRocks": 3,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 3,
+    "moveShips": false
   },
   {
-    "level_9": {
-      "playerShips": [2, 2],
-      "enemyShips": [2, 2, 2, 3, 4, 5],
-      "playerRocks": 7,
-      "enemyRocks": 2,
-      "playerPowUps": 1,
-      "enemyPowUps": 1,
-      "enemyStrategy": 3,
-      "moveShips": false
-    }
+    "id": "9",
+    "playerShips": [2, 2],
+    "enemyShips": [2, 2, 2, 3, 4, 5],
+    "playerRocks": 7,
+    "enemyRocks": 2,
+    "playerPowUps": 1,
+    "enemyPowUps": 1,
+    "enemyStrategy": 3,
+    "moveShips": false
   }
 ]
