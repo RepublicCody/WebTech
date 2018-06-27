@@ -636,18 +636,11 @@ class PlayingField {
   }
 
   bool gameOver() {
-    int counterFriend = 0;
-    int counterEnemy = 0;
-    for(int i = 0; i < ships.length; i++){
-      if(ships[i].sunk == true && ships[i].friendly == true)counterFriend++;
-      if(ships[i].sunk == true && ships[i].friendly == false)counterEnemy++;
-    }
-    return counterFriend == playerShipLengths.length || counterEnemy == enemyShipLengths.length;
+    return playerShipCount() <= 0 || enemyShipCount() <= 0;
   }
 
   int enemyShipCount() {
     int count = 0;
-    ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
     ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
     return count;
   }
@@ -857,14 +850,9 @@ class Ship extends Entity {
   }
 
   void sinkShip() {
-    for (int i = 0; i < fields.length; i++) {
-      //if (fields[i].entity == this) fields[i].entity = null;
-    }
-    //playingField.ships.remove(this);
     _sunk = true;
   }
 
-  //TODO: not tested
   void move(int dir) {
     List<Field> newShip = new List<Field>();
     for (int i = 0; i < fields.length; i++) {
@@ -875,7 +863,10 @@ class Ship extends Entity {
           newShip.add(vertical ? playingField.south(f) : playingField.east(f));
         }
     }
-    sinkShip();
+
+    fields.forEach((f) => f.entity = null);
+    playingField.ships.remove(this);
+
     playingField.addShip(Ship.makeShip(playingField, newShip, friendly));
   }
 
