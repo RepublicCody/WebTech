@@ -96,7 +96,7 @@ class GameView {
     String messageString;
     messageString = '<div id="messageBox">';
     messageString += '<div id="messageLevel"></div>';
-    messageString += '<div id="messageText">Place your ships in the lower field and take care of islands, they may look like ships</div>';
+    messageString += '<div id="messageText">Place your ships in the lower field and watch out for islands, they look like ships when hit.</div>';
     messageString += '<div id="match"><div id="player">Player</div><div id="vs">VS</div><div id="enemyplayer"></div>';
     messageString += '<div id="playerside"><div id="playerdestroyer"><div id="pdpicture"></div><div id="pdcount"></div></div>'
         '<div id="playersubmarine"><div id="pspicture"></div><div id="pscount"></div></div>'
@@ -112,7 +112,7 @@ class GameView {
     message.innerHtml = messageString;
   }
   /**
-   * Generats a div for an animated message, not used yet
+   * Generates a div for an animated message, not used yet
    */
   void generateAnimatedMessage(){
     animatedMesage.innerHtml = '<div id="animatedmessagetext">Ship sunk</div>';

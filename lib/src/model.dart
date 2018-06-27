@@ -480,18 +480,65 @@ class Enemy {
   }
 }
 
+/**
+ * The PlayingField class contains all entities of the game. It is divided into
+ * the northern half and the southern half each of which function as one party's
+ * territory
+ */
 class PlayingField {
+  /**
+   * A 2d list containing all tiles(Fields) of the playing field
+   */
   List<List<Field>> _fields;
+
+  /**
+   * A list containing both party's ships
+   */
   List<Ship> _ships;
+
+  /**
+   * A list containing the lengths of the player's ships
+   */
   List<int> _playerShipLengths;
+
+  /**
+   * The lengths of the enemy's ships
+   */
   List<int> _enemyShipLengths;
+
+  /**
+   * The player's ship builder
+   */
   ShipBuilder _playerBuilder;
+
+  /**
+   * the enemy's ship builder
+   */
   ShipBuilder _enemyBuilder;
+
+  /**
+   * the player's ship mover
+   */
   ShipMover _mover;
+
+  /**
+   * the playing fields's number of rows
+   */
   int _rowCount;
+
+  /**
+   * the playing field's number of columns
+   */
   int _colCount;
+
+  /**
+   * the amount of the enemy territory's rows
+   */
   int _enemyRows;
 
+  /**
+   * the radius power ups left turns
+   */
   int _radiusPuRounds;
 
   operator [](int index) => _fields[index];
@@ -502,9 +549,13 @@ class PlayingField {
   int get rowCount => _rowCount;
   int get colCount => _colCount;
   int get enemyRows => _enemyRows;
-
   set radiusPuRounds(int rounds) => _radiusPuRounds = rounds;
 
+  /**
+   * creates a new PlayingField instance
+   * @param rows the playing field's number of rows
+   * @param cols the playing field's number of columns
+   */
   PlayingField(int rows, int cols) {
     this._rowCount = rows;
     this._colCount = cols;
@@ -514,11 +565,18 @@ class PlayingField {
     _radiusPuRounds = 0;
   }
 
+  /**
+   * resets the playing field for a new game
+   */
   void newGame() {
     _fields = initializeFields(rowCount, colCount);
     _ships = new List<Ship>();
   }
 
+  /**
+   * @param rows the playing field's number of rows
+   * @param cols the playing field's number of columns
+   */
   List<List<Field>> initializeFields(int rows, int cols) {
     var outerList = new List<List<Field>>(rows);
     for (int row = 0; row < rows; row++) {
@@ -531,6 +589,11 @@ class PlayingField {
     return outerList;
   }
 
+  /**
+   * Attacks a specific tile of the playing field
+   * @param row the target field's row
+   * @param col the target field's column
+   */
   void fireAt(int row, int col) {
     if (row < _enemyRows) {
       _fields[row][col].fireAt();
@@ -548,6 +611,10 @@ class PlayingField {
     }
   }
 
+  /**
+   * generates a random field with a given number of rocks, power ups and ships
+   * @param level a map containing the information for the generation of the playingField
+   */
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
@@ -577,6 +644,12 @@ class PlayingField {
     }
   }
 
+  /**
+   * provides a random tile from the playing field between a minimal row and a maximal row
+   * @param minRow the minimal row
+   * @param maxRow the maximal row
+   * @returns a random field between the min- and maxRow
+   */
   Field randomField(int minRow, int maxRow) {
     Random rng = new Random();
     int row;
@@ -586,15 +659,29 @@ class PlayingField {
     return _fields[row][col];
   }
 
+  /**
+   * checks if there are any ships left to build
+   * @returns true if all ships are built, false if not
+   */
   bool shipBuildingComplete() {
     return playerShipCount() >= playerShipLengths.length;
   }
 
+  /**
+   * adds a ship to the playingfield
+   * @param ship the ship to be added
+   */
   void addShip(Ship ship) {
     ships.add(ship);
     ship.place();
   }
 
+  /**
+   * adds a ShipBuilder to construct a ship
+   * @param row the target row for the ship builder
+   * @param col the target col for the ship builder
+   * @returns true if ship is completed, false if not
+   */
   bool buildShip(int row, int col, bool friendly) {
     Field f = _fields[row][col];
     if (f.entity == null/* && !f.foggy*/) {
@@ -615,6 +702,12 @@ class PlayingField {
     return false;
   }
 
+  /**
+   * adds a ShipMover to move a ship
+   * @param row the target row for the ship mover
+   * @param col the target col for the ship mover
+   * @returns true if the ship has been moved, false if not
+   */
   bool moveShip(int row, int col) {
     if (_fields[row][col].entity is Ship) {
       Ship s = _fields[row][col].entity;
@@ -628,27 +721,47 @@ class PlayingField {
     return false;
   }
 
+  /**
+   * removes the ShipMovers from the playing field
+   */
   void removeMovers() {
     if (_mover != null)
     _mover.remove();
   }
 
+  /**
+   * checks if the game is over
+   * @returns true if the game is over, false if not
+   */
   bool gameOver() {
     return playerShipCount() <= 0 || enemyShipCount() <= 0;
   }
 
+  /**
+   * counts the enemy's ships which have not sunk
+   * @return the number of enemy ships which have not sunk
+   */
   int enemyShipCount() {
     int count = 0;
     ships.forEach((s) => count += !s.friendly && !s.sunk ? 1 : 0);
     return count;
   }
 
+  /**
+   * counts the player's ships which have not sunk
+   * @return the number of player ships which have not sunk
+   */
   int playerShipCount() {
     int count = 0;
     ships.forEach((s) => count += s.friendly && !s.sunk ? 1 : 0);
     return count;
   }
 
+  /**
+   * finds the field to the north of a known field if there is one
+   * @param f the known field
+   * @returns the field to the north of the known field if there is one, else null
+   */
   Field north(Field f) {
     if (_fields[f.row][f.col] != null) {
       if (f.row - 1 < 0) return null;
@@ -656,6 +769,12 @@ class PlayingField {
     }
     return null;
   }
+  /**
+   * finds the field to the east of a known field
+   * @param f the known field
+   * @returns the field to the east of the known field if there is none
+   *          the first field of the known field's row is returned
+   */
   Field east(Field f) {
     if (_fields[f.row][f.col] != null) {
       if (f.col + 1 >= colCount) return _fields[f.row][0];
@@ -663,6 +782,12 @@ class PlayingField {
     }
     return null;
   }
+
+  /**
+   * finds the field to the south of a known field if there is one
+   * @param f the known field
+   * @returns the field to the south of the known field if there is one, else null
+   */
   Field south(Field f) {
     if (_fields[f.row][f.col] != null) {
       if (f.row + 1 >= rowCount) return null;
@@ -670,6 +795,12 @@ class PlayingField {
     }
     return null;
   }
+  /**
+   * finds the field to the west of a known field
+   * @param f the known field
+   * @returns the field to the west of the known field if there is none
+   *          the last field of the known field's row is returned
+   */
   Field west(Field f) {
     if (_fields[f.row][f.col] != null) {
       if (f.col - 1 < 0)
