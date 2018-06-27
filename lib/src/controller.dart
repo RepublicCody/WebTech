@@ -37,17 +37,27 @@ class GameController{
   }
 
   List<int> rowCol(String cssId) {
-    RegExp re = new RegExp("field_([0-9]+)_([0-9]+)");
+    print("Hallo3");
+    RegExp re = new RegExp("[a-z]+_([0-9]+)_([0-9]+)");
+    print("Hallo4");
     Match m = re.firstMatch(cssId);
+    print("Hallo5");
+    print(m.group(1));
+    print(int.parse(m.group(2)));
     return [int.parse(m.group(1)), int.parse(m.group(2))];
   }
 
 
   void fireAt(MouseEvent e) {
     if (e.target is Element) {
+      print("Hallo1");
       HtmlElement element = e.target;
+      print("Hallo2");
+      print(element.id);
       var rc = rowCol(element.id);
-      if(rc[0] < model.playingField.enemyRows){
+      print("HalloDONE");
+      if (rc[0] < model.playingField.enemyRows &&
+          !model.playingField[rc[0]][rc[1]].hit) {
         model.playingField.removeMovers();
         model.fireAt(rc[0], rc[1]);
         shipsleftMessage();
@@ -55,20 +65,23 @@ class GameController{
           view.update(model.playingField);
           gameoverScreen();
           this.tableListener.cancel();
-          this.tableListener = querySelectorAll('td').onClick.listen(buildShip);  //change to fireat on click on table
+          this.tableListener = querySelectorAll('td').onClick.listen(
+              buildShip); //change to fireat on click on table
         } else {
           enemyMove();
         }
-      } else if (model.playingField[rc[0]][rc[1]].entity is Ship) {
-        Ship s = model.playingField[rc[0]][rc[1]].entity;
-        if (s.friendly) {
+      } else if (model.playingField[rc[0]][rc[1]].entity != null) {
+        if (model.playingField[rc[0]][rc[1]].entity is Ship) {
+          Ship s = model.playingField[rc[0]][rc[1]].entity;
+          if (s.friendly) {
+            model.playingField.moveShip(rc[0], rc[1]);
+            view.update(model.playingField);
+          }
+        } else if (model.playingField[rc[0]][rc[1]].entity is ShipMover) {
           model.playingField.moveShip(rc[0], rc[1]);
+          enemyMove();
           view.update(model.playingField);
         }
-      } else if (model.playingField[rc[0]][rc[1]].entity is ShipMover) {
-        model.playingField.moveShip(rc[0], rc[1]);
-        enemyMove();
-        view.update(model.playingField);
       }
     }
   }

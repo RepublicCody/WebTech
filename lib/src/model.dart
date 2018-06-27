@@ -491,7 +491,6 @@ class PlayingField {
   int _rowCount;
   int _colCount;
   int _enemyRows;
-  bool moveShips;
 
   int _radiusPuRounds;
 
@@ -513,7 +512,6 @@ class PlayingField {
     _fields = initializeFields(rows, cols);
     _ships = new List<Ship>();
     _radiusPuRounds = 0;
-    moveShips = false;
   }
 
   void newGame() {
@@ -553,7 +551,6 @@ class PlayingField {
   void generateField(Map level) {// TODO: complete
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
-    moveShips = level["moveShips"];
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
@@ -632,6 +629,7 @@ class PlayingField {
   }
 
   void removeMovers() {
+    if (_mover != null)
     _mover.remove();
   }
 
