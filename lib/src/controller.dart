@@ -11,6 +11,7 @@ class GameController{
   var deviceListener;
   var fullscreenListener;
   var exitfullscreenListener;
+  var instructionListener;
 
   int lastPlayed = 0;
 
@@ -24,15 +25,20 @@ class GameController{
     view.generateMessage();
     view.generateDevice();
     view.generateAnimatedMessage();
+    view.generateInstruction();
     view.showMenu();
     window.onResize.listen((e) => view.fieldSize());
+    instructionListener = querySelector("#instructionButton").onClick.listen((MouseEvent e) {changeInstruction(1);});
+    instructionListener = querySelector("#nextInstruction1").onClick.listen((MouseEvent e) {changeInstruction(2);});
+    instructionListener = querySelector("#nextInstruction2").onClick.listen((MouseEvent e) {changeInstruction(3);});
+    instructionListener = querySelector("#nextInstruction3").onClick.listen((MouseEvent e) {changeInstruction(4);});
+    instructionListener = querySelector("#backInstruction").onClick.listen((MouseEvent e) {view.showMenu();});
     messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
     deviceListener = querySelector('#deviceButton').onClick.listen((MouseEvent e) {view.hideDevice();});
     menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
     tableListener = querySelectorAll('td').onClick.listen(buildShip);
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
-    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(0, querySelector("body"));});
-    exitfullscreenListener = querySelector('#exitfullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(1, querySelector("body"));});
+    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
     addListeners();
   }
 
@@ -59,7 +65,13 @@ class GameController{
       if (rc[0] < model.playingField.enemyRows &&
           !model.playingField[rc[0]][rc[1]].hit) {
         model.playingField.removeMovers();
+        int i = model.playingField.enemyShipCount();
+        print("enemy ship count before: " + i.toString());
         model.fireAt(rc[0], rc[1]);
+        print("enemy ship count after: " + model.playingField.enemyShipCount().toString());
+        if(i > model.playingField.enemyShipCount()){
+          sunkShipAnimation();
+        }
         shipsleftMessage();
         if (model.playingField.gameOver()) {
           view.update(model.playingField);
@@ -254,13 +266,50 @@ class GameController{
     }
   }
 
-  void fullscreenMode(int i, Element element){
-    view.changeButton(i);
-    view.fullscreenWorkaround(i, element);
+  void fullscreenMode(Element element){
+    view.fullscreenWorkaround(element);
   }
 
   void sunkShipAnimation(){
+    view.showAnimatedMessage();
+    new Timer(new Duration(milliseconds: 500), () => view.hideAnimatedMessage());
+  }
 
+  void changeInstruction(int i){
+    String object = "";
+    String picture = "";
+    String text = "";
+    if(i == 1){
+      view.showInstruction();
+      object = "Placing a Ship";
+      picture = "shipbuilder_center";
+      text = "PowerUps";
+      view.changeInstructionButton(i);
+      view.setInstruction(object, picture, text);
+    }else if(i == 2){
+      object = "Island";
+      picture = "rock_2";
+      text = "Islands are obstacles which block the way of your ships. "
+          "If you attack one on the enemy's territory, "
+          "it might look like you've hit a ship. Don't be fooled.";
+      view.changeInstructionButton(i);
+      view.setInstruction(object, picture, text);
+    }else if(i == 3){
+      object = "Moving a Ship";
+      picture = "shipbuilder_east";
+      text = "In order to move a ship, "
+          "simply tap on it and use the arrows to move it. "
+          "You can choose between moving a ship and attacking the enemy every round.";
+      view.changeInstructionButton(i);
+      view.setInstruction(object, picture, text);
+    }else if(i == 4){
+      object = "PowerUp";
+      picture = "powerup_fog";
+      text = "Attacking power ups randomly activates one of two effects. "
+          "They either reveal one of the enemy's ships or increase the radius of your attacks.";
+      view.changeInstructionButton(i);
+      view.setInstruction(object, picture, text);
+    }
   }
 }
 
