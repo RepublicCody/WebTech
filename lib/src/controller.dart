@@ -283,7 +283,8 @@ class GameController{
       view.showInstruction();
       object = "Placing a Ship";
       picture = "shipbuilder_center";
-      text = "PowerUps";
+      text = "Place your ships in the lower field. "
+          "You and the enemy can place them beyond the left and the right border.";
       view.changeInstructionButton(i);
       view.setInstruction(object, picture, text);
     }else if(i == 2){
