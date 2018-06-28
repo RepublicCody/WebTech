@@ -812,12 +812,39 @@ class PlayingField {
   }
 }
 
+/**
+ * The field class represents the tiles of the playing field. Each field can hold
+ * an entity like for example a ship or a power up
+ */
 class Field{
+  /**
+   * the row in the field's PlayingField
+   */
   int _row;
+
+  /**
+   * the column in the field's playing field
+   */
   int _col;
+
+  /**
+   * amount of times the field has been fired at
+   */
   int _hitCounter = 0;
+
+  /**
+   * describes if the field has been fired at
+   */
   bool _hit;
+
+  /**
+   * true if the field is foggy, false if not
+   */
   bool _foggy;
+
+  /**
+   * the entity this field holds
+   */
   Entity _entity;
 
   int get row => _row;
@@ -833,6 +860,12 @@ class Field{
   bool get foggy => _foggy;
   set foggy(bool value) => _foggy = value;
 
+  /**
+   * creates a field instance
+   * @param row the y position of the field on the playingfield
+   * @param col the x position of the field on the playingfield
+   * @param foggy true for foggy field else false
+   */
   Field(int row, int col, bool foggy){
     this.row = row;
     this.col = col;
@@ -841,6 +874,9 @@ class Field{
     //this.entity = null;
   }
 
+  /**
+   * fires at the field and its entity if it holds one
+   */
   void fireAt() {
     hitCounter++;
     if (entity is Ship) {
