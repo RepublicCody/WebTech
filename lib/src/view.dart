@@ -49,7 +49,7 @@ class GameView {
    * The screen conatins a button, which is not used yet
    */
   void generateDevice(){
-    device.innerHtml = "<input type='button' id='deviceButton' value='Ignore Device Message'></input>";
+    device.innerHtml = "<input type='button' id='deviceButton' value='Ignore'></input>";
   }
 
   /**
