@@ -892,22 +892,49 @@ class Field{
   }
 }
 
+/**
+ * Represents an object on the playing field like for example ships, rocks etc.
+ */
 class Entity {
+  /**
+   * the playing field, which contains the entity
+   */
   PlayingField _playingField;
 
   PlayingField get playingField => _playingField;
   set playingField(PlayingField value) => _playingField = value;
 
+  /**
+   * Creates a new entity instance
+   */
   Entity(PlayingField playingField) {
     this.playingField = playingField;
   }
 }
 
+/**
+ *
+ */
 class Ship extends Entity {
-  bool destroyed;
+  /**
+   * true if the ship is aligned vertically from the player's perspective,
+   * false if aligned horizontally
+   */
   bool _vertical;
+
+  /**
+   * true if the ship belongs to the player, false if it belongs to the enemy
+   */
   bool _friendly;
+
+  /**
+   * true if every part of the ship has been fired at, false if not
+   */
   bool _sunk;
+
+  /**
+   * a list containing the fields, which hold the ship
+   */
   List<Field> fields;
 
   bool get vertical => _vertical;
@@ -915,8 +942,13 @@ class Ship extends Entity {
   bool get friendly => _friendly;
   bool get sunk => _sunk;
 
+  /**
+   * Creates a new  ship instance
+   * @param pField the playingField, which contains the ship
+   * @param fields the fields, which contain the ship
+   * @param friendly describes who the ship belongs to
+   */
   Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField) {
-    destroyed = false;
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
     this.fields = fields;
@@ -926,6 +958,14 @@ class Ship extends Entity {
     }
   }
 
+  /**
+   * static factory method for the ship class. decides which type of ship to create,
+   * based on its length
+   * @param pf the playing field, which contains the ship
+   * @param fields the fields which contain the ship
+   * @param friendly describes who the ship belongs to
+   * @returns a new instance of one of the ship classes, based on the length of the fields list
+   */
   static Ship makeShip(PlayingField pf, List<Field> fields, bool friendly) {
     switch (fields.length) {
       case 2:
@@ -944,12 +984,20 @@ class Ship extends Entity {
     return null;
   }
 
+  /**
+   * places the ship on the playing field
+   */
   void place() {
     for (int i = 0; i < fields.length; i++) {
       fields[i].entity = this;
     }
   }
 
+  /**
+   * checks if the ship is placed over the playing field borders and reenters on
+   * the other side
+   * @returns true if the ship reenters the playing field, false if not
+   */
   bool reenters() {
     bool first = false;
     bool last = false;
@@ -961,6 +1009,10 @@ class Ship extends Entity {
     return first && last;
   }
 
+  /**
+   * gets the back of the ship
+   * @returns the back of the ship
+   */
   Field back() {
     //can probably be improved
     Field f;
@@ -993,6 +1045,10 @@ class Ship extends Entity {
     }
   }
 
+  /**
+   * checks if the ship is damaged
+   * @returns true if one of the ship's parts have been fired at, false if not
+   */
   bool isDamaged() {
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].hit) return true;
@@ -1000,6 +1056,10 @@ class Ship extends Entity {
     return false;
   }
 
+  /**
+   * fires at the ship, damaging the part which has been fired on
+   * @param f the field, which is being attacked
+   */
   void fireAt(Field f) {
     f.hit = true;
     bool sunk = true;
@@ -1014,10 +1074,19 @@ class Ship extends Entity {
     }
   }
 
+  /**
+   * sinks the ship
+   */
   void sinkShip() {
     _sunk = true;
   }
 
+  /**
+   * moves the ship according to it's alignment (to the west or the east for horizontal
+   * ships, to the north or the south for vertical ships) by a given distanced
+   * @param dir the direction and distance, if negative, the direction is north or left
+   *            if positive thedirection ist south or east
+   */
   void move(int dir) {
     List<Field> newShip = new List<Field>();
     for (int i = 0; i < fields.length; i++) {
