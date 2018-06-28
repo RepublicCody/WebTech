@@ -913,7 +913,8 @@ class Entity {
 }
 
 /**
- *
+ * Represents a ship. A ship always belongs to one of the party's and has to be destroyed
+ * by the other party in order to win the game. Ships can be moved according to their alignment.
  */
 class Ship extends Entity {
   /**
@@ -1107,49 +1108,129 @@ class Ship extends Entity {
 
 }
 
+/**
+ * A five part ship is a carrier.
+ */
 class Carrier extends Ship {
+
+  /**
+   * Creates a new Carrier instance.
+   * @param pf the playing field containing the ship
+   * @param fields the ship's fields
+   * @param friendly describes who the ship belongs to
+   */
   Carrier(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
 }
 
+/**
+ * A four part ship is a battleship.
+ */
 class BattleShip extends Ship {
+
+  /**
+   * Creates a new BattleShip instance.
+   * @param pf the playing field containing the ship
+   * @param fields the ship's fields
+   * @param friendly describes who the ship belongs to
+   */
   BattleShip(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
 }
 
+/**
+ * A three part ship is a submarine.
+ */
 class Submarine extends Ship {
+
+  /**
+   * Creates a new Submarine instance.
+   * @param pf the playing field containing the ship
+   * @param fields the ship's fields
+   * @param friendly describes who the ship belongs to
+   */
   Submarine(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
 }
 
+/**
+ * A two part ship is a destroyer.
+ */
 class Destroyer extends Ship {
+
+  /**
+   * Creates a new Destroyer instance.
+   * @param pf the playing field containing the ship
+   * @param fields the ship's fields
+   * @param friendly describes who the ship belongs to
+   */
   Destroyer(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
 }
 
+/**
+ * A rock is an obstacle on the playing field. Ships can't move over it.
+ */
 class Rock extends Entity {
+
+  /**
+   * the field containing the rock
+   */
   Field _field;
 
   Field get field => _field;
 
+  /**
+   * creates a new Rock instance
+   * @param field the playing field containing the rock
+   * @param row the y position on the playing field
+   * @param col the x position on the playing field
+   */
   Rock(PlayingField field, int row, int col) : super(field) { // maybe construct via field and not via row/col
     _field = field[row][col];
   }
 
+  /**
+   * places the rock on the playing field
+   */
   void place() {
     _field.entity = this;
   }
 }
 
+/**
+ * A power up grants the player randomly one of two positive effects. The two effects are
+ * - the player's shots affect an increased radius
+ * - one of the enemy's ships is revealed
+ */
 class PowerUp extends Entity { // The type of powerup is determined randomly on activation
+
+  /**
+   * the field containing the power up
+   */
   Field _field;
 
   Field get field => _field;
 
+  /**
+   * creates a new PowerUp instance
+   * @param field the field containing the power up
+   * @param row the power up's y position on the playing field
+   * @param col the power up's x position on the playing field
+   */
   PowerUp(PlayingField field, int row, int col) : super(field) {
     _field = field[row][col];
   }
 
+  /**
+   * places the power up on the playing field
+   */
   void place() {
     _field.entity = this;
   }
 
+  /**
+   * Randomly chooses one of the power ups effects and activates it.
+   * The possible effects are:
+   * - the player's shots affect an increased radius
+   * - one of the enemy's ships is revealed
+   */
   void activate() {
     Random rng = new Random();
     int type = rng.nextInt(2);
@@ -1168,7 +1249,9 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     field.entity = null;
   }
 
-  // makes one enemy Ship visible
+  /**
+   * reveals one of the enemy's ships
+   */
   void visionPu() {
     Ship ship;
     for (int i = 0; i < playingField.ships.length; i++) {
@@ -1181,23 +1264,55 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     field.entity = null;
   }
 
-  // increases radius of attacks
+  /**
+   * increases the player's shots radius
+   */
   void radiusPu() {
     playingField.radiusPuRounds = 2;
   }
 
 }
 
+/**
+ * A ShipBuilder constructs ships for either the enemy or the player. It consists of
+ * one centerfield and four direction fields, one for each of the cardinal directions.
+ */
 class ShipBuilder extends Entity{
+  /**
+   * the lenght of the ship to be constructed
+   */
   int shipLength;
+
+  /**
+   * the row of the center of the ship builder
+   */
   int centerRow;
+
+  /**
+   * the column of the center of the ship builder
+   */
   int centerCol;
+
+  /**
+   * the fields containing the ship builder
+   */
   List<Field> _fields;
+
+  /**
+   * true if the ship to be constructed belongs to the player else false
+   */
   bool _friendly;
 
   List<Field> get fields => _fields;
   set fields(List<Field> fields) => _fields = fields;
 
+  /**
+   * creates a new ShipBuilder instance
+   * @param field the playing field containing the ship builder
+   * @param row the row of the center of the ship builder
+   * @param col the column of the center of the ship builder
+   * @param friendly describes who the ship will belong to
+   */
   ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) : super(field) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
@@ -1211,7 +1326,6 @@ class ShipBuilder extends Entity{
     fields.add(row + 1 < field.rowCount ? field[row + 1][col] : null);   // south
     fields.add(field[row][col - 1 >= 0 ? col - 1 : field.colCount - 1]); // west
 
-    // check if direction is blocked or foggy, remove if it is
     for (int dir = 1; dir < fields.length; dir++) {
       if (fields[dir] != null) {
         bool unOccupied = true;
@@ -1242,6 +1356,9 @@ class ShipBuilder extends Entity{
     place();
   }
 
+  /**
+   * places the ship builder on the palying field
+   */
   void place() {
     for (int i = 0; i < fields.length; i++) {
       if (fields[i] != null) {
@@ -1250,6 +1367,9 @@ class ShipBuilder extends Entity{
     }
   }
 
+  /**
+   * removes the ship builder from the playing field
+   */
   void remove() {
     for (int i = 0; i < fields.length; i++) {
       if (fields[i] != null && fields[i].entity == this) {
@@ -1258,6 +1378,10 @@ class ShipBuilder extends Entity{
     }
   }
 
+  /**
+   * constructs a new ship on the playing field
+   * @param f one of the ship builder's fields, indicating the direction, the ship should be built in
+   */
   void buildShip(Field f) {
     if (fields.contains(f) && f != fields.first) {
       List<Field> shipFields = new List<Field>();
@@ -1284,6 +1408,10 @@ class ShipBuilder extends Entity{
     }
   }
 
+  /**
+   * gets a random direction field from the ship builder
+   * @returns a random direction field from the ship builder
+   */
   Field randomDirection() {
     var fieldsClean = fields;
     fieldsClean.removeWhere((f) => f == null);
