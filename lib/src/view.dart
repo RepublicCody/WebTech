@@ -301,6 +301,7 @@ class GameView {
     querySelector("#body").style.height = (window.innerHeight).toString() + "px";
     menu.style.height = (window.innerHeight).toString() + "px";
 
+
     double d = 0.0;
     for(int p = 0; p < COLCOUNT; p++){
       d += calculation+3;
