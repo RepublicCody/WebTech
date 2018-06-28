@@ -1,13 +1,31 @@
 part of warships;
 
+/**
+ * The game model contains the models components and is used by the controller.
+ */
 class GameModel {
+  /**
+   * the game's enemy
+   */
   Enemy _enemy;
+
+  /**
+   * the game's playing field
+   */
   PlayingField _playingField;
+
+  /**
+   * the levels of the game
+   */
   List<Map> levels;
+
   Enemy get enemy => _enemy;
   PlayingField get playingField => _playingField;
   set playingField(PlayingField field) => _playingField = field;
 
+  /**
+   * creates a new GameModel instance
+   */
   GameModel() {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
     _enemy = new Enemy(this);
@@ -15,6 +33,10 @@ class GameModel {
     loadLevels();
   }
 
+  /**
+   * generates a playing field according to one of the levels
+   * @param level the id of the level, which should be generated
+   */
   void generatePlayingField(int level) {
     playingField.newGame();
     playingField.generateField(levels[level - 1]);
@@ -23,22 +45,38 @@ class GameModel {
     enemy.resetAI();
   }
 
+  /**
+   * chooses a romdom level
+   * @returns one randomly selected level id
+   */
   int randomLevel() {
     int lvlCount = levels.length;
     Random rng = new Random();
     return 1 + rng.nextInt(lvlCount);
   }
 
+  /**
+   * loads the levels from the levels.json file
+   */
   void loadLevels() {
     HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
   }
 
+  /**
+   * fires at one of the playing field's fields
+   * @param row the playing field's row to be fired at
+   * @param col the playing field's col to be fired at
+   */
   void fireAt(int row, int col) {
     playingField.fireAt(row, col);
   }
 
 }
 
+/**
+ * Represents the player's enemy in the game. Contains various KIs for firing on the
+ * player's ships and placing enemy ships.
+ */
 class Enemy {
 
   bool hitMove = false;
@@ -70,6 +108,10 @@ class Enemy {
     _rng = new Random();
   }
 
+  /**
+   * randomly places the enemy's ships
+   * @param pf the games playing field
+   */
   void placeShips(PlayingField pf) {  // It's possible, that a ship can't be placed, because there's no more space left on the playing field
     for (int i = 0; i < pf.enemyShipLengths.length; i++) {
       while(pf.enemyShipCount() < pf.enemyShipLengths.length) {
@@ -79,6 +121,9 @@ class Enemy {
     }
   }
 
+  /**
+   * selects the strategy to exectute
+   */
   void makeMove() {
 
     switch (_strategy) {
