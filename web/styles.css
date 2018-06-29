@@ -937,6 +937,7 @@ div {
     position: fixed;
     color: #FFFFFF;
     padding: 1%;
+    margin: 0;
     border: 3px solid #080808;
     border-radius: 20px;
     text-shadow: 0 -2px #080808, 2px 0 #080808, 0 2px #080808, -2px 0 #080808;

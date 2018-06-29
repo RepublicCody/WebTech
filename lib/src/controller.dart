@@ -19,8 +19,8 @@ class GameController{
     JsObject jsObject = new JsObject.fromBrowserObject(querySelector("#menu"));
     int scrollHeight = jsObject['scrollHeight'];
     jsObject['scrollTop'] = '${scrollHeight}';
-    view.generateMenu();
     view.generateField(model.playingField);
+    view.generateMenu();
     view.generateGameoverscreen();
     view.generateMessage();
     view.generateDevice();
