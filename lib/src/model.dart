@@ -255,7 +255,7 @@ class Enemy {
   }
 
   /**
-   *
+   * TODO
    */
   bool checkSunkShip() {
     int counter = 0;
@@ -270,7 +270,7 @@ class Enemy {
   }
 
   /**
-   *
+   * TODO
    */
   void template(List<int> list) {
     int row = list[0];
