@@ -13,6 +13,8 @@ class GameView {
 
   final animatedMesage = querySelector("#animatedmessage");
 
+  final instruction = querySelector("#instruction");
+
   List<List<HtmlElement>> fields;
   /**
    * Generats html for the playing field screen
@@ -49,7 +51,7 @@ class GameView {
    * The screen conatins a button, which is not used yet
    */
   void generateDevice(){
-    device.innerHtml = "<input type='button' id='deviceButton' value='Ignore Device Message'></input>";
+    device.innerHtml = "<input type='button' id='deviceButton' value='Ignore'></input>";
   }
 
   /**
@@ -70,8 +72,8 @@ class GameView {
     menuString +=
     '<input type="button" id="level_$counter" class="button" value="Level $counter"></input>';
     menuString += '<input type="button" id="zufall" class="button" value="Random"></input>';
+    menuString += '<input type="button" id="instructionButton" value="Instruction"></input>';
     menuString += '<input type="button" id="fullscreenbutton" class="fullscreen"></input>';
-    menuString += '<input type="button" id="exitfullscreenbutton" class="fullscreen"></input>';
     menuString += '<div id="fullscreendiv" class="fullscreen"></div>';
 
     menu.innerHtml = menuString;
@@ -116,6 +118,19 @@ class GameView {
    */
   void generateAnimatedMessage(){
     animatedMesage.innerHtml = '<div id="animatedmessagetext">Ship sunk</div>';
+  }
+
+  void generateInstruction(){
+    String instructionString = "";
+    instructionString += '<div id="headInstruction"></div>';
+    instructionString += '<div id="pictureInstruction"></div>';
+    instructionString += '<div id="messageInstruction"></div>';
+    instructionString += '<input type="button" id="nextInstruction1" class="nextIns" value="Next"></input>';
+    instructionString += '<input type="button" id="nextInstruction2" class="nextIns" value="Next"></input>';
+    instructionString += '<input type="button" id="nextInstruction3" class="nextIns" value="Next"></input>';
+    instructionString += '<input type="button" id="nextInstruction4" class="nextIns" value="Next"></input>';
+    instructionString += '<input type="button" id="backInstruction" class="button" value="Back"></input>';
+    instruction.innerHtml = instructionString;
   }
 
   /**
@@ -299,6 +314,7 @@ class GameView {
     querySelector("#back").style.height = h;
 
     querySelector("#body").style.height = (window.innerHeight).toString() + "px";
+    querySelector("#device").style.height = (window.innerHeight).toString() + "px";
     menu.style.height = (window.innerHeight).toString() + "px";
 
 
@@ -318,6 +334,7 @@ class GameView {
     gameTable.style.display="block";
     gameover.style.display="none";
     message.style.display="none";
+    instruction.style.display="none";
   }
 
   /**
@@ -328,6 +345,7 @@ class GameView {
     gameTable.style.display="none";
     gameover.style.display="none";
     message.style.display="none";
+    instruction.style.display="none";
   }
 
   /**
@@ -338,6 +356,7 @@ class GameView {
     gameTable.style.display="block";
     gameover.style.display="block";
     message.style.display="none";
+    instruction.style.display="none";
   }
 
   /**
@@ -348,6 +367,7 @@ class GameView {
     gameTable.style.display="block";
     message.style.display="block";
     gameover.style.display="none";
+    instruction.style.display="none";
   }
 
   /**
@@ -365,17 +385,23 @@ class GameView {
   }
 
   /**
-   * Change display mode for fullscreen or exit fullscreen
-   * @param i can be 0 or 1, 0 for exit fullscreen, 1 for fullscreen
+   * Change display mode to show the instruction
    */
-  void changeButton(int i){
-    if(i == 0) {
-      querySelector("#exitfullscreenbutton").style.display="block";
-      querySelector("#fullscreenbutton").style.display="none";
-    }else {
-      querySelector("#exitfullscreenbutton").style.display="none";
-      querySelector("#fullscreenbutton").style.display="block";
+  void showInstruction(){
+    menu.style.display="block";
+    gameTable.style.display="none";
+    gameover.style.display="none";
+    message.style.display="none";
+    instruction.style.display="block";
+  }
+
+  void changeInstructionButton(int i){
+    if(i > 1) {
+      String oldButton = '#nextInstruction' + (i - 1).toString();
+      querySelector(oldButton).style.display = "none";
     }
+    String newButton = '#nextInstruction' + (i).toString();
+    if(i < 4)querySelector(newButton).style.display = "block";
   }
 
   /**
@@ -432,14 +458,19 @@ class GameView {
     querySelector('#ebcount').innerHtml = s[6];
     querySelector('#eccount').innerHtml = s[7];
   }
+  //TODO
+  void setInstruction(String object, String picture, String text){
+    querySelector("#pictureInstruction").attributes["class"] = picture;
+    querySelector("#messageInstruction").innerHtml = text;
+    querySelector("#headInstruction").innerHtml = object;
+  }
 
   /**
    * Make fullscreen request
    * @param i can be 0 or 1, 0 for exit fullscreen, 1 for fullscreen
    * @param element which should request for fullscreen
    */
-  void fullscreenWorkaround(int i, Element element) {
-    if (i == 0) {
+  void fullscreenWorkaround(Element element) {
       var elem = new JsObject.fromBrowserObject(element);
 
       if (elem.hasProperty("requestFullscreen")) {
@@ -458,26 +489,5 @@ class GameView {
           }
         }
       }
-    }else{
-      var elem = new JsObject.fromBrowserObject(element);
-      elem.callMethod("exitFullscreen");
-/*
-      if (elem.hasProperty("exitFullscreen")) {
-        elem.callMethod("exitFullscreen");
-      }
-      else {
-        List<String> vendors = ['moz', '_webkit', 'ms', 'o'];
-        for (String vendor in vendors) {
-          String vendorFullscreen = "${vendor}ExitFullscreen";
-          if (vendor == 'moz') {
-            vendorFullscreen = "${vendor}ExitFullScreen";
-          }
-          if (elem.hasProperty(vendorFullscreen)) {
-            elem.callMethod(vendorFullscreen);
-            return;
-          }
-        }
-      }*/
     }
-  }
 }
