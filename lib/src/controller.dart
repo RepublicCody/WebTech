@@ -15,6 +15,9 @@ class GameController{
 
   int lastPlayed = 0;
 
+  /**
+   * Creates a new GameController instance
+   */
   GameController() {
     JsObject jsObject = new JsObject.fromBrowserObject(querySelector("#menu"));
     int scrollHeight = jsObject['scrollHeight'];
@@ -42,6 +45,11 @@ class GameController{
     addListeners();
   }
 
+  /**
+   * parses the row and the col of an html table element from it's id
+   * @param the element's id
+   * @returns a List containing the row and the col of the element
+   */
   List<int> rowCol(String cssId) {
     print("Hallo3");
     RegExp re = new RegExp("[a-z]+_([0-9]+)_([0-9]+)");
@@ -52,7 +60,6 @@ class GameController{
     print(int.parse(m.group(2)));
     return [int.parse(m.group(1)), int.parse(m.group(2))];
   }
-
 
   void fireAt(MouseEvent e) {
     if (e.target is Element) {
@@ -98,12 +105,18 @@ class GameController{
     }
   }
 
+  /**
+   * initializes th enemy making a move
+   */
   void enemyMove() {
     model.enemy.makeMove();
     shipsleftMessage();
     view.update(model.playingField);
   }
 
+  /**
+   * instructs the view to show the game over screen after the game is finished
+   */
   void gameoverScreen(){
     String text = model.playingField.enemyShipCount() == 0 ? "YOU WIN!" : "YOU LOST!";
     querySelector('#gameoverText').attributes["class"] = model.playingField.enemyShipCount() == 0 ? "win" : "loose";
@@ -113,6 +126,9 @@ class GameController{
     view.showGameover();
   }
 
+  /**
+   * manages the users actions on the menu screen
+   */
   void selectLevel(MouseEvent e) {
     if (e.target is Element){
       HtmlElement element = e.target;
@@ -134,6 +150,9 @@ class GameController{
     }
   }
 
+  /**
+   * manages the users actions on th game over screen
+   */
   void gameOver(Event e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
@@ -160,13 +179,18 @@ class GameController{
     }
   }
 
+  /**
+   * resets the listeners on the table
+   */
   void goBack() {
     this.tableListener.cancel();
     this.tableListener = querySelectorAll('td').onClick.listen(buildShip);
     view.showMenu();
   }
 
-  //  this can be disposed of once all listeners are implemented properly
+  /**
+   * adds listeners to the random level button and the home button
+   */
   void addListeners() {
     querySelector("#zufall").onClick.listen((Event e) {
       setMessage();
