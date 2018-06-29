@@ -61,6 +61,9 @@ class GameController{
     return [int.parse(m.group(1)), int.parse(m.group(2))];
   }
 
+  /**
+   * manages the player's actions on the playing field
+   */
   void fireAt(MouseEvent e) {
     if (e.target is Element) {
       print("Hallo1");
@@ -151,7 +154,7 @@ class GameController{
   }
 
   /**
-   * manages the users actions on th game over screen
+   * manages the users actions on the game over screen
    */
   void gameOver(Event e) {
     if (e.target is Element) {
@@ -202,6 +205,9 @@ class GameController{
     });
   }
 
+  /**
+   * manages the player's ship building
+   */
   void buildShip(MouseEvent e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
@@ -281,6 +287,9 @@ class GameController{
 
   }
 
+  /**
+   * instructs the view to display how many ships the enemy has left
+   */
   void shipsleftMessage(){
     if(model.playingField.enemyShipCount() == 1){
       view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
@@ -294,11 +303,17 @@ class GameController{
     view.fullscreenWorkaround(element);
   }
 
+  /**
+   * requests the view to display the animation for sinking a ship
+   */
   void sunkShipAnimation(){
     view.showAnimatedMessage();
     new Timer(new Duration(milliseconds: 500), () => view.hideAnimatedMessage());
   }
 
+  /**
+   * requests the view to display the tutorial for the game
+   */
   void changeInstruction(int i){
     String object = "";
     String picture = "";

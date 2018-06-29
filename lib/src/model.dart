@@ -142,6 +142,9 @@ class Enemy {
     }
   }
 
+  /**
+   * fires randomly at a field in the player's territory which has not been hit yet
+   */
   void randomMove() {
     bool shot = false;
     int halfROWCOUNT;
@@ -157,6 +160,9 @@ class Enemy {
     }
   }
 
+  /**
+   * executes a move following a mediocre strategy
+   */
   void mediocreMove() { // for a lack of a better name
 
     int row = postionHitMove[0];
@@ -175,6 +181,9 @@ class Enemy {
     postionHitMove[1] = col;
   }
 
+  /**
+   * executes a move following a clever strategy
+   */
   void hardcoreMove() {
 
     int row = postionHitMove[0];
@@ -198,6 +207,9 @@ class Enemy {
     postionHitMove[1] = col;
   }
 
+  /**
+   * executes a move following a clever strategy, starting at a random field
+   */
   void randomHardcoreMove() {
 
     int row = postionHitMove[0];
@@ -224,7 +236,10 @@ class Enemy {
     postionHitMove[1] = col;
   }
 
-  void resetAI(){
+  /**
+   * resets the ai for a new game
+   */
+  void resetAI() {
 
     sunkShipCount = 0;
 
@@ -239,7 +254,10 @@ class Enemy {
     allHitsRowMove = [];
   }
 
-  bool checkSunkShip(){
+  /**
+   *
+   */
+  bool checkSunkShip() {
     int counter = 0;
     for(int i = 0; i < model.playingField.ships.length; i++){
       if(model.playingField.ships[i].sunk == true && model.playingField.ships[i].friendly == true)counter++;
@@ -250,8 +268,11 @@ class Enemy {
     }
     return false;
   }
-  
-  void template(List<int> list){
+
+  /**
+   *
+   */
+  void template(List<int> list) {
     int row = list[0];
     int col = list[1];
     int halfROWCOUNT = model.playingField._enemyRows;
@@ -309,7 +330,7 @@ class Enemy {
     }
   }
 
-  void foundShip(){
+  void foundShip() {
 
     int halfROWCOUNT = model.playingField._enemyRows;
     int rowcount = model.playingField._rowCount;
@@ -1468,13 +1489,28 @@ class ShipBuilder extends Entity{
 
 }
 
+/**
+ * Instances of this class assist the player in moving their ships.
+ */
 class ShipMover extends Entity {
+  /**
+   * the ship to be moved
+   */
   Ship _ship;
+
+  /**
+   * the fields which contain this ship mover
+   */
   List<Field> _fields;
+
   List<Field> get fields => _fields;
   Ship get ship => _ship;
 
-
+  /**
+   * creates a new ShipMover instance
+   * @param pf the playingfield containing the ship builder
+   * @param ship the ship to be moved
+   */
   ShipMover(PlayingField pf, Ship ship) : super(pf) {
     _ship = ship;
     _fields = new List<Field>();
@@ -1497,6 +1533,15 @@ class ShipMover extends Entity {
     }
   }
 
+  /**
+   * move the ship builder's ship in a specific direction
+   * @param direction if the direction is negative the ship is moved westwards if
+   *                  it is aligned horizontally and northwards if it is aligned
+   *                  vertically, if it is positive the ship is moved to the east
+   *                  if it is aligned horizontally and to the south if it's aligned
+   *                  vertically. This parameter also determines how far the ship
+   *                  will move.
+   */
   void moveShip(Field direction) {
     remove();
     if (_fields.indexOf(direction) == 0) {
@@ -1506,6 +1551,9 @@ class ShipMover extends Entity {
     }
   }
 
+  /**
+   * removes the ship builder from the playing field
+   */
   void remove() {
     for (int i = 0; i < _fields.length; i++) {
       if (_fields[i].entity == this) {
