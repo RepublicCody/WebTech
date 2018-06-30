@@ -549,21 +549,6 @@ class PlayingField {
   List<int> _enemyShipLengths;
 
   /**
-   * The player's ship builder
-   */
-  ShipBuilder _playerBuilder;
-
-  /**
-   * the enemy's ship builder
-   */
-  ShipBuilder _enemyBuilder;
-
-  /**
-   * the player's ship mover
-   */
-  ShipMover _mover;
-
-  /**
    * the playing fields's number of rows
    */
   int _rowCount;
@@ -718,6 +703,26 @@ class PlayingField {
     ship.place();
   }
 
+  void addMover(ShipMover mover) {
+    mover.place();
+  }
+
+  void addBuilder(ShipBuilder builder) {
+    builder.place();
+  }
+
+  void removeBuilder() {
+    for (int r = 0; r < _fields.length; r++) {
+      for (int c = 0; c < _fields[r].length; c++) {
+        if (_fields[r][c].entity is ShipBuilder) {
+          ShipBuilder b = _fields[r][c].entity;
+          b.remove();
+        }
+      }
+    }
+
+  }
+
   /**
    * adds a ShipBuilder to construct a ship
    * @param row the target row for the ship builder
@@ -728,12 +733,13 @@ class PlayingField {
     Field f = _fields[row][col];
     if (f.entity == null/* && !f.foggy*/) {
       if (friendly) {
-        if (_playerBuilder != null) _playerBuilder.remove();
-        _playerBuilder = new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()], true);
+        removeBuilder();
+        addBuilder(new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()], true));
       } else {
-        if (_enemyBuilder != null) _enemyBuilder.remove();
-        _enemyBuilder = new ShipBuilder(this, row, col, enemyShipLengths[enemyShipCount()], false);
-        Field dir = _enemyBuilder.randomDirection();
+        removeBuilder();
+        ShipBuilder b = new ShipBuilder(this, row, col, enemyShipLengths[enemyShipCount()], false);
+        addBuilder(b);
+        Field dir = b.randomDirection();
         return buildShip(dir.row, dir.col, false);
       }
     } else if(f.entity is ShipBuilder) {
@@ -753,8 +759,8 @@ class PlayingField {
   bool moveShip(int row, int col) {
     if (_fields[row][col].entity is Ship) {
       Ship s = _fields[row][col].entity;
-      if (_mover != null)_mover.remove();
-      _mover = new ShipMover(this, s);
+      removeMovers();
+      addMover(new ShipMover(this, s));
     } else if (_fields[row][col].entity is ShipMover){
       ShipMover m = _fields[row][col].entity;
       m.moveShip(_fields[row][col]);
@@ -767,8 +773,14 @@ class PlayingField {
    * removes the ShipMovers from the playing field
    */
   void removeMovers() {
-    if (_mover != null)
-    _mover.remove();
+    for (int r = 0; r < _fields.length; r++) {
+      for (int c = 0; c < _fields[r].length; c++) {
+        if (_fields[r][c].entity is ShipMover) {
+          ShipMover shipmover = _fields[r][c].entity;
+          shipmover.remove();
+        }
+      }
+    }
   }
 
   /**
@@ -942,7 +954,6 @@ class Entity {
    * the playing field, which contains the entity
    */
   PlayingField _playingField;
-
   PlayingField get playingField => _playingField;
   set playingField(PlayingField value) => _playingField = value;
 
@@ -1298,7 +1309,7 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
     Ship ship;
     for (int i = 0; i < playingField.ships.length; i++) {
       ship = playingField.ships[i];
-      if (!ship.friendly){
+      if (!ship.friendly && !ship.sunk){
         ship.fields.forEach((Field f) => f.foggy = false);
         break;
       }
@@ -1499,12 +1510,13 @@ class ShipMover extends Entity {
        // _fields.add(null);
         _fields.add(pf.south(ship.fields.last));
       }
+    }
+  }
 
-      //place
-      for (int i = 0; i < _fields.length; i++) {
-        if (fields[i].entity == null && !fields[i].hit) {
-          _fields[i].entity = this;
-        }
+  void place() {
+    for (int i = 0; i < _fields.length; i++) {
+      if (fields[i].entity == null && !fields[i].hit) {
+        _fields[i].entity = this;
       }
     }
   }
