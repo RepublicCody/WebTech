@@ -648,7 +648,7 @@ class PlayingField {
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
-        f.entity = new Rock(this, f.row, f.col);
+        f.entity = new Rock(f);
       } else {
         i--;
       }
@@ -656,7 +656,7 @@ class PlayingField {
     for (int i = 0; i < level["enemyRocks"]; i++) {
       Field f = randomField(enemyRows, rowCount);
       if (f.entity == null) {
-        f.entity = new Rock(this, f.row, f.col);
+        f.entity = new Rock(f);
       } else {
         i--;
       }
@@ -817,7 +817,7 @@ class PlayingField {
  * The field class represents the tiles of the playing field. Each field can hold
  * an entity like for example a ship or a power up
  */
-class Field{
+class Field {
   /**
    * the row in the field's PlayingField
    */
@@ -918,7 +918,7 @@ class Field{
     this.col = col;
     this.foggy = foggy;
     this.hit = false;
-    //this.entity = null;
+    this.entity = null;
   }
 
   /**
@@ -960,8 +960,24 @@ class Entity {
   /**
    * Creates a new entity instance
    */
-  Entity() {//PlayingField playingField) {
+  Entity() {
     fields = new List<Field>();
+  }
+
+  void place() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null && fields[i].entity == null) {
+        fields[i].entity = this;
+      }
+    }
+  }
+
+  void remove() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null && fields[i].entity != null && fields[i].entity == this) {
+        fields[i].entity = null;
+      }
+    }
   }
 }
 
@@ -985,11 +1001,6 @@ class Ship extends Entity {
    * true if every part of the ship has been fired at, false if not
    */
   bool _sunk;
-
-  /**
-   * a list containing the fields, which hold the ship
-   */
-  List<Field> fields;
 
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
@@ -1036,15 +1047,6 @@ class Ship extends Entity {
         break;
     }
     return null;
-  }
-
-  /**
-   * places the ship on the playing field
-   */
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      fields[i].entity = this;
-    }
   }
 
   /**
@@ -1158,7 +1160,6 @@ class Ship extends Entity {
     fields.first.playingField.addShip(Ship.makeShip(newShip, friendly));
   }
 
-
 }
 
 /**
@@ -1223,28 +1224,15 @@ class Destroyer extends Ship {
 class Rock extends Entity {
 
   /**
-   * the field containing the rock
-   */
-  Field _field;
-
-  Field get field => _field;
-
-  /**
    * creates a new Rock instance
    * @param field the playing field containing the rock
    * @param row the y position on the playing field
    * @param col the x position on the playing field
    */
-  Rock(PlayingField field, int row, int col) {
-    _field = field[row][col];
+  Rock(Field field) {
+    fields.add(field);
   }
 
-  /**
-   * places the rock on the playing field
-   */
-  void place() {
-    _field.entity = this;
-  }
 }
 
 /**
@@ -1252,14 +1240,7 @@ class Rock extends Entity {
  * - the player's shots affect an increased radius
  * - one of the enemy's ships is revealed
  */
-class PowerUp extends Entity { // The type of powerup is determined randomly on activation
-
-  /**
-   * the field containing the power up
-   */
-  //Field _field;
-
-  //Field get field => _field;
+class PowerUp extends Entity {
 
   /**
    * creates a new PowerUp instance
@@ -1267,16 +1248,8 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
    * @param row the power up's y position on the playing field
    * @param col the power up's x position on the playing field
    */
-  PowerUp(Field field) {//PlayingField field, int row, int col){
-    //_field = field;//[row][col];
-    _fields.add(field);
-  }
-
-  /**
-   * places the power up on the playing field
-   */
-  void place() {
-    _fields[0].entity = this;
+  PowerUp(Field field) {
+    fields.add(field);
   }
 
   /**
@@ -1351,17 +1324,9 @@ class ShipBuilder extends Entity{
   int centerCol;
 
   /**
-   * the fields containing the ship builder
-   */
-  List<Field> _fields;
-
-  /**
    * true if the ship to be constructed belongs to the player else false
    */
   bool _friendly;
-
-  List<Field> get fields => _fields;
-  set fields(List<Field> fields) => _fields = fields;
 
   /**
    * creates a new ShipBuilder instance
@@ -1411,28 +1376,6 @@ class ShipBuilder extends Entity{
       }
     }
     place();
-  }
-
-  /**
-   * places the ship builder on the palying field
-   */
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      if (fields[i] != null) {
-        fields[i].entity = this;
-      }
-    }
-  }
-
-  /**
-   * removes the ship builder from the playing field
-   */
-  void remove() {
-    for (int i = 0; i < fields.length; i++) {
-      if (fields[i] != null && fields[i].entity == this) {
-        fields[i].entity = null;
-      }
-    }
   }
 
   /**
@@ -1489,12 +1432,6 @@ class ShipMover extends Entity {
    */
   Ship _ship;
 
-  /**
-   * the fields which contain this ship mover
-   */
-  List<Field> _fields;
-
-  List<Field> get fields => _fields;
   Ship get ship => _ship;
 
   /**
@@ -1511,18 +1448,10 @@ class ShipMover extends Entity {
         _fields.add(ship.fields.last.east());
       } else {
         _fields.add(ship.fields.first.north());
-       // _fields.add(null);
         _fields.add(ship.fields.last.south());
       }
     }
-  }
-
-  void place() {
-    for (int i = 0; i < _fields.length; i++) {
-      if (fields[i].entity == null && !fields[i].hit) {
-        _fields[i].entity = this;
-      }
-    }
+    fields.removeWhere((f) => f == null);
   }
 
   /**
@@ -1543,14 +1472,4 @@ class ShipMover extends Entity {
     }
   }
 
-  /**
-   * removes the ship builder from the playing field
-   */
-  void remove() {
-    for (int i = 0; i < _fields.length; i++) {
-      if (_fields[i].entity == this) {
-        _fields[i].entity = null;
-      }
-    }
-  }
 }
