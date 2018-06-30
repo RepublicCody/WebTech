@@ -508,7 +508,6 @@ class Enemy {
             lastHitMove[0] = -1;
             lastDirectionMove = "no direction";
             shot = true;
-            print("muss wohl ein Felsen sein");
             mediocreMove();
           }
           break;
@@ -518,7 +517,6 @@ class Enemy {
           break;
         default:
           lastHitMove[0] = -1;
-          print("Hier passiert nichts");
           break;
       }
     }
@@ -552,21 +550,6 @@ class PlayingField {
   List<int> _enemyShipLengths;
 
   /**
-   * The player's ship builder
-   */
-  ShipBuilder _playerBuilder;
-
-  /**
-   * the enemy's ship builder
-   */
-  ShipBuilder _enemyBuilder;
-
-  /**
-   * the player's ship mover
-   */
-  ShipMover _mover;
-
-  /**
    * the playing fields's number of rows
    */
   int _rowCount;
@@ -586,6 +569,9 @@ class PlayingField {
    */
   int _radiusPuRounds;
 
+  /**
+   * the playingfield's tiles can be accessed via this operator
+   */
   operator [](int index) => _fields[index];
 
   List<Ship> get ships => _ships;
@@ -627,7 +613,7 @@ class PlayingField {
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-        innerList[col] = row >= _enemyRows ? new Field(row, col, false): new Field(row, col, true);
+        innerList[col] = row >= _enemyRows ? new Field(this, row, col, false): new Field(this, row, col, true);
       }
       outerList[row] = innerList;
     }
@@ -645,10 +631,10 @@ class PlayingField {
       if (_radiusPuRounds > 0) {
         _radiusPuRounds--;
         Field f = _fields[row][col];
-        if (north(f) != null) north(f).fireAt();
-        east(f).fireAt();
-        if (south(f).row < enemyRows)south(f).fireAt();
-        west(f).fireAt();
+        if (f.north() != null) f.north().fireAt();
+        f.east().fireAt();
+        if (f.south().row < enemyRows) f.south().fireAt();
+        f.west().fireAt();
       }
     } else {
       _fields[row][col].fireAt();
@@ -660,13 +646,13 @@ class PlayingField {
    * generates a random field with a given number of rocks, power ups and ships
    * @param level a map containing the information for the generation of the playingField
    */
-  void generateField(Map level) {// TODO: complete
+  void generateField(Map level) {
     _playerShipLengths = level["playerShips"];
     _enemyShipLengths = level["enemyShips"];
     for (int i = 0; i < level["playerRocks"]; i++) {
       Field f = randomField(0, rowCount ~/ 2);
       if (f.entity == null) {
-        f.entity = new Rock(this, f.row, f.col);
+        f.entity = new Rock(f);
       } else {
         i--;
       }
@@ -674,7 +660,7 @@ class PlayingField {
     for (int i = 0; i < level["enemyRocks"]; i++) {
       Field f = randomField(enemyRows, rowCount);
       if (f.entity == null) {
-        f.entity = new Rock(this, f.row, f.col);
+        f.entity = new Rock(f);
       } else {
         i--;
       }
@@ -682,7 +668,7 @@ class PlayingField {
     for (int i = 0; i < level["enemyPowUps"]; i++) {
       Field f = randomField(0, enemyRows);
       if (f.entity == null) {
-        f.entity = new PowerUp(this, f.row, f.col);
+        f.entity = new PowerUp(f);//this, f.row, f.col);
       } else {
         i--;
       }
@@ -722,6 +708,37 @@ class PlayingField {
   }
 
   /**
+   * places a shipMover on the playing field
+   * @param mover the ship mover to be placed
+   */
+  void addMover(ShipMover mover) {
+    mover.place();
+  }
+
+  /**
+   * places a ship builder on the palying field
+   * @param builder the ship builder to be placed
+   */
+  void addBuilder(ShipBuilder builder) {
+    builder.place();
+  }
+
+  /**
+   * removes all ship builders from the playing field
+   */
+  void removeBuilder() {
+    for (int r = 0; r < _fields.length; r++) {
+      for (int c = 0; c < _fields[r].length; c++) {
+        if (_fields[r][c].entity is ShipBuilder) {
+          ShipBuilder b = _fields[r][c].entity;
+          b.remove();
+        }
+      }
+    }
+
+  }
+
+  /**
    * adds a ShipBuilder to construct a ship
    * @param row the target row for the ship builder
    * @param col the target col for the ship builder
@@ -731,12 +748,13 @@ class PlayingField {
     Field f = _fields[row][col];
     if (f.entity == null/* && !f.foggy*/) {
       if (friendly) {
-        if (_playerBuilder != null) _playerBuilder.remove();
-        _playerBuilder = new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()], true);
+        removeBuilder();
+        addBuilder(new ShipBuilder(_fields[row][col], playerShipLengths[playerShipCount()], true));
       } else {
-        if (_enemyBuilder != null) _enemyBuilder.remove();
-        _enemyBuilder = new ShipBuilder(this, row, col, enemyShipLengths[enemyShipCount()], false);
-        Field dir = _enemyBuilder.randomDirection();
+        removeBuilder();
+        ShipBuilder b = new ShipBuilder(_fields[row][col], enemyShipLengths[enemyShipCount()], false);
+        addBuilder(b);
+        Field dir = b.randomDirection();
         return buildShip(dir.row, dir.col, false);
       }
     } else if(f.entity is ShipBuilder) {
@@ -756,8 +774,8 @@ class PlayingField {
   bool moveShip(int row, int col) {
     if (_fields[row][col].entity is Ship) {
       Ship s = _fields[row][col].entity;
-      if (_mover != null)_mover.remove();
-      _mover = new ShipMover(this, s);
+      removeMovers();
+      addMover(new ShipMover(s));
     } else if (_fields[row][col].entity is ShipMover){
       ShipMover m = _fields[row][col].entity;
       m.moveShip(_fields[row][col]);
@@ -770,8 +788,14 @@ class PlayingField {
    * removes the ShipMovers from the playing field
    */
   void removeMovers() {
-    if (_mover != null)
-    _mover.remove();
+    for (int r = 0; r < _fields.length; r++) {
+      for (int c = 0; c < _fields[r].length; c++) {
+        if (_fields[r][c].entity is ShipMover) {
+          ShipMover shipmover = _fields[r][c].entity;
+          shipmover.remove();
+        }
+      }
+    }
   }
 
   /**
@@ -802,66 +826,13 @@ class PlayingField {
     return count;
   }
 
-  /**
-   * finds the field to the north of a known field if there is one
-   * @param f the known field
-   * @returns the field to the north of the known field if there is one, else null
-   */
-  Field north(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.row - 1 < 0) return null;
-      else return _fields[f.row - 1][f.col];
-    }
-    return null;
-  }
-  /**
-   * finds the field to the east of a known field
-   * @param f the known field
-   * @returns the field to the east of the known field if there is none
-   *          the first field of the known field's row is returned
-   */
-  Field east(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.col + 1 >= colCount) return _fields[f.row][0];
-      else return _fields[f.row][f.col + 1];
-    }
-    return null;
-  }
-
-  /**
-   * finds the field to the south of a known field if there is one
-   * @param f the known field
-   * @returns the field to the south of the known field if there is one, else null
-   */
-  Field south(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.row + 1 >= rowCount) return null;
-      else return _fields[f.row + 1][f.col];
-    }
-    return null;
-  }
-  /**
-   * finds the field to the west of a known field
-   * @param f the known field
-   * @returns the field to the west of the known field if there is none
-   *          the last field of the known field's row is returned
-   */
-  Field west(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.col - 1 < 0)
-        return _fields[f.row][colCount - 1];
-      else
-        return _fields[f.row ][f.col - 1];
-    }
-    return null;
-  }
 }
 
 /**
  * The field class represents the tiles of the playing field. Each field can hold
  * an entity like for example a ship or a power up
  */
-class Field{
+class Field {
   /**
    * the row in the field's PlayingField
    */
@@ -892,6 +863,50 @@ class Field{
    */
   Entity _entity;
 
+  PlayingField _playingField;
+
+  Field west() {
+    if (col - 1 < 0)
+      return playingField[row][playingField.colCount - 1];
+    else
+      return playingField[row][col - 1];
+  }
+
+  /**
+   * finds the field to the north of a known field if there is one
+   * @param f the known field
+   * @returns the field to the north of the known field if there is one, else null
+   */
+  Field north() {
+    if (row - 1 < 0)
+      return null;
+    else
+      return playingField[row - 1][col];
+  }
+  /**
+   * finds the field to the east of a known field
+   * @param f the known field
+   * @returns the field to the east of the known field if there is none
+   *          the first field of the known field's row is returned
+   */
+  Field east() {
+    if (col + 1 >= playingField.colCount)
+      return playingField[row][0];
+    else
+      return playingField[row][col + 1];
+  }
+  /**
+   * finds the field to the south of a known field if there is one
+   * @param f the known field
+   * @returns the field to the south of the known field if there is one, else null
+   */
+  Field south() {
+    if (row + 1 >= playingField.rowCount)
+      return null;
+    else
+      return playingField[row + 1][col];
+  }
+
   int get row => _row;
   set row(int row) => _row = row;
   int get col => _col;
@@ -904,6 +919,7 @@ class Field{
   set entity(Entity entity) => _entity = entity;
   bool get foggy => _foggy;
   set foggy(bool value) => _foggy = value;
+  PlayingField get playingField => _playingField;
 
   /**
    * creates a field instance
@@ -911,12 +927,13 @@ class Field{
    * @param col the x position of the field on the playingfield
    * @param foggy true for foggy field else false
    */
-  Field(int row, int col, bool foggy){
+  Field(PlayingField pf, int row, int col, bool foggy){
+    this._playingField = pf;
     this.row = row;
     this.col = col;
     this.foggy = foggy;
     this.hit = false;
-    //this.entity = null;
+    this.entity = null;
   }
 
   /**
@@ -941,19 +958,42 @@ class Field{
  * Represents an object on the playing field like for example ships, rocks etc.
  */
 class Entity {
-  /**
-   * the playing field, which contains the entity
-   */
-  PlayingField _playingField;
 
-  PlayingField get playingField => _playingField;
-  set playingField(PlayingField value) => _playingField = value;
+  /**
+   * The fields which contain this entity
+   */
+  List<Field> _fields;
+
+  List<Field> get fields => _fields;
+  set fields(List<Field> value) => _fields = value;
 
   /**
    * Creates a new entity instance
    */
-  Entity(PlayingField playingField) {
-    this.playingField = playingField;
+  Entity() {
+    fields = new List<Field>();
+  }
+
+  /**
+   * Places the entity on the playing field
+   */
+  void place() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null && fields[i].entity == null) {
+        fields[i].entity = this;
+      }
+    }
+  }
+
+  /**
+   * removes the entity from the playing field
+   */
+  void remove() {
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i] != null && fields[i].entity != null && fields[i].entity == this) {
+        fields[i].entity = null;
+      }
+    }
   }
 }
 
@@ -978,11 +1018,6 @@ class Ship extends Entity {
    */
   bool _sunk;
 
-  /**
-   * a list containing the fields, which hold the ship
-   */
-  List<Field> fields;
-
   bool get vertical => _vertical;
   set vertical(bool value) => _vertical = value;
   bool get friendly => _friendly;
@@ -990,11 +1025,10 @@ class Ship extends Entity {
 
   /**
    * Creates a new  ship instance
-   * @param pField the playingField, which contains the ship
    * @param fields the fields, which contain the ship
    * @param friendly describes who the ship belongs to
    */
-  Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField) {
+  Ship(List<Field> fields, bool friendly) {
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
     this.fields = fields;
@@ -1012,31 +1046,22 @@ class Ship extends Entity {
    * @param friendly describes who the ship belongs to
    * @returns a new instance of one of the ship classes, based on the length of the fields list
    */
-  static Ship makeShip(PlayingField pf, List<Field> fields, bool friendly) {
+  static Ship makeShip(List<Field> fields, bool friendly) {
     switch (fields.length) {
       case 2:
-        return new Destroyer(pf, fields, friendly);
+        return new Destroyer(fields, friendly);
         break;
       case 3:
-        return new Submarine(pf, fields, friendly);
+        return new Submarine(fields, friendly);
         break;
       case 4:
-        return new BattleShip(pf, fields, friendly);
+        return new BattleShip(fields, friendly);
         break;
       case 5:
-        return new Carrier(pf, fields, friendly);
+        return new Carrier(fields, friendly);
         break;
     }
     return null;
-  }
-
-  /**
-   * places the ship on the playing field
-   */
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      fields[i].entity = this;
-    }
   }
 
   /**
@@ -1049,7 +1074,7 @@ class Ship extends Entity {
     bool last = false;
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].col == 0) first = true;
-      if (fields[i].col == playingField.colCount - 1)
+      if (fields[i].col == fields.first.playingField.colCount - 1)
         last = true;
     }
     return first && last;
@@ -1068,7 +1093,7 @@ class Ship extends Entity {
         bool hasNext = false;
         for (int j = 0; j < fields.length; j++) {
           if (fields[j].col == fields[i].col + 1) hasNext = true;
-          if (fields[i].col == playingField.colCount - 1 &&
+          if (fields[i].col == fields.first.playingField.colCount - 1 &&
               fields[j].col == 0) hasNext = true;
         }
         if (!hasNext) {
@@ -1116,7 +1141,6 @@ class Ship extends Entity {
     }
     if (sunk) {
       sinkShip();
-      print("Schiff versenkt");//Hier könnte ihr animierter Code stehen
     }
   }
 
@@ -1138,18 +1162,17 @@ class Ship extends Entity {
     for (int i = 0; i < fields.length; i++) {
         Field f = fields[i];
         if (dir < 0) {
-          newShip.add(vertical ? playingField.north(f) : playingField.west(f));
+          newShip.add(vertical ? f.north() : f.west());
         } else if (dir > 0){
-          newShip.add(vertical ? playingField.south(f) : playingField.east(f));
+          newShip.add(vertical ? f.south() : f.east());
         }
     }
 
     fields.forEach((f) => f.entity = null);
-    playingField.ships.remove(this);
+    fields.first.playingField.ships.remove(this);
 
-    playingField.addShip(Ship.makeShip(playingField, newShip, friendly));
+    fields.first.playingField.addShip(Ship.makeShip(newShip, friendly));
   }
-
 
 }
 
@@ -1160,11 +1183,10 @@ class Carrier extends Ship {
 
   /**
    * Creates a new Carrier instance.
-   * @param pf the playing field containing the ship
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Carrier(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Carrier(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1174,11 +1196,10 @@ class BattleShip extends Ship {
 
   /**
    * Creates a new BattleShip instance.
-   * @param pf the playing field containing the ship
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  BattleShip(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  BattleShip(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1188,11 +1209,10 @@ class Submarine extends Ship {
 
   /**
    * Creates a new Submarine instance.
-   * @param pf the playing field containing the ship
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Submarine(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Submarine(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1202,11 +1222,10 @@ class Destroyer extends Ship {
 
   /**
    * Creates a new Destroyer instance.
-   * @param pf the playing field containing the ship
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Destroyer(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Destroyer(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1215,28 +1234,13 @@ class Destroyer extends Ship {
 class Rock extends Entity {
 
   /**
-   * the field containing the rock
-   */
-  Field _field;
-
-  Field get field => _field;
-
-  /**
    * creates a new Rock instance
-   * @param field the playing field containing the rock
-   * @param row the y position on the playing field
-   * @param col the x position on the playing field
+   * @param field the field containing the rock
    */
-  Rock(PlayingField field, int row, int col) : super(field) { // maybe construct via field and not via row/col
-    _field = field[row][col];
+  Rock(Field field) {
+    fields.add(field);
   }
 
-  /**
-   * places the rock on the playing field
-   */
-  void place() {
-    _field.entity = this;
-  }
 }
 
 /**
@@ -1244,30 +1248,14 @@ class Rock extends Entity {
  * - the player's shots affect an increased radius
  * - one of the enemy's ships is revealed
  */
-class PowerUp extends Entity { // The type of powerup is determined randomly on activation
-
-  /**
-   * the field containing the power up
-   */
-  Field _field;
-
-  Field get field => _field;
+class PowerUp extends Entity {
 
   /**
    * creates a new PowerUp instance
    * @param field the field containing the power up
-   * @param row the power up's y position on the playing field
-   * @param col the power up's x position on the playing field
    */
-  PowerUp(PlayingField field, int row, int col) : super(field) {
-    _field = field[row][col];
-  }
-
-  /**
-   * places the power up on the playing field
-   */
-  void place() {
-    _field.entity = this;
+  PowerUp(Field field) {
+    fields.add(field);
   }
 
   /**
@@ -1290,8 +1278,7 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
       //activate pu2
         break;
     }
-    print("PowerUp aktiviert");
-    field.entity = null;
+    _fields[0].entity = null;
   }
 
   /**
@@ -1299,21 +1286,21 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
    */
   void visionPu() {
     Ship ship;
-    for (int i = 0; i < playingField.ships.length; i++) {
-      ship = playingField.ships[i];
-      if (!ship.friendly){
+    for (int i = 0; i < fields.first.playingField.ships.length; i++) {
+      ship = fields.first.playingField.ships[i];
+      if (!ship.friendly && !ship.sunk){
         ship.fields.forEach((Field f) => f.foggy = false);
         break;
       }
     }
-    field.entity = null;
+    _fields[0].entity = null;
   }
 
   /**
    * increases the player's shots radius
    */
   void radiusPu() {
-    playingField.radiusPuRounds = 2;
+    fields.first.playingField.radiusPuRounds = 2;
   }
 
 }
@@ -1329,47 +1316,26 @@ class ShipBuilder extends Entity{
   int shipLength;
 
   /**
-   * the row of the center of the ship builder
-   */
-  int centerRow;
-
-  /**
-   * the column of the center of the ship builder
-   */
-  int centerCol;
-
-  /**
-   * the fields containing the ship builder
-   */
-  List<Field> _fields;
-
-  /**
    * true if the ship to be constructed belongs to the player else false
    */
   bool _friendly;
 
-  List<Field> get fields => _fields;
-  set fields(List<Field> fields) => _fields = fields;
-
   /**
    * creates a new ShipBuilder instance
-   * @param field the playing field containing the ship builder
-   * @param row the row of the center of the ship builder
-   * @param col the column of the center of the ship builder
+   * @param center the center of the ship builder
    * @param friendly describes who the ship will belong to
    */
-  ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) : super(field) {
+  ShipBuilder(Field center, int shipLength, bool friendly) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
-    this.centerRow = row;
-    this.centerCol = col;
     this._friendly = friendly;
+
     //add fields to the list
-    fields.add(field[row][col]);                                         // center
-    fields.add(row - 1 >= 0 ? field[row - 1][col] : null);               // north
-    fields.add(field[row][col + 1 < field.colCount ? col + 1 : 0]);      // east
-    fields.add(row + 1 < field.rowCount ? field[row + 1][col] : null);   // south
-    fields.add(field[row][col - 1 >= 0 ? col - 1 : field.colCount - 1]); // west
+    fields.add(center);        // center
+    fields.add(center.north());// north
+    fields.add(center.east()); // east
+    fields.add(center.south());// south
+    fields.add(center.west()); // west
 
     for (int dir = 1; dir < fields.length; dir++) {
       if (fields[dir] != null) {
@@ -1382,14 +1348,14 @@ class ShipBuilder extends Entity{
         if (colDiff < -1) {
           colDiff = 1;
         }
-        for (int r = row, c = col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
-          if (c < 0) c = field.colCount - 1;
-          if (c >= field.colCount) c = 0;
-          if (r >= field.rowCount || r < 0) {
+        for (int r = center.row, c = center.col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
+          if (c < 0) c = center.playingField.colCount - 1;
+          if (c >= center.playingField.colCount) c = 0;
+          if (r >= center.playingField.rowCount || r < 0) {
             unOccupied = false;
-          } else if (field[r][c].entity != null
-              || (_friendly && field[r][c].foggy)
-              || (!_friendly && !field[r][c].foggy)) {
+          } else if (center.playingField[r][c].entity != null
+              || (_friendly && center.playingField[r][c].foggy)
+              || (!_friendly && !center.playingField[r][c].foggy)) {
             unOccupied = false;
           }
         }
@@ -1402,54 +1368,32 @@ class ShipBuilder extends Entity{
   }
 
   /**
-   * places the ship builder on the palying field
-   */
-  void place() {
-    for (int i = 0; i < fields.length; i++) {
-      if (fields[i] != null) {
-        fields[i].entity = this;
-      }
-    }
-  }
-
-  /**
-   * removes the ship builder from the playing field
-   */
-  void remove() {
-    for (int i = 0; i < fields.length; i++) {
-      if (fields[i] != null && fields[i].entity == this) {
-        fields[i].entity = null;
-      }
-    }
-  }
-
-  /**
    * constructs a new ship on the playing field
    * @param f one of the ship builder's fields, indicating the direction, the ship should be built in
    */
   void buildShip(Field f) {
     if (fields.contains(f) && f != fields.first) {
       List<Field> shipFields = new List<Field>();
-      var rowDiff = centerRow - f.row;
-      var colDiff = centerCol - f.col;
+      var rowDiff = fields[0].row - f.row;
+      var colDiff = fields[0].col - f.col;
       if (colDiff > 1) {
         colDiff = -1;
       }
       if (colDiff < -1) {
         colDiff = 1;
       }
-      for (int r = centerRow, c = centerCol, i = 0; i < shipLength;
+      for (int r = fields[0].row, c = fields[0].col, i = 0; i < shipLength;
       r -= rowDiff, c -= colDiff, i++) {
         if (c < 0) {
-          c = playingField.colCount - 1;
+          c = fields.first.playingField.colCount - 1;
         }
-        if (c >= playingField.colCount) {
+        if (c >= fields.first.playingField.colCount) {
           c = 0;
         }
-        shipFields.add(playingField[r][c]);
+        shipFields.add(fields.first.playingField[r][c]);
       }
       remove();
-      playingField.addShip(Ship.makeShip(playingField, shipFields, _friendly));
+      fields.first.playingField.addShip(Ship.makeShip(shipFields, _friendly));
     }
   }
 
@@ -1477,39 +1421,25 @@ class ShipMover extends Entity {
    */
   Ship _ship;
 
-  /**
-   * the fields which contain this ship mover
-   */
-  List<Field> _fields;
-
-  List<Field> get fields => _fields;
   Ship get ship => _ship;
 
   /**
    * creates a new ShipMover instance
-   * @param pf the playingfield containing the ship builder
    * @param ship the ship to be moved
    */
-  ShipMover(PlayingField pf, Ship ship) : super(pf) {
+  ShipMover(Ship ship) {
     _ship = ship;
     _fields = new List<Field>();
     if (!ship.isDamaged()) {
       if (!ship.vertical) {
-        _fields.add(pf.west(ship.fields.first));
-        _fields.add(pf.east(ship.fields.last));
+        _fields.add(ship.fields.first.west());
+        _fields.add(ship.fields.last.east());
       } else {
-        _fields.add(pf.north(ship.fields.first));
-       // _fields.add(null);
-        _fields.add(pf.south(ship.fields.last));
-      }
-
-      //place
-      for (int i = 0; i < _fields.length; i++) {
-        if (fields[i].entity == null && !fields[i].hit) {
-          _fields[i].entity = this;
-        }
+        _fields.add(ship.fields.first.north());
+        _fields.add(ship.fields.last.south());
       }
     }
+    fields.removeWhere((f) => f == null);
   }
 
   /**
@@ -1530,14 +1460,4 @@ class ShipMover extends Entity {
     }
   }
 
-  /**
-   * removes the ship builder from the playing field
-   */
-  void remove() {
-    for (int i = 0; i < _fields.length; i++) {
-      if (_fields[i].entity == this) {
-        _fields[i].entity = null;
-      }
-    }
-  }
 }

@@ -111,8 +111,6 @@ class GameController{
   List<int> rowCol(String cssId) {
     RegExp re = new RegExp("[a-z]+_([0-9]+)_([0-9]+)");
     Match m = re.firstMatch(cssId);
-    print(m.group(1));
-    print(int.parse(m.group(2)));
     return [int.parse(m.group(1)), int.parse(m.group(2))];
   }
 
@@ -123,7 +121,6 @@ class GameController{
   void fireAt(MouseEvent e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
-      print(element.id);
       var rc = rowCol(element.id);
       if (rc[0] < _model.playingField.enemyRows &&
           !_model.playingField[rc[0]][rc[1]].hit) {
