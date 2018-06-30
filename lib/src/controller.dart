@@ -8,96 +8,99 @@ class GameController{
   /**
    * the games model contains contains the logic for the game
    */
-  GameModel model = new GameModel();
+  GameModel _model = new GameModel();
 
   /**
-   * the games view manipulates the html dom tree and is instructed by the controller
+   * the game's view manipulates the html dom tree and is instructed by the controller
    */
-  GameView view = new GameView();
+  GameView _view = new GameView();
 
   /**
    * the listener for level selection buttons
    */
-  var menuListener;
+  var _menuListener;
 
   /**
    * the listener for the actual game
    */
-  var tableListener;
+  var _tableListener;
 
   /**
    * the listener for the game over screen
    */
-  var gameoverListener;
+  var _gameoverlistener;
 
   /**
    * the listener for the message
    */
-  var messageListener;
+  var _messageListener;
 
   /**
    * TODO
    */
-  var deviceListener;
+  var _deviceListener;
 
   /**
    * the listener for entering full screen mode
    */
-  var fullscreenListener;
+  var _fullscreenListener;
 
   /**
    * the listener for exiting full screen mode
    */
-  var exitfullscreenListener;
+  var _exitFullscreenListener;
 
   /**
    * the listener for the instructions
    */
-  var instructionListener;
+  var _instructionListener;
 
   /**
    * The levels
    */
-  var levels;
+  var _levels;
 
   /**
    * The last level played
    */
-  int lastPlayed = 0;
+  int _lastPlayed = 0;
 
   /**
    * Creates a new GameController instance
    */
   GameController() {
-    loadLevels();
+    loadlevels();
     JsObject jsObject = new JsObject.fromBrowserObject(querySelector("#menu"));
     int scrollHeight = jsObject['scrollHeight'];
     jsObject['scrollTop'] = '${scrollHeight}';
-    view.generateField(model.playingField);
-    view.generateMenu();
-    view.generateGameoverscreen();
-    view.generateMessage();
-    view.generateDevice();
-    view.generateAnimatedMessage();
-    view.generateInstruction();
-    view.showMenu();
-    window.onResize.listen((e) => view.fieldSize());
-    instructionListener = querySelector("#instructionButton").onClick.listen((MouseEvent e) {changeInstruction(1);});
-    instructionListener = querySelector("#nextInstruction1").onClick.listen((MouseEvent e) {changeInstruction(2);});
-    instructionListener = querySelector("#nextInstruction2").onClick.listen((MouseEvent e) {changeInstruction(3);});
-    instructionListener = querySelector("#nextInstruction3").onClick.listen((MouseEvent e) {changeInstruction(4);});
-    instructionListener = querySelector("#backInstruction").onClick.listen((MouseEvent e) {view.showMenu();});
-    messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {view.showGame();});
-    deviceListener = querySelector('#deviceButton').onClick.listen((MouseEvent e) {view.hideDevice();});
-    menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
-    tableListener = querySelectorAll('td').onClick.listen(buildShip);
-    gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
-    fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
+    _view.generateField(_model.playingField);
+    _view.generateMenu();
+    _view.generateGameoverscreen();
+    _view.generateMessage();
+    _view.generateDevice();
+    _view.generateAnimatedMessage();
+    _view.generateInstruction();
+    _view.showMenu();
+    window.onResize.listen((e) => _view.fieldSize());
+    _instructionListener = querySelector("#instructionButton").onClick.listen((MouseEvent e) {changeInstruction(1);});
+    _instructionListener = querySelector("#nextInstruction1").onClick.listen((MouseEvent e) {changeInstruction(2);});
+    _instructionListener = querySelector("#nextInstruction2").onClick.listen((MouseEvent e) {changeInstruction(3);});
+    _instructionListener = querySelector("#nextInstruction3").onClick.listen((MouseEvent e) {changeInstruction(4);});
+    _instructionListener = querySelector("#backInstruction").onClick.listen((MouseEvent e) {_view.showMenu();});
+    _messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {_view.showGame();});
+    _deviceListener = querySelector('#deviceButton').onClick.listen((MouseEvent e) {_view.hideDevice();});
+    _menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
+    _tableListener = querySelectorAll('td').onClick.listen(buildShip);
+    _gameoverlistener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
+    _fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
     addListeners();
   }
 
-  void loadLevels() {
-    HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
+  /**
+   * loads the game's levels
+   */
+  void loadlevels() {
+    HttpRequest.getString("levels.json").then((resp) => _levels = JSON.decode(resp));
   }
 
   /**
@@ -115,41 +118,42 @@ class GameController{
 
   /**
    * manages the player's actions on the playing field
+   * 
    */
   void fireAt(MouseEvent e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
       print(element.id);
       var rc = rowCol(element.id);
-      if (rc[0] < model.playingField.enemyRows &&
-          !model.playingField[rc[0]][rc[1]].hit) {
-        model.playingField.removeMovers();
-        int i = model.playingField.enemyShipCount();
-        model.fireAt(rc[0], rc[1]);
-        if(i > model.playingField.enemyShipCount()){
+      if (rc[0] < _model.playingField.enemyRows &&
+          !_model.playingField[rc[0]][rc[1]].hit) {
+        _model.playingField.removeMovers();
+        int i = _model.playingField.enemyShipCount();
+        _model.fireAt(rc[0], rc[1]);
+        if(i > _model.playingField.enemyShipCount()){
           sunkShipAnimation();
         }
         shipsleftMessage();
-        if (model.playingField.gameOver()) {
-          view.update(model.playingField);
+        if (_model.playingField.gameOver()) {
+          _view.update(_model.playingField);
           gameoverScreen();
-          this.tableListener.cancel();
-          this.tableListener = querySelectorAll('td').onClick.listen(
+          this._tableListener.cancel();
+          this._tableListener = querySelectorAll('td').onClick.listen(
               buildShip); //change to fireat on click on table
         } else {
           enemyMove();
         }
-      } else if (model.playingField[rc[0]][rc[1]].entity != null) {
-        if (model.playingField[rc[0]][rc[1]].entity is Ship) {
-          Ship s = model.playingField[rc[0]][rc[1]].entity;
+      } else if (_model.playingField[rc[0]][rc[1]].entity != null) {
+        if (_model.playingField[rc[0]][rc[1]].entity is Ship) {
+          Ship s = _model.playingField[rc[0]][rc[1]].entity;
           if (s.friendly) {
-            model.playingField.moveShip(rc[0], rc[1]);
-            view.update(model.playingField);
+            _model.playingField.moveShip(rc[0], rc[1]);
+            _view.update(_model.playingField);
           }
-        } else if (model.playingField[rc[0]][rc[1]].entity is ShipMover) {
-          model.playingField.moveShip(rc[0], rc[1]);
+        } else if (_model.playingField[rc[0]][rc[1]].entity is ShipMover) {
+          _model.playingField.moveShip(rc[0], rc[1]);
           enemyMove();
-          view.update(model.playingField);
+          _view.update(_model.playingField);
         }
       }
     }
@@ -159,25 +163,26 @@ class GameController{
    * initializes th enemy making a move
    */
   void enemyMove() {
-    model.enemy.makeMove();
+    _model.enemy.makeMove();
     shipsleftMessage();
-    view.update(model.playingField);
+    _view.update(_model.playingField);
   }
 
   /**
    * instructs the view to show the game over screen after the game is finished
    */
   void gameoverScreen(){
-    String text = model.playingField.enemyShipCount() == 0 ? "YOU WIN!" : "YOU LOST!";
-    querySelector('#gameoverText').attributes["class"] = model.playingField.enemyShipCount() == 0 ? "win" : "loose";
-    querySelector('#nextGameover').style.display = model.playingField.enemyShipCount() == 0 ? "block" : "none";
-    querySelector('#restartGameover').style.display = model.playingField.enemyShipCount() == 0 ? "none" : "block";
-    view.setGameoverText(text);
-    view.showGameover();
+    String text = _model.playingField.enemyShipCount() == 0 ? "YOU WIN!" : "YOU LOST!";
+    querySelector('#gameoverText').attributes["class"] = _model.playingField.enemyShipCount() == 0 ? "win" : "loose";
+    querySelector('#nextGameover').style.display = _model.playingField.enemyShipCount() == 0 ? "block" : "none";
+    querySelector('#restartGameover').style.display = _model.playingField.enemyShipCount() == 0 ? "none" : "block";
+    _view.setGameoverText(text);
+    _view.showGameover();
   }
 
   /**
    * manages the users actions on the level selection buttons
+   * @param e the event
    */
   void selectLevel(MouseEvent e) {
     if (e.target is Element){
@@ -185,47 +190,48 @@ class GameController{
       RegExp re = new RegExp("level_([0-9]+)");
       if (re.hasMatch(element.id)) {
         Match m = re.firstMatch(element.id);
-        model.generatePlayingField(levels[int.parse(m.group(1)) - 1]);//int.parse(m.group(1)));
-        lastPlayed = int.parse(m.group(1));
+        _model.generatePlayingField(_levels[int.parse(m.group(1)) - 1]);//int.parse(m.group(1)));
+        _lastPlayed = int.parse(m.group(1));
       } else {
         Random r = new Random();
-        int lvl = r.nextInt(levels.length);
-        model.generatePlayingField(levels[lvl - 1]);
-        lastPlayed = lvl;
+        int lvl = r.nextInt(_levels.length);
+        _model.generatePlayingField(_levels[lvl - 1]);
+        _lastPlayed = lvl;
       }
-      view.setInGameText("Place a ${model.playingField.playerShipLengths[0]}-part ship");
-      view.setInGameLevel("Level $lastPlayed");
-      view.update(model.playingField);
+      _view.setInGameText("Place a ${_model.playingField.playerShipLengths[0]}-part ship");
+      _view.setInGameLevel("Level $_lastPlayed");
+      _view.update(_model.playingField);
       setMessage();
-      view.showMessage();
+      _view.showMessage();
     }
   }
 
   /**
    * manages the users actions on the game over screen
+   * @param e the event
    */
   void gameOver(Event e) {
     if (e.target is Element) {
       HtmlElement element = e.target;
       if (element.id == "menuGameover") {
-        view.showMenu();
+        _view.showMenu();
       } else if (element.id == "nextGameover") {
-        model.generatePlayingField(levels[lastPlayed + 1]);
-        view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[0]}-part ship");
-        view.setInGameLevel("Level " + (lastPlayed+1).toString());
-        lastPlayed++;
-        view.update(model.playingField);
+        _model.generatePlayingField(_levels[_lastPlayed + 1]);
+        _view.setInGameText(
+            "Place a ${_model.playingField.playerShipLengths[0]}-part ship");
+        _view.setInGameLevel("Level " + (_lastPlayed+1).toString());
+        _lastPlayed++;
+        _view.update(_model.playingField);
         setMessage();
-        view.showMessage();
+        _view.showMessage();
       } else if (element.id == "restartGameover") {
-        model.generatePlayingField(levels[lastPlayed]);
-        view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[0]}-part ship");
-        view.setInGameLevel("Level $lastPlayed");
-        view.update(model.playingField);
+        _model.generatePlayingField(_levels[_lastPlayed]);
+        _view.setInGameText(
+            "Place a ${_model.playingField.playerShipLengths[0]}-part ship");
+        _view.setInGameLevel("Level $_lastPlayed");
+        _view.update(_model.playingField);
         setMessage();
-        view.showMessage();
+        _view.showMessage();
       }
     }
   }
@@ -234,9 +240,9 @@ class GameController{
    * resets the listeners on the table
    */
   void goBack() {
-    this.tableListener.cancel();
-    this.tableListener = querySelectorAll('td').onClick.listen(buildShip);
-    view.showMenu();
+    this._tableListener.cancel();
+    this._tableListener = querySelectorAll('td').onClick.listen(buildShip);
+    _view.showMenu();
   }
 
   /**
@@ -245,7 +251,7 @@ class GameController{
   void addListeners() {
     querySelector("#zufall").onClick.listen((Event e) {
       setMessage();
-      view.showMessage();
+      _view.showMessage();
     });
 
     querySelector("#back").onClick.listen((Event e) {
@@ -260,15 +266,15 @@ class GameController{
     if (e.target is Element) {
       HtmlElement element = e.target;
       var rc = rowCol(element.id);
-      bool completed = model.playingField.buildShip(rc[0], rc[1], true);
-      if (completed && model.playingField.playerShipCount() < model.playingField.playerShipLengths.length) {
-        view.setInGameText(
-            "Place a ${model.playingField.playerShipLengths[model.playingField.playerShipCount()]}-part ship");
+      bool completed = _model.playingField.buildShip(rc[0], rc[1], true);
+      if (completed && _model.playingField.playerShipCount() < _model.playingField.playerShipLengths.length) {
+        _view.setInGameText(
+            "Place a ${_model.playingField.playerShipLengths[_model.playingField.playerShipCount()]}-part ship");
       }
-      view.update(model.playingField);
-      if (model.playingField.shipBuildingComplete()) {
-        this.tableListener.cancel();
-        this.tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
+      _view.update(_model.playingField);
+      if (_model.playingField.shipBuildingComplete()) {
+        this._tableListener.cancel();
+        this._tableListener = querySelectorAll('tr').onClick.listen(fireAt);  //change to fireat on click on table
         shipsleftMessage();
       }
     }
@@ -281,34 +287,34 @@ class GameController{
     List<String> s = ["0", "0", "0", "0", "0", "0", "0", "0"];
     List<int> c = [0,0,0,0,0,0,0,0];
 
-    for(int i = 0; i < model.playingField.ships.length; i++){
-      if(model.playingField.ships[i] is Destroyer){
-        if(model.playingField.ships[i]._friendly == true){
+    for(int i = 0; i < _model.playingField.ships.length; i++){
+      if(_model.playingField.ships[i] is Destroyer){
+        if(_model.playingField.ships[i]._friendly == true){
           c[0]++;
         }else{c[4]++;}
-      }else if(model.playingField.ships[i] is Submarine){
-        if(model.playingField.ships[i]._friendly == true){
+      }else if(_model.playingField.ships[i] is Submarine){
+        if(_model.playingField.ships[i]._friendly == true){
           c[1]++;
         }else{c[5]++;}
-      }else if(model.playingField.ships[i] is BattleShip){
-        if(model.playingField.ships[i]._friendly == true){
+      }else if(_model.playingField.ships[i] is BattleShip){
+        if(_model.playingField.ships[i]._friendly == true){
           c[2]++;
         }else{c[6]++;}
-      }else if(model.playingField.ships[i] is Carrier){
-        if(model.playingField.ships[i]._friendly == true){
+      }else if(_model.playingField.ships[i] is Carrier){
+        if(_model.playingField.ships[i]._friendly == true){
           c[3]++;
         }else{c[7]++;}
       }
     }
 
-    for(int i = 0; i < model.playingField.playerShipLengths.length; i++){
-      if(model.playingField.playerShipLengths[i] == 2){
+    for(int i = 0; i < _model.playingField.playerShipLengths.length; i++){
+      if(_model.playingField.playerShipLengths[i] == 2){
           c[0]++;
-      }else if(model.playingField.playerShipLengths[i] == 3){
+      }else if(_model.playingField.playerShipLengths[i] == 3){
           c[1]++;
-      }else if(model.playingField.playerShipLengths[i] == 4){
+      }else if(_model.playingField.playerShipLengths[i] == 4){
           c[2]++;
-      }else if(model.playingField.playerShipLengths[i] == 5){
+      }else if(_model.playingField.playerShipLengths[i] == 5){
           c[3]++;
       }
     }
@@ -318,7 +324,7 @@ class GameController{
     }
     String t = "";
 
-    switch(model.enemy.strategy){
+    switch(_model.enemy.strategy){
       case 0:
         t = "Easy Bot";
         break;
@@ -333,8 +339,8 @@ class GameController{
         break;
     }
 
-    view.setMessageEnemy(t);
-    view.setShipCount(s);
+    _view.setMessageEnemy(t);
+    _view.setShipCount(s);
 
   }
 
@@ -342,64 +348,65 @@ class GameController{
    * instructs the view to display how many ships the enemy has left
    */
   void shipsleftMessage(){
-    if(model.playingField.enemyShipCount() == 1){
-      view.setInGameText("${model.playingField.enemyShipCount()} Ship left");
+    if(_model.playingField.enemyShipCount() == 1){
+      _view.setInGameText("${_model.playingField.enemyShipCount()} Ship left");
     }else {
-      view.setInGameText(
-          "${model.playingField.enemyShipCount()} Ships left");
+      _view.setInGameText(
+          "${_model.playingField.enemyShipCount()} Ships left");
     }
   }
 
   void fullscreenMode(Element element){
-    view.fullscreenWorkaround(element);
+    _view.fullscreenWorkaround(element);
   }
 
   /**
    * requests the view to display the animation for sinking a ship
    */
   void sunkShipAnimation(){
-    view.showAnimatedMessage();
-    new Timer(new Duration(milliseconds: 500), () => view.hideAnimatedMessage());
+    _view.showAnimatedMessage();
+    new Timer(new Duration(milliseconds: 500), () => _view.hideAnimatedMessage());
   }
 
   /**
    * requests the view to display the tutorial for the game
+   * @param i TODO
    */
   void changeInstruction(int i){
     String object = "";
     String picture = "";
     String text = "";
     if(i == 1){
-      view.showInstruction();
+      _view.showInstruction();
       object = "Placing a Ship";
       picture = "shipbuilder_center";
       text = "Place your ships in the lower field. "
           "You and the enemy can place them beyond the left and the right border.";
-      view.changeInstructionButton(i);
-      view.setInstruction(object, picture, text);
+      _view.changeInstructionButton(i);
+      _view.setInstruction(object, picture, text);
     }else if(i == 2){
       object = "Island";
       picture = "rock_2";
       text = "Islands are obstacles which block the way of your ships. "
           "If you attack one on the enemy's territory, "
           "it might look like you've hit a ship. Don't be fooled.";
-      view.changeInstructionButton(i);
-      view.setInstruction(object, picture, text);
+      _view.changeInstructionButton(i);
+      _view.setInstruction(object, picture, text);
     }else if(i == 3){
       object = "Moving a Ship";
       picture = "shipbuilder_east";
       text = "In order to move a ship, "
           "simply tap on it and use the arrows to move it. "
           "You can choose between moving a ship and attacking the enemy every round.";
-      view.changeInstructionButton(i);
-      view.setInstruction(object, picture, text);
+      _view.changeInstructionButton(i);
+      _view.setInstruction(object, picture, text);
     }else if(i == 4){
       object = "PowerUp";
       picture = "powerup_fog";
       text = "Attacking power ups randomly activates one of two effects. "
           "They either reveal one of the enemy's ships or increase the radius of your attacks.";
-      view.changeInstructionButton(i);
-      view.setInstruction(object, picture, text);
+      _view.changeInstructionButton(i);
+      _view.setInstruction(object, picture, text);
     }
   }
 }
