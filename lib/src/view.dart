@@ -19,7 +19,7 @@ class GameView {
   /**
    * Generats html for the playing field screen
    * Creats a List in a List which contains HtmlElements
-   * @param playingField TODO
+   * @param playingField current state of the game
    */
   void generateField(PlayingField playingField) {
     int text = playingField.colCount - 1;
@@ -135,7 +135,7 @@ class GameView {
 
   /**
    * update DOM tree
-   * @param playingFiled TODO
+   * @param playingFiled current state of the game
    */
   void update(PlayingField playingField) {
     for (int row = 0; row < fields.length; row++) {
