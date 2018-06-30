@@ -609,7 +609,7 @@ class PlayingField {
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-        innerList[col] = row >= _enemyRows ? new Field(row, col, false): new Field(row, col, true);
+        innerList[col] = row >= _enemyRows ? new Field(this, row, col, false): new Field(this, row, col, true);
       }
       outerList[row] = innerList;
     }
@@ -627,10 +627,10 @@ class PlayingField {
       if (_radiusPuRounds > 0) {
         _radiusPuRounds--;
         Field f = _fields[row][col];
-        if (north(f) != null) north(f).fireAt();
-        east(f).fireAt();
-        if (south(f).row < enemyRows)south(f).fireAt();
-        west(f).fireAt();
+        if (f.north() != null) f.north().fireAt();
+        f.east().fireAt();
+        if (f.south().row < enemyRows) f.south().fireAt();
+        f.west().fireAt();
       }
     } else {
       _fields[row][col].fireAt();
@@ -664,7 +664,7 @@ class PlayingField {
     for (int i = 0; i < level["enemyPowUps"]; i++) {
       Field f = randomField(0, enemyRows);
       if (f.entity == null) {
-        f.entity = new PowerUp(this, f.row, f.col);
+        f.entity = new PowerUp(f);//this, f.row, f.col);
       } else {
         i--;
       }
@@ -811,59 +811,6 @@ class PlayingField {
     return count;
   }
 
-  /**
-   * finds the field to the north of a known field if there is one
-   * @param f the known field
-   * @returns the field to the north of the known field if there is one, else null
-   */
-  Field north(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.row - 1 < 0) return null;
-      else return _fields[f.row - 1][f.col];
-    }
-    return null;
-  }
-  /**
-   * finds the field to the east of a known field
-   * @param f the known field
-   * @returns the field to the east of the known field if there is none
-   *          the first field of the known field's row is returned
-   */
-  Field east(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.col + 1 >= colCount) return _fields[f.row][0];
-      else return _fields[f.row][f.col + 1];
-    }
-    return null;
-  }
-
-  /**
-   * finds the field to the south of a known field if there is one
-   * @param f the known field
-   * @returns the field to the south of the known field if there is one, else null
-   */
-  Field south(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.row + 1 >= rowCount) return null;
-      else return _fields[f.row + 1][f.col];
-    }
-    return null;
-  }
-  /**
-   * finds the field to the west of a known field
-   * @param f the known field
-   * @returns the field to the west of the known field if there is none
-   *          the last field of the known field's row is returned
-   */
-  Field west(Field f) {
-    if (_fields[f.row][f.col] != null) {
-      if (f.col - 1 < 0)
-        return _fields[f.row][colCount - 1];
-      else
-        return _fields[f.row ][f.col - 1];
-    }
-    return null;
-  }
 }
 
 /**
@@ -901,6 +848,50 @@ class Field{
    */
   Entity _entity;
 
+  PlayingField _playingField;
+
+  Field west() {
+    if (col - 1 < 0)
+      return playingField[row][playingField.colCount - 1];
+    else
+      return playingField[row][col - 1];
+  }
+
+  /**
+   * finds the field to the north of a known field if there is one
+   * @param f the known field
+   * @returns the field to the north of the known field if there is one, else null
+   */
+  Field north() {
+    if (row - 1 < 0)
+      return null;
+    else
+      return playingField[row - 1][col];
+  }
+  /**
+   * finds the field to the east of a known field
+   * @param f the known field
+   * @returns the field to the east of the known field if there is none
+   *          the first field of the known field's row is returned
+   */
+  Field east() {
+    if (col + 1 >= playingField.colCount)
+      return playingField[row][0];
+    else
+      return playingField[row][col + 1];
+  }
+  /**
+   * finds the field to the south of a known field if there is one
+   * @param f the known field
+   * @returns the field to the south of the known field if there is one, else null
+   */
+  Field south() {
+    if (row + 1 >= playingField.rowCount)
+      return null;
+    else
+      return playingField[row + 1][col];
+  }
+
   int get row => _row;
   set row(int row) => _row = row;
   int get col => _col;
@@ -913,6 +904,7 @@ class Field{
   set entity(Entity entity) => _entity = entity;
   bool get foggy => _foggy;
   set foggy(bool value) => _foggy = value;
+  PlayingField get playingField => _playingField;
 
   /**
    * creates a field instance
@@ -920,7 +912,8 @@ class Field{
    * @param col the x position of the field on the playingfield
    * @param foggy true for foggy field else false
    */
-  Field(int row, int col, bool foggy){
+  Field(PlayingField pf, int row, int col, bool foggy){
+    this._playingField = pf;
     this.row = row;
     this.col = col;
     this.foggy = foggy;
@@ -953,15 +946,22 @@ class Entity {
   /**
    * the playing field, which contains the entity
    */
-  PlayingField _playingField;
-  PlayingField get playingField => _playingField;
-  set playingField(PlayingField value) => _playingField = value;
+  //PlayingField _playingField;
+  //PlayingField get playingField => _playingField;
+  //set playingField(PlayingField value) => _playingField = value;
+
+  List<Field> _fields;
+
+  List<Field> get fields => _fields;
+  set fields(List<Field> value) {
+    _fields = value;
+  }
 
   /**
    * Creates a new entity instance
    */
-  Entity(PlayingField playingField) {
-    this.playingField = playingField;
+  Entity() {//PlayingField playingField) {
+    fields = new List<Field>();
   }
 }
 
@@ -1002,7 +1002,7 @@ class Ship extends Entity {
    * @param fields the fields, which contain the ship
    * @param friendly describes who the ship belongs to
    */
-  Ship(PlayingField pField, List<Field> fields, bool friendly) : super(pField) {
+  Ship(List<Field> fields, bool friendly) {
     this._friendly = friendly;
     this.vertical = fields.first.col == fields.last.col;
     this.fields = fields;
@@ -1020,19 +1020,19 @@ class Ship extends Entity {
    * @param friendly describes who the ship belongs to
    * @returns a new instance of one of the ship classes, based on the length of the fields list
    */
-  static Ship makeShip(PlayingField pf, List<Field> fields, bool friendly) {
+  static Ship makeShip(List<Field> fields, bool friendly) {
     switch (fields.length) {
       case 2:
-        return new Destroyer(pf, fields, friendly);
+        return new Destroyer(fields, friendly);
         break;
       case 3:
-        return new Submarine(pf, fields, friendly);
+        return new Submarine(fields, friendly);
         break;
       case 4:
-        return new BattleShip(pf, fields, friendly);
+        return new BattleShip(fields, friendly);
         break;
       case 5:
-        return new Carrier(pf, fields, friendly);
+        return new Carrier(fields, friendly);
         break;
     }
     return null;
@@ -1057,7 +1057,7 @@ class Ship extends Entity {
     bool last = false;
     for (int i = 0; i < fields.length; i++) {
       if (fields[i].col == 0) first = true;
-      if (fields[i].col == playingField.colCount - 1)
+      if (fields[i].col == fields.first.playingField.colCount - 1)
         last = true;
     }
     return first && last;
@@ -1076,7 +1076,7 @@ class Ship extends Entity {
         bool hasNext = false;
         for (int j = 0; j < fields.length; j++) {
           if (fields[j].col == fields[i].col + 1) hasNext = true;
-          if (fields[i].col == playingField.colCount - 1 &&
+          if (fields[i].col == fields.first.playingField.colCount - 1 &&
               fields[j].col == 0) hasNext = true;
         }
         if (!hasNext) {
@@ -1146,16 +1146,16 @@ class Ship extends Entity {
     for (int i = 0; i < fields.length; i++) {
         Field f = fields[i];
         if (dir < 0) {
-          newShip.add(vertical ? playingField.north(f) : playingField.west(f));
+          newShip.add(vertical ? f.north() : f.west());
         } else if (dir > 0){
-          newShip.add(vertical ? playingField.south(f) : playingField.east(f));
+          newShip.add(vertical ? f.south() : f.east());
         }
     }
 
     fields.forEach((f) => f.entity = null);
-    playingField.ships.remove(this);
+    fields.first.playingField.ships.remove(this);
 
-    playingField.addShip(Ship.makeShip(playingField, newShip, friendly));
+    fields.first.playingField.addShip(Ship.makeShip(newShip, friendly));
   }
 
 
@@ -1172,7 +1172,7 @@ class Carrier extends Ship {
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Carrier(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Carrier(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1186,7 +1186,7 @@ class BattleShip extends Ship {
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  BattleShip(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  BattleShip(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1200,7 +1200,7 @@ class Submarine extends Ship {
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Submarine(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Submarine(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1214,7 +1214,7 @@ class Destroyer extends Ship {
    * @param fields the ship's fields
    * @param friendly describes who the ship belongs to
    */
-  Destroyer(PlayingField pf, List<Field> fields, bool friendly) : super(pf, fields, friendly);
+  Destroyer(List<Field> fields, bool friendly) : super(fields, friendly);
 }
 
 /**
@@ -1235,7 +1235,7 @@ class Rock extends Entity {
    * @param row the y position on the playing field
    * @param col the x position on the playing field
    */
-  Rock(PlayingField field, int row, int col) : super(field) { // maybe construct via field and not via row/col
+  Rock(PlayingField field, int row, int col) {
     _field = field[row][col];
   }
 
@@ -1257,9 +1257,9 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
   /**
    * the field containing the power up
    */
-  Field _field;
+  //Field _field;
 
-  Field get field => _field;
+  //Field get field => _field;
 
   /**
    * creates a new PowerUp instance
@@ -1267,15 +1267,16 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
    * @param row the power up's y position on the playing field
    * @param col the power up's x position on the playing field
    */
-  PowerUp(PlayingField field, int row, int col) : super(field) {
-    _field = field[row][col];
+  PowerUp(Field field) {//PlayingField field, int row, int col){
+    //_field = field;//[row][col];
+    _fields.add(field);
   }
 
   /**
    * places the power up on the playing field
    */
   void place() {
-    _field.entity = this;
+    _fields[0].entity = this;
   }
 
   /**
@@ -1285,6 +1286,7 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
    * - one of the enemy's ships is revealed
    */
   void activate() {
+    print("power up activated");
     Random rng = new Random();
     int type = rng.nextInt(2);
     switch(type) {
@@ -1299,29 +1301,31 @@ class PowerUp extends Entity { // The type of powerup is determined randomly on 
         break;
     }
     print("PowerUp aktiviert");
-    field.entity = null;
+    _fields[0].entity = null;
   }
 
   /**
    * reveals one of the enemy's ships
    */
   void visionPu() {
+    print("vision pu");
     Ship ship;
-    for (int i = 0; i < playingField.ships.length; i++) {
-      ship = playingField.ships[i];
+    for (int i = 0; i < fields.first.playingField.ships.length; i++) {
+      ship = fields.first.playingField.ships[i];
       if (!ship.friendly && !ship.sunk){
         ship.fields.forEach((Field f) => f.foggy = false);
         break;
       }
     }
-    field.entity = null;
+    _fields[0].entity = null;
   }
 
   /**
    * increases the player's shots radius
    */
   void radiusPu() {
-    playingField.radiusPuRounds = 2;
+    print("radius pu");
+    fields.first.playingField.radiusPuRounds = 2;
   }
 
 }
@@ -1366,7 +1370,7 @@ class ShipBuilder extends Entity{
    * @param col the column of the center of the ship builder
    * @param friendly describes who the ship will belong to
    */
-  ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) : super(field) {
+  ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
     this.centerRow = row;
@@ -1449,15 +1453,15 @@ class ShipBuilder extends Entity{
       for (int r = centerRow, c = centerCol, i = 0; i < shipLength;
       r -= rowDiff, c -= colDiff, i++) {
         if (c < 0) {
-          c = playingField.colCount - 1;
+          c = fields.first.playingField.colCount - 1;
         }
-        if (c >= playingField.colCount) {
+        if (c >= fields.first.playingField.colCount) {
           c = 0;
         }
-        shipFields.add(playingField[r][c]);
+        shipFields.add(fields.first.playingField[r][c]);
       }
       remove();
-      playingField.addShip(Ship.makeShip(playingField, shipFields, _friendly));
+      fields.first.playingField.addShip(Ship.makeShip(shipFields, _friendly));
     }
   }
 
@@ -1498,17 +1502,17 @@ class ShipMover extends Entity {
    * @param pf the playingfield containing the ship builder
    * @param ship the ship to be moved
    */
-  ShipMover(PlayingField pf, Ship ship) : super(pf) {
+  ShipMover(PlayingField pf, Ship ship) {
     _ship = ship;
     _fields = new List<Field>();
     if (!ship.isDamaged()) {
       if (!ship.vertical) {
-        _fields.add(pf.west(ship.fields.first));
-        _fields.add(pf.east(ship.fields.last));
+        _fields.add(ship.fields.first.west());
+        _fields.add(ship.fields.last.east());
       } else {
-        _fields.add(pf.north(ship.fields.first));
+        _fields.add(ship.fields.first.north());
        // _fields.add(null);
-        _fields.add(pf.south(ship.fields.last));
+        _fields.add(ship.fields.last.south());
       }
     }
   }
