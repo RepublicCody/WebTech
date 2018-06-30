@@ -566,6 +566,9 @@ class PlayingField {
    */
   int _radiusPuRounds;
 
+  /**
+   * the playingfield's tiles can be accessed via this operator
+   */
   operator [](int index) => _fields[index];
 
   List<Ship> get ships => _ships;
@@ -701,14 +704,25 @@ class PlayingField {
     ship.place();
   }
 
+  /**
+   * places a shipMover on the playing field
+   * @param mover the ship mover to be placed
+   */
   void addMover(ShipMover mover) {
     mover.place();
   }
 
+  /**
+   * places a ship builder on the palying field
+   * @param builder the ship builder to be placed
+   */
   void addBuilder(ShipBuilder builder) {
     builder.place();
   }
 
+  /**
+   * removes all ship builders from the playing field
+   */
   void removeBuilder() {
     for (int r = 0; r < _fields.length; r++) {
       for (int c = 0; c < _fields[r].length; c++) {
@@ -732,10 +746,10 @@ class PlayingField {
     if (f.entity == null/* && !f.foggy*/) {
       if (friendly) {
         removeBuilder();
-        addBuilder(new ShipBuilder(this, row, col, playerShipLengths[playerShipCount()], true));
+        addBuilder(new ShipBuilder(_fields[row][col], playerShipLengths[playerShipCount()], true));
       } else {
         removeBuilder();
-        ShipBuilder b = new ShipBuilder(this, row, col, enemyShipLengths[enemyShipCount()], false);
+        ShipBuilder b = new ShipBuilder(_fields[row][col], enemyShipLengths[enemyShipCount()], false);
         addBuilder(b);
         Field dir = b.randomDirection();
         return buildShip(dir.row, dir.col, false);
@@ -1008,7 +1022,6 @@ class Ship extends Entity {
 
   /**
    * Creates a new  ship instance
-   * @param pField the playingField, which contains the ship
    * @param fields the fields, which contain the ship
    * @param friendly describes who the ship belongs to
    */
@@ -1300,39 +1313,26 @@ class ShipBuilder extends Entity{
   int shipLength;
 
   /**
-   * the row of the center of the ship builder
-   */
-  int centerRow;
-
-  /**
-   * the column of the center of the ship builder
-   */
-  int centerCol;
-
-  /**
    * true if the ship to be constructed belongs to the player else false
    */
   bool _friendly;
 
   /**
    * creates a new ShipBuilder instance
-   * @param field the playing field containing the ship builder
-   * @param row the row of the center of the ship builder
-   * @param col the column of the center of the ship builder
+   * @param center the center of the ship builder
    * @param friendly describes who the ship will belong to
    */
-  ShipBuilder(PlayingField field, int row, int col, int shipLength, bool friendly) {
+  ShipBuilder(Field center, int shipLength, bool friendly) {
     this.shipLength = shipLength;
     this.fields = new List<Field>();
-    this.centerRow = row;
-    this.centerCol = col;
     this._friendly = friendly;
+
     //add fields to the list
-    fields.add(field[row][col]);                                         // center
-    fields.add(row - 1 >= 0 ? field[row - 1][col] : null);               // north
-    fields.add(field[row][col + 1 < field.colCount ? col + 1 : 0]);      // east
-    fields.add(row + 1 < field.rowCount ? field[row + 1][col] : null);   // south
-    fields.add(field[row][col - 1 >= 0 ? col - 1 : field.colCount - 1]); // west
+    fields.add(center);        // center
+    fields.add(center.north());// north
+    fields.add(center.east()); // east
+    fields.add(center.south());// south
+    fields.add(center.west()); // west
 
     for (int dir = 1; dir < fields.length; dir++) {
       if (fields[dir] != null) {
@@ -1345,14 +1345,14 @@ class ShipBuilder extends Entity{
         if (colDiff < -1) {
           colDiff = 1;
         }
-        for (int r = row, c = col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
-          if (c < 0) c = field.colCount - 1;
-          if (c >= field.colCount) c = 0;
-          if (r >= field.rowCount || r < 0) {
+        for (int r = center.row, c = center.col, i = 0; i < shipLength; r -= rowDiff, c -= colDiff, i++) {
+          if (c < 0) c = center.playingField.colCount - 1;
+          if (c >= center.playingField.colCount) c = 0;
+          if (r >= center.playingField.rowCount || r < 0) {
             unOccupied = false;
-          } else if (field[r][c].entity != null
-              || (_friendly && field[r][c].foggy)
-              || (!_friendly && !field[r][c].foggy)) {
+          } else if (center.playingField[r][c].entity != null
+              || (_friendly && center.playingField[r][c].foggy)
+              || (!_friendly && !center.playingField[r][c].foggy)) {
             unOccupied = false;
           }
         }
@@ -1371,15 +1371,15 @@ class ShipBuilder extends Entity{
   void buildShip(Field f) {
     if (fields.contains(f) && f != fields.first) {
       List<Field> shipFields = new List<Field>();
-      var rowDiff = centerRow - f.row;
-      var colDiff = centerCol - f.col;
+      var rowDiff = fields[0].row - f.row;
+      var colDiff = fields[0].col - f.col;
       if (colDiff > 1) {
         colDiff = -1;
       }
       if (colDiff < -1) {
         colDiff = 1;
       }
-      for (int r = centerRow, c = centerCol, i = 0; i < shipLength;
+      for (int r = fields[0].row, c = fields[0].col, i = 0; i < shipLength;
       r -= rowDiff, c -= colDiff, i++) {
         if (c < 0) {
           c = fields.first.playingField.colCount - 1;
