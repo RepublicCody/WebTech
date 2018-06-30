@@ -219,7 +219,7 @@ class GameController{
   }
 
   /**
-   * TODO
+   * Count and set amount of ships for the message screen
    */
   void setMessage(){
     List<String> s = ["0", "0", "0", "0", "0", "0", "0", "0"];
@@ -294,6 +294,9 @@ class GameController{
     }
   }
 
+  /**
+   * Request for FullscreenMode
+   */
   void fullscreenMode(Element element){
     view.fullscreenWorkaround(element);
   }
