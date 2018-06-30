@@ -231,7 +231,7 @@ class Enemy {
   }
 
   /**
-   * TODO
+   * check if shot ships is sunk
    */
   bool checkSunkShip() {
     int counter = 0;
@@ -246,7 +246,7 @@ class Enemy {
   }
 
   /**
-   * TODO
+   * maka a template move
    */
   void template(List<int> list) {
     int row = list[0];
@@ -306,6 +306,9 @@ class Enemy {
     }
   }
 
+  /**
+   * search for other parts of a ship
+   */
   void foundShip() {
 
     int halfROWCOUNT = model.playingField._enemyRows;

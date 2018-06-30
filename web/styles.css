@@ -863,7 +863,7 @@ div {
     width: 100vw;
     height: 100vh;
     z-index: 3;
-    background-size: 40%;
+    background-size: 35%;
     background-color: #080808;
     background-repeat: no-repeat;
     background-image: url("images/device.png");
@@ -877,7 +877,7 @@ div {
     border: 3px solid #ffffff;
     color: #FFFFFF;
     padding: 4px;
-    top: 92.5%;
+    top: 90%;
     left: 50%;
     font-size: 3vw;
     border-radius: 20px;
