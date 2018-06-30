@@ -14,11 +14,6 @@ class GameModel {
    */
   PlayingField _playingField;
 
-  /**
-   * the levels of the game
-   */
-  List<Map> levels;
-
   Enemy get enemy => _enemy;
   PlayingField get playingField => _playingField;
   set playingField(PlayingField field) => _playingField = field;
@@ -29,37 +24,18 @@ class GameModel {
   GameModel() {
     playingField = new PlayingField(ROWCOUNT, COLCOUNT);
     _enemy = new Enemy(this);
-    _enemy = new Enemy(this);
-    loadLevels();
   }
 
   /**
    * generates a playing field according to one of the levels
    * @param level the id of the level, which should be generated
    */
-  void generatePlayingField(int level) {
+  void generatePlayingField(Map level) {
     playingField.newGame();
-    playingField.generateField(levels[level - 1]);
-    enemy.strategy = levels[level - 1]["enemyStrategy"];
+    playingField.generateField(level);
+    enemy.strategy = level["enemyStrategy"];
     enemy.placeShips(playingField);
     enemy.resetAI();
-  }
-
-  /**
-   * chooses a romdom level
-   * @returns one randomly selected level id
-   */
-  int randomLevel() {
-    int lvlCount = levels.length;
-    Random rng = new Random();
-    return 1 + rng.nextInt(lvlCount);
-  }
-
-  /**
-   * loads the levels from the levels.json file
-   */
-  void loadLevels() {
-    HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
   }
 
   /**
@@ -648,7 +624,7 @@ class PlayingField {
     for (int row = 0; row < rows; row++) {
       var innerList = new List<Field>(cols);
       for (int col = 0; col < cols; col++) {
-        innerList[col] = row >= _enemyRows ? new Field(row, col, false): new Field(row, col, true); // ??
+        innerList[col] = row >= _enemyRows ? new Field(row, col, false): new Field(row, col, true);
       }
       outerList[row] = innerList;
     }

@@ -1,24 +1,75 @@
 part of warships;
-
+/**
+ * The GameController class is the application's controller. It insteracts with
+ * the game's model and view to make it playable
+ */
 class GameController{
+
+  /**
+   * the games model contains contains the logic for the game
+   */
   GameModel model = new GameModel();
+
+  /**
+   * the games view manipulates the html dom tree and is instructed by the controller
+   */
   GameView view = new GameView();
 
+  /**
+   * the listener for level selection buttons
+   */
   var menuListener;
+
+  /**
+   * the listener for the actual game
+   */
   var tableListener;
+
+  /**
+   * the listener for the game over screen
+   */
   var gameoverListener;
+
+  /**
+   * the listener for the message
+   */
   var messageListener;
+
+  /**
+   * TODO
+   */
   var deviceListener;
+
+  /**
+   * the listener for entering full screen mode
+   */
   var fullscreenListener;
+
+  /**
+   * the listener for exiting full screen mode
+   */
   var exitfullscreenListener;
+
+  /**
+   * the listener for the instructions
+   */
   var instructionListener;
 
+  /**
+   * The levels
+   */
+  var levels;
+
+  /**
+   * The last level played
+   */
   int lastPlayed = 0;
 
   /**
    * Creates a new GameController instance
    */
   GameController() {
+    loadLevels();
     JsObject jsObject = new JsObject.fromBrowserObject(querySelector("#menu"));
     int scrollHeight = jsObject['scrollHeight'];
     jsObject['scrollTop'] = '${scrollHeight}';
@@ -43,6 +94,10 @@ class GameController{
     gameoverListener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
     fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
     addListeners();
+  }
+
+  void loadLevels() {
+    HttpRequest.getString("levels.json").then((resp) => levels = JSON.decode(resp));
   }
 
   /**
@@ -122,7 +177,7 @@ class GameController{
   }
 
   /**
-   * manages the users actions on the menu screen
+   * manages the users actions on the level selection buttons
    */
   void selectLevel(MouseEvent e) {
     if (e.target is Element){
@@ -130,11 +185,12 @@ class GameController{
       RegExp re = new RegExp("level_([0-9]+)");
       if (re.hasMatch(element.id)) {
         Match m = re.firstMatch(element.id);
-        model.generatePlayingField(int.parse(m.group(1)));
+        model.generatePlayingField(levels[int.parse(m.group(1)) - 1]);//int.parse(m.group(1)));
         lastPlayed = int.parse(m.group(1));
       } else {
-        int lvl = model.randomLevel();
-        model.generatePlayingField(lvl);
+        Random r = new Random();
+        int lvl = r.nextInt(levels.length);
+        model.generatePlayingField(levels[lvl - 1]);
         lastPlayed = lvl;
       }
       view.setInGameText("Place a ${model.playingField.playerShipLengths[0]}-part ship");
@@ -154,7 +210,7 @@ class GameController{
       if (element.id == "menuGameover") {
         view.showMenu();
       } else if (element.id == "nextGameover") {
-        model.generatePlayingField(lastPlayed + 1);
+        model.generatePlayingField(levels[lastPlayed + 1]);
         view.setInGameText(
             "Place a ${model.playingField.playerShipLengths[0]}-part ship");
         view.setInGameLevel("Level " + (lastPlayed+1).toString());
@@ -163,7 +219,7 @@ class GameController{
         setMessage();
         view.showMessage();
       } else if (element.id == "restartGameover") {
-        model.generatePlayingField(lastPlayed);
+        model.generatePlayingField(levels[lastPlayed]);
         view.setInGameText(
             "Place a ${model.playingField.playerShipLengths[0]}-part ship");
         view.setInGameLevel("Level $lastPlayed");
@@ -262,7 +318,7 @@ class GameController{
     }
     String t = "";
 
-    switch(model.enemy._strategy){
+    switch(model.enemy.strategy){
       case 0:
         t = "Easy Bot";
         break;
