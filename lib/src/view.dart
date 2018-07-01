@@ -44,7 +44,7 @@ class GameView {
    * a list containing every cell of the game table
    */
   List<List<HtmlElement>> fields;
-  
+
   /**
    * Generats html for the playing field screen
    * Creats a List in a List which contains HtmlElements
@@ -498,7 +498,13 @@ class GameView {
     querySelector('#ebcount').innerHtml = s[6];
     querySelector('#eccount').innerHtml = s[7];
   }
-  //TODO
+
+  /**
+   * sets the texts and pictures for the instructions
+   * @param object the object
+   * @param picture the picture to be displayed
+   * @param text the text to be displayed
+   */
   void setInstruction(String object, String picture, String text){
     querySelector("#pictureInstruction").attributes["class"] = picture;
     querySelector("#messageInstruction").innerHtml = text;
