@@ -16,44 +16,9 @@ class GameController{
   GameView _view = new GameView();
 
   /**
-   * the listener for level selection buttons
-   */
-  var _menuListener;
-
-  /**
    * the listener for the actual game
    */
   var _tableListener;
-
-  /**
-   * the listener for the game over screen
-   */
-  var _gameoverlistener;
-
-  /**
-   * the listener for the message
-   */
-  var _messageListener;
-
-  /**
-   * TODO
-   */
-  var _deviceListener;
-
-  /**
-   * the listener for entering full screen mode
-   */
-  var _fullscreenListener;
-
-  /**
-   * the listener for exiting full screen mode
-   */
-  var _exitFullscreenListener;
-
-  /**
-   * the listener for the instructions
-   */
-  var _instructionListener;
 
   /**
    * The levels
@@ -66,7 +31,7 @@ class GameController{
   int _lastPlayed = 0;
 
   /**
-   * Creates a new GameController instance
+   * Creates a new GameController instance ands adds Listeners
    */
   GameController() {
     loadlevels();
@@ -82,17 +47,17 @@ class GameController{
     _view.generateInstruction();
     _view.showMenu();
     window.onResize.listen((e) => _view.fieldSize());
-    _instructionListener = querySelector("#instructionButton").onClick.listen((MouseEvent e) {changeInstruction(1);});
-    _instructionListener = querySelector("#nextInstruction1").onClick.listen((MouseEvent e) {changeInstruction(2);});
-    _instructionListener = querySelector("#nextInstruction2").onClick.listen((MouseEvent e) {changeInstruction(3);});
-    _instructionListener = querySelector("#nextInstruction3").onClick.listen((MouseEvent e) {changeInstruction(4);});
-    _instructionListener = querySelector("#backInstruction").onClick.listen((MouseEvent e) {_view.showMenu();});
-    _messageListener = querySelector('#messageNext').onClick.listen((MouseEvent e) {_view.showGame();});
-    _deviceListener = querySelector('#deviceButton').onClick.listen((MouseEvent e) {_view.hideDevice();});
-    _menuListener = querySelectorAll('#menu .button').onClick.listen(selectLevel);
+    querySelector("#instructionButton").onClick.listen((MouseEvent e) {changeInstruction(1);});
+    querySelector("#nextInstruction1").onClick.listen((MouseEvent e) {changeInstruction(2);});
+    querySelector("#nextInstruction2").onClick.listen((MouseEvent e) {changeInstruction(3);});
+    querySelector("#nextInstruction3").onClick.listen((MouseEvent e) {changeInstruction(4);});
+    querySelector("#backInstruction").onClick.listen((MouseEvent e) {_view.showMenu();});
+    querySelector('#messageNext').onClick.listen((MouseEvent e) {_view.showGame();});
+    querySelector('#deviceButton').onClick.listen((MouseEvent e) {_view.hideDevice();});
+    querySelectorAll('#menu .button').onClick.listen(selectLevel);
     _tableListener = querySelectorAll('td').onClick.listen(buildShip);
-    _gameoverlistener = querySelectorAll('#gameover .button').onClick.listen(gameOver);
-    _fullscreenListener = querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
+    querySelectorAll('#gameover .button').onClick.listen(gameOver);
+    querySelector('#fullscreenbutton').onClick.listen((MouseEvent e) {fullscreenMode(querySelector("body"));});
     addListeners();
   }
 
@@ -370,7 +335,11 @@ class GameController{
 
   /**
    * requests the view to display the tutorial for the game
-   * @param i TODO
+   * @param i the instruction page to show:
+   *           1 for ship placing instructions
+   *           2 for island instructions
+   *           3 for ship moving instructions
+   *           4 for power ups instructions
    */
   void changeInstruction(int i){
     String object = "";
@@ -410,5 +379,3 @@ class GameController{
     }
   }
 }
-
-

@@ -1,21 +1,50 @@
 part of warships;
 
+/**
+ * The GameView is responsible for manipulating the DOM-Tree. It offers a variety
+ * of methods, for example to update the game table, or set the text s for the textfields.
+ */
 class GameView {
+  /**
+   * the menu element of the html page
+   */
   final menu = querySelector("#menu");
 
+  /**
+   * the html's game over screen
+   */
   final gameover = querySelector("#gameover");
 
+  /**
+   * the html's game table
+   */
   final gameTable = querySelector("#gameTable");
 
+  /**
+   * the html's in game message
+   */
   final message = querySelector("#message");
 
+  /**
+   * the device
+   */
   final device = querySelector("#device");
 
+  /**
+   * the animated message
+   */
   final animatedMesage = querySelector("#animatedmessage");
 
+  /**
+   * the instructions
+   */
   final instruction = querySelector("#instruction");
 
+  /**
+   * a list containing every cell of the game table
+   */
   List<List<HtmlElement>> fields;
+  
   /**
    * Generats html for the playing field screen
    * Creats a List in a List which contains HtmlElements
@@ -46,6 +75,7 @@ class GameView {
       }
     }
   }
+
   /**
    * Generats html for the device screen
    * The screen conatins a button, which is not used yet
@@ -90,6 +120,7 @@ class GameView {
     gameoverString += '<input type="button" id="restartGameover" class="button" value="Restart"></input>';
     gameover.innerHtml = gameoverString;
   }
+
   /**
    * Generats html for the message screen
    * The screen contains informations about the round, enemy and player ship count and how difficult it is
@@ -113,6 +144,7 @@ class GameView {
 
     message.innerHtml = messageString;
   }
+
   /**
    * Generates a div for an animated message, not used yet
    */
@@ -120,6 +152,9 @@ class GameView {
     animatedMesage.innerHtml = '<div id="animatedmessagetext">Ship sunk</div>';
   }
 
+  /**
+   * generates the instructions for the game
+   */
   void generateInstruction(){
     String instructionString = "";
     instructionString += '<div id="headInstruction"></div>';
@@ -145,6 +180,7 @@ class GameView {
       }
     }
   }
+
   /**
    * This method is for the div above a Field and contains explosion animations
    * select a red or white cross
@@ -169,6 +205,7 @@ class GameView {
     }
     return "empty";
   }
+
   /**
    * Select a class name for different entities
    * @param f is a Field which contains informations about hit, entitiy, fog, powerup, rock, ship, shipBuilder, shipMover
@@ -395,6 +432,9 @@ class GameView {
     instruction.style.display="block";
   }
 
+  /**
+   * updates the instruction page's button
+   */
   void changeInstructionButton(int i){
     if(i > 1) {
       String oldButton = '#nextInstruction' + (i - 1).toString();

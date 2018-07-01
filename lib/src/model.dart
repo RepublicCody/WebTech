@@ -68,9 +68,28 @@ class Enemy {
 
   int sunkShipCount = 0;
 
+  /**
+   * the enemy's strategy
+   *  0: easy
+   *  1: medium
+   *  2: hard
+   *  3:very hard
+   */
   int _strategy;
+
+  /**
+   * the game's model
+   */
   GameModel _model;
+
+  /**
+   * used for generating random numbers for the KIs
+   */
   Random _rng;
+
+  /**
+   * the lengths of the enemy's ships
+   */
   List<int> shipLengths;
 
   set strategy(int value) => _strategy = value;
@@ -78,6 +97,10 @@ class Enemy {
   set model(GameModel value) => _model = value;
   GameModel get model => _model;
 
+  /**
+   * creates a new Enemy instance
+   * @param model the game's model
+   */
   Enemy(GameModel model) {
     this.model = model;
     this.strategy = 0;
@@ -246,7 +269,7 @@ class Enemy {
   }
 
   /**
-   * maka a template move
+   * the template for moves
    */
   void template(List<int> list) {
     int row = list[0];
